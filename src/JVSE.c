@@ -7,12 +7,12 @@ int main(void) {
         printf("JVSE: Failed to connect\n");
         return -1;
     }
-    set_interface_attribs(serial, B115200, 0);
-    setSystemSwitch(5, 1);
-    setSystemSwitch(4, 1);
+    set_interface_attribs(serial, B115200);
+    setSystemSwitch(5, 0);
+    setSystemSwitch(4, 0);
     setAnalogue(0, 0xFF);
-    setPlayerSwitch(0, 1, 1);
-    setPlayerSwitch(0, 9, 1);
+    setPlayerSwitch(0, 1, 0);
+    setPlayerSwitch(0, 9, 0);
     while (1) {
         getPacket();
     }
@@ -91,6 +91,7 @@ void writeEscaped(unsigned char byte) {
 }
 
 unsigned char getByte() {
+    //usleep(100);
     unsigned char buffer[] = {
         0x00
     };
@@ -129,6 +130,7 @@ void writeBytes(unsigned char bytes[], int size) {
 }
 
 void sendReply() {
+    //usleep(100);
     if (replyCount > 0) {
         int checksum = BUS_MASTER + replyCount + 2 + STATUS_SUCCESS;
 
