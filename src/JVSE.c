@@ -277,24 +277,26 @@ void getPacket() {
     int ourChecksum = 0;
 
     while (getByte() != CMD_SYNC);
-
+    printf("SYNC\n");
     unsigned char packet_address = getByte();
     ourChecksum += packet_address;
 
     unsigned char packet_length = getByte() - 1;
     ourChecksum += packet_length + 1;
-
+    printf("length %d\n", packet_length);
     unsigned char packet[packet_length];
 
     int counter = 0;
     while (counter < packet_length) {
         unsigned char byte = getByte();
         packet[counter] = byte;
+        printf("byte %d\n", byte);
         counter += 1;
         ourChecksum += byte;
     }
 
     unsigned char theirChecksum = getByte();
+    printf("check %d %d\n", theirChecksum, (ourChecksum & 0xFF));
     if ((ourChecksum & 0xFF) == theirChecksum) {
         processPacket(packet, packet_length, packet_address);
     } else {
