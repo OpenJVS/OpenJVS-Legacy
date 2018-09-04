@@ -5,7 +5,7 @@ int main(void) {
     init();
     serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
     if (serial < 0) {
-        printf("JVSEC: Failed to connect\n");
+        printf("JVSE: Failed to connect\n");
         return -1;
     }
     set_interface_attribs(serial, B115200, 0);
@@ -52,7 +52,7 @@ void setSystemSwitch(int bit, int value) {
 
 void setPlayerSwitch(int player, int bit, int value) {
 	if(value == 1) {
-		playerSwitches[player * bytesPerPlayer + (bit / 8)] |= 1 << bit - (8 * (bit / 8));
+		playerSwitches[player * bytesPerPlayer + (bit / 8)] |= 1 << (bit - (8 * (bit / 8)));
 	} else if(value == 0) {
 		playerSwitches[player * bytesPerPlayer + (bit / 8)] &= ~(1 << (bit - (8 * (bit / 8))));
 	}
@@ -70,7 +70,7 @@ int set_interface_attribs(int fd, int speed, int parity) {
     struct termios tty;
     memset( & tty, 0, sizeof tty);
     if (tcgetattr(fd, & tty) != 0) {
-        printf("JVSEC: error %d from tcgetattr", errno);
+        printf("JVSE: error %d from tcgetattr", errno);
         return -1;
     }
 
@@ -91,7 +91,7 @@ int set_interface_attribs(int fd, int speed, int parity) {
     tty.c_cflag &= ~CRTSCTS;
 
     if (tcsetattr(fd, TCSANOW, & tty) != 0) {
-        printf("JVSEC: Error %d from tcsetattr", errno);
+        printf("JVSE: Error %d from tcsetattr", errno);
         return -1;
     }
     return 0;
@@ -105,7 +105,7 @@ void writeEscaped(unsigned char byte) {
         };
         int n = write(serial, buffer, sizeof(buffer));
         if (n != 1) {
-            printf("Error from write: %d, %d\n", n, errno);
+            printf("JVSE: Error from write: %d, %d\n", n, errno);
         }
         byte -= 1;
     }
@@ -115,7 +115,7 @@ void writeEscaped(unsigned char byte) {
     };
     int n = write(serial, buffer, sizeof(buffer));
     if (n != 1) {
-        printf("JVSEC: Error from write: %d, %d\n", n, errno);
+        printf("JVSE: Error from write: %d, %d\n", n, errno);
     }
     tcdrain(serial);
 }
@@ -205,7 +205,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
             } else if (packet[0] == CMD_READID) {
                 debug("CMD_READID\n");
                 writeByte(STATUS_SUCCESS);
-                writeString("OpenJVS Emulator;I/O BD JVS;837-13551;Ver1.00;98/10");
+                writeString("JVSE Emulator;I/O BD JVS;837-13551;Ver1.00;98/10");
             } else if (packet[0] == CMD_FORMATVERSION) {
                 debug("CMD_FORMATVERSION\n");
                 writeByte(STATUS_SUCCESS);
@@ -234,7 +234,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 writeByte(STATUS_SUCCESS);
                 writeByte(reverse(systemSwitches));
 								if(packet[1] != players || packet[2] != bytesPerPlayer) {
-									printf("OpenJVS Error: Switch request differs from offered no. of players\n");
+									printf("JVSE: Switch request differs from offered no. of players\n");
 								}
 								for(int i = 0 ; i < packet[1] * packet[2] ; i++) {
 										writeByte(reverse(playerSwitches[i]));
@@ -268,7 +268,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 writeByte(STATUS_SUCCESS);
 
 								if(packet[1] != analogueChannels) {
-									printf("OpenJVS Error: Analogue Channel Requests differs\n");
+									printf("JVSE: Analogue Channel Requests differs\n");
 								}
 
 								for(int i = 0 ; i < packet[1] ; i++) {
