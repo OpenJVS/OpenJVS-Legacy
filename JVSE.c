@@ -2,13 +2,18 @@
 
 int main(void) {
 
-		init();
+    init();
     serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
     if (serial < 0) {
         printf("JVSEC: Failed to connect\n");
         return -1;
     }
     set_interface_attribs(serial, B115200, 0);
+    setSystemSwitch(5, 1);
+    setSystemSwitch(4, 1);
+    setAnalogue(0, 0xFF);
+    setPlayerSwitch(0, 1, 1);
+    setPlayerSwitch(0, 9, 1);
     while (1) {
         getPacket();
     }
