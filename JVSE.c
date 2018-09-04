@@ -20,6 +20,17 @@ int main(void) {
     return 0;
 }
 
+void debug(char* string) {
+	//printf("%s", string);
+}
+
+unsigned char reverse(unsigned char b) {
+	b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
+	b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
+	b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
+	return b;
+}
+
 void init() {
 	systemSwitches = 0x0;
 	for(int i = 0 ; i < players * bytesPerPlayer ; i++) {
@@ -41,9 +52,9 @@ void setSystemSwitch(int bit, int value) {
 
 void setPlayerSwitch(int player, int bit, int value) {
 	if(value == 1) {
-		playerSwitches[player * bytesPerPlayer + (bit / 8)] |= 1 << bit;
+		playerSwitches[player * bytesPerPlayer + (bit / 8)] |= 1 << bit - (8 * (bit / 8));
 	} else if(value == 0) {
-		playerSwitches[player * bytesPerPlayer + (bit / 8)] &= ~(1 << bit);
+		playerSwitches[player * bytesPerPlayer + (bit / 8)] &= ~(1 << (bit - (8 * (bit / 8))));
 	}
 }
 
@@ -183,32 +194,32 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
             int command_size = 1;
 
             if (packet[0] == CMD_RESET) {
-                printf("CMD_RESET\n");
+                debug("CMD_RESET\n");
                 command_size = 2;
                 deviceID = -1;
             } else if (packet[0] == CMD_SETADDRESS) {
-                printf("CMD_SETADDRESS\n");
+                debug("CMD_SETADDRESS\n");
                 command_size = 2;
                 deviceID = packet[1];
                 writeByte(STATUS_SUCCESS);
             } else if (packet[0] == CMD_READID) {
-                printf("CMD_READID\n");
+                debug("CMD_READID\n");
                 writeByte(STATUS_SUCCESS);
                 writeString("OpenJVS Emulator;I/O BD JVS;837-13551;Ver1.00;98/10");
             } else if (packet[0] == CMD_FORMATVERSION) {
-                printf("CMD_FORMATVERSION\n");
+                debug("CMD_FORMATVERSION\n");
                 writeByte(STATUS_SUCCESS);
                 writeByte(0x11);
             } else if (packet[0] == CMD_JVSVERSION) {
-                printf("CMD_JVSVERSION\n");
+                debug("CMD_JVSVERSION\n");
                 writeByte(STATUS_SUCCESS);
                 writeByte(0x20);
             } else if (packet[0] == CMD_COMMSVERSION) {
-                printf("CMD_COMMSVERSION\n");
+                debug("CMD_COMMSVERSION\n");
                 writeByte(STATUS_SUCCESS);
                 writeByte(0x10);
             } else if (packet[0] == CMD_GETFEATURES) {
-                printf("CMD_GETFEATURES\n");
+                debug("CMD_GETFEATURES\n");
                 writeByte(STATUS_SUCCESS);
                 unsigned char features[] = {
                     0x01, players, bytesPerPlayer * 8, 0x00,
@@ -219,22 +230,22 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 };
                 writeBytes(features, sizeof(features));
             } else if (packet[0] == CMD_READSWITCHES) {
-                printf("CMD_READSWITCHES\n");
+                debug("CMD_READSWITCHES\n");
                 writeByte(STATUS_SUCCESS);
-                writeByte(systemSwitches);
+                writeByte(reverse(systemSwitches));
 								if(packet[1] != players || packet[2] != bytesPerPlayer) {
 									printf("OpenJVS Error: Switch request differs from offered no. of players\n");
 								}
 								for(int i = 0 ; i < packet[1] * packet[2] ; i++) {
-										writeByte(playerSwitches[i]);
+										writeByte(reverse(playerSwitches[i]));
 								}
                 command_size = 3;
             } else if (packet[0] == CMD_WRITEGPIO1) {
-                printf("CMD_WRITEGPIO1\n");
+                debug("CMD_WRITEGPIO1\n");
                 command_size = 2 + packet[1];
                 writeByte(STATUS_SUCCESS);
             } else if (packet[0] == CMD_SETMAINBOARDID) {
-                printf("CMD_MAINBOARDID\n");
+                debug("CMD_MAINBOARDID\n");
                 int counter = 1;
                 while (packet[counter] != 0x00 && counter <= packet_length) {
 										boardID[counter - 1] = packet[counter];
@@ -244,7 +255,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 command_size = counter;
                 writeByte(STATUS_SUCCESS);
             } else if (packet[0] == CMD_READCOIN) {
-                printf("CMD_READCOIN\n");
+                debug("CMD_READCOIN\n");
                 writeByte(STATUS_SUCCESS);
                 writeByte(0x00);
                 writeByte(coin);
@@ -252,7 +263,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 writeByte(0x00);
                 command_size = 2;
             } else if (packet[0] == CMD_READANALOG) {
-                printf("CMD_READANALOG\n");
+                debug("CMD_READANALOG\n");
                 command_size = 2;
                 writeByte(STATUS_SUCCESS);
 
@@ -265,7 +276,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
 									writeByte(analogue[i]);
 								}
             } else if (packet[0] == CMD_READSCREENPOS) {
-                printf("CMD_READSCREENPOS\n");
+                debug("CMD_READSCREENPOS\n");
                 command_size = 2;
                 writeByte(STATUS_SUCCESS);
                 writeByte(0x00);
@@ -283,7 +294,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
             packet_length -= command_size;
             packet += command_size;
         }
-        usleep(100);
+        usleep(50);
         sendReply();
     }
 }
