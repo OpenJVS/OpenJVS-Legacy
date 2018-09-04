@@ -3,9 +3,21 @@ TARGET := bin/JVSE
 CFLAGS := -std=c99
 INC := include
 SRCDIR := src
+BUILDDIR := build
 
-JVSE: $(SRCDIR)/JVSE.c
-	$(CC) -o $(TARGET) $(CFLAGS) -I $(INC) $(SRCDIR)/JVSE.c
+all: $(TARGET)
+
+$(TARGET): JVSE.o Utilities.o
+	$(CC) $(CFLAGS) -o $(TARGET) $(BUILDDIR)/JVSE.o $(BUILDDIR)/Utilities.o
+
+JVSE.o: $(SRCDIR)/JVSE.c $(INC)/Utilities.h
+	mkdir -p $(BUILDDIR)
+	$(CC) $(CFLAGS) -I $(INC) -o $(BUILDDIR)/JVSE.o -c $(SRCDIR)/JVSE.c
+
+Utilities.o: $(SRCDIR)/Utilities.c
+	mkdir -p $(BUILDDIR)
+	$(CC) $(CFLAGS) -I $(INC) -o $(BUILDDIR)/Utilities.o -c $(SRCDIR)/Utilities.c
+
 
 clean:
-	rm -f $(TARGET)
+	$(RM) -r $(BUILDDIR) $(TARGET)
