@@ -8,6 +8,7 @@ BUILDDIR := build
 all: $(TARGET)
 
 $(TARGET): JVSE.o Utilities.o
+	mkdir -p bin
 	$(CC) $(CFLAGS) -o $(TARGET) $(BUILDDIR)/JVSE.o $(BUILDDIR)/Utilities.o
 
 JVSE.o: $(SRCDIR)/JVSE.c $(INC)/Utilities.h
