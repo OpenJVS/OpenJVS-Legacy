@@ -13,12 +13,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "Utilities.h"
 #include "Definitions.h"
-/* Here you can set the serial device */
-char* portName = "/dev/ttyUSB0";
-
-/* allDeviceMode replies to all requests regardless of deviceID */
-int allDeviceMode = 1;
+#include "Config.h"
 
 /* Variables used in the program */
 int deviceID;
@@ -45,7 +42,6 @@ unsigned char getByte();
 void processPacket(unsigned char packet[], int packet_length, int packet_address);
 void getPacket();
 void sendReply();
-int set_interface_attribs (int fd, int speed, int parity);
 void writeByte(unsigned char byte);
 void writeString(char* string);
 void writeBytes(unsigned char bytes[], int size);
@@ -54,8 +50,5 @@ void setSystemSwitch(int bit, int value);
 void setPlayerSwitch(int player, int bit, int value);
 void setAnalogue(int channel, char value);
 void incrementCoin();
-
-
-
 
 #endif // JVSE_H_
