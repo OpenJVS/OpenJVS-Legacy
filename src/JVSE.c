@@ -87,22 +87,24 @@ void writeEscaped(unsigned char byte) {
     if (n != 1) {
         printf("JVSE: Error from write: %d, %d\n", n, errno);
     }
-    tcdrain(serial);
+    //usleep(10);
+    //tcdrain(serial);
 }
 
 unsigned char getByte() {
-    //usleep(100);
     unsigned char buffer[] = {
         0x00
     };
     int n = -1;
     while (n < 1) {
+        //usleep(10);
         n = read(serial, buffer, 1);
     }
 
     if (buffer[0] == CMD_ESCAPE) {
         n = -1;
         while (n < 1) {
+            //usleep(10);
             n = read(serial, buffer, 1);
         }
         return buffer[0] + 1;
@@ -156,8 +158,8 @@ void sendReply() {
         replyCount = 0;
     }
 
-    tcflush(serial, TCIOFLUSH);
-    tcdrain(serial);
+    //tcflush(serial, TCIOFLUSH);
+    //tcdrain(serial);
 }
 
 void processPacket(unsigned char packet[], int packet_length, int packet_address) {
@@ -266,7 +268,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
             packet_length -= command_size;
             packet += command_size;
         }
-        usleep(50);
+        //usleep(100);
         sendReply();
     }
 }
