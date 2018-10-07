@@ -1,8 +1,7 @@
 #include "JVSE.h"
 
 int main(void) {
-
-		init();
+    init();
     serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
     if (serial < 0) {
         printf("JVSEC: Failed to connect\n");
@@ -12,12 +11,12 @@ int main(void) {
     setSystemSwitch(0, 0);
     setSystemSwitch(1, 0);
 
-    setPlayerSwitch(0, 0, 1);
-    setPlayerSwitch(0, 2, 1);
-    setPlayerSwitch(0, 4, 1);
-    setPlayerSwitch(0, 6, 1);
-    setPlayerSwitch(0, 8, 1);
-    setPlayerSwitch(0, 10, 1);
+    //setPlayerSwitch(0, 0, 1);
+    //setPlayerSwitch(0, 2, 1);
+    //setPlayerSwitch(0, 4, 1);
+    //setPlayerSwitch(0, 6, 1);
+    //setPlayerSwitch(0, 8, 1);
+    //setPlayerSwitch(0, 10, 1);
    
     while (1) {
         getPacket();

@@ -35,7 +35,7 @@ char boardID[255];
 char analogueChannels = 4;
 char analogue[255];
 
-char coin = 0;
+char coin = 1;
 
 /* Function definitions */
 int main(void);
