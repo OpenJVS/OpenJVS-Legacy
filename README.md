@@ -12,13 +12,17 @@ OpenJVS requires a RS232 to RS485 converter, wired to the JVS controller cable. 
 
 ## Installation
 
-### Raspberry Pi 1
+### Raspberry Pi
 
-Unforunately OpenJVS does not currently work on a Raspberry Pi.
+OpenJVS supports a few Naomi games on the raspberry pi. To install run the commands below:
 
-### Raspberry Pi 2/3
-
-OpenJVS is known to work on Ubuntu on a Raspberry Pi 2 or 3.
+```
+sudo apt install build-essentials git
+git clone http://github.com/bobbydilley/OpenJVS
+cd OpenJVS
+make
+sudo bin/JVSE
+```
 
 ### Mac OS
 
