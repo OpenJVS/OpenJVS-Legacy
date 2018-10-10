@@ -1,10 +1,8 @@
 # OpenJVS
 
-## Introduction
+OpenJVS is a software replacement for the JVS I/O boards used in arcade systems such as the Sega Naomi, Triforce, Chihiro and Lindbergh as well as other systems by other manufacturers. The software is written in C and aims to run on a RaspberryPi allowing users to use their existing peripherals such as keyboards, AimTraks, mice, joysticks and steering wheels to control the games.
 
-This repository will include resources, and the OpenJVS emulator written in C/C++.
-
-This is the new and improved version of the JVSEmulator written in python at http://github.com/bobbydilley/JVSEmulator.
+This is the new version of the JVSEmulator repository at http://github.com/bobbydilley/JVSEmulator.
 
 ## Hardware
 
