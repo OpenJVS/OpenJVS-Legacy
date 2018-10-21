@@ -22,3 +22,20 @@ cchars: discard = ^O; dsusp = ^Y; eof = ^D; eol = <undef>;
 	eol2 = <undef>; erase = ^?; intr = ^C; kill = ^U; lnext = ^V;
 	min = 0; quit = ^\; reprint = ^R; start = ^Q; status = ^T;
 	stop = ^S; susp = ^Z; time = 10; werase = ^W;
+
+Findings:
+
+On linux MIN and TIME don't seem to be setting to 0 and 10 properly?
+Mac has a reprint
+Mac has a status
+
+MAC HAS:
+
+altwerase
+pendin
+nokerninfo
+oxtabs
+dsrflow
+dtrflow
+mdmbuf
+
