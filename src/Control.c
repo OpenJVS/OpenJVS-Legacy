@@ -1,1 +1,54 @@
+#include "Control.h"
 
+char* deviceName = "/events/mouse0";
+
+char players = 2;
+char bytesPerPlayer = 2;
+char playerSwitches[255];
+char systemSwitches = 0x0;
+char boardID[255];
+char analogueChannels = 4;
+char analogue[255];
+char coin = 1;
+
+unsigned char reverse(unsigned char b) {
+	b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
+	b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
+	b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
+	return b;
+}
+
+void initControl() {
+	systemSwitches = 0x0;
+	for(int i = 0 ; i < players * bytesPerPlayer ; i++) {
+		playerSwitches[i] = 0x0;
+	}
+
+	for(int i = 0 ; i < analogueChannels ; i++) {
+		analogue[i] = 0x0;
+	}
+}
+
+void setSystemSwitch(int bit, int value) {
+	if(value == 1) {
+		systemSwitches |= 1 << bit;
+	} else if(value == 0) {
+		systemSwitches &= ~(1 << bit);
+	}
+}
+
+void setPlayerSwitch(int player, int bit, int value) {
+	if(value == 1) {
+		playerSwitches[player * bytesPerPlayer + (bit / 8)] |= 1 << (bit - (8 * (bit / 8)));
+	} else if(value == 0) {
+		playerSwitches[player * bytesPerPlayer + (bit / 8)] &= ~(1 << (bit - (8 * (bit / 8))));
+	}
+}
+
+void setAnalogue(int channel, char value) {
+	analogue[channel] = value;
+}
+
+void incrementCoin() {
+	coin++;
+}
