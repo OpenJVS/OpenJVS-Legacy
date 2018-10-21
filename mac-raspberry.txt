@@ -25,17 +25,17 @@ cchars: discard = ^O; dsusp = ^Y; eof = ^D; eol = <undef>;
 
 Findings:
 
-On linux MIN and TIME don't seem to be setting to 0 and 10 properly?
+On linux MIN and TIME don't seem to be setting to 0 and 10 properly? This may be a big issue!
 Mac has a reprint
 Mac has a status
 
 MAC HAS:
 
-altwerase
-pendin
-nokerninfo
-oxtabs
-dsrflow
-dtrflow
-mdmbuf
+altwerase	Something to do with erasing? Probably don't need it.
+pendin	Something about resending pending characters, we should enable this!
+nokerninfo	Disables a character, lets enable this.
+oxtabs	Converting tabs to spaces don't try this.
+dsrflow	FLOW CONTROL - We should try enabling this?
+dtrflow	FLOW CONTROL - We should try enabling this?
+mdmbuf	If this bit is set, enable carrier-based flow control of output.	We should enable this.
 
