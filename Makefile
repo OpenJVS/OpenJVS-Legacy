@@ -23,3 +23,4 @@ Utilities.o: $(SRCDIR)/Utilities.c
 
 clean:
 	$(RM) -r $(BUILDDIR) $(TARGET)
+	$(RM) -r bin
