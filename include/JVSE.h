@@ -12,12 +12,13 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 
 #include "Control.h"
 #include "Utilities.h"
 #include "Definitions.h"
 #include "Config.h"
-
+#include "Keyboard.h"
 
 /* Variables used in the program */
 int deviceID;
@@ -30,6 +31,7 @@ int majorVersion = 0;
 int minorVersion = 9;
 
 /* Function definitions */
+void intHandler(int dummy);
 int main(void);
 void writeEscaped(unsigned char byte);
 unsigned char getByte();

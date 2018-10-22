@@ -1,6 +1,15 @@
 #include "JVSE.h"
 
+void intHandler(int dummy) {
+  closeKeyboard();
+  close(serial);
+  exit(0);
+}
+
 int main(void) {
+    /* Setup signal handlers */
+    signal(SIGINT, intHandler);
+
     /* Print out information */
     printf("JVSE: OpenJVS Emulator %d.%d\n", majorVersion, minorVersion);
     printf("JVSE: (C) Robert Dilley 2018\n\n");
