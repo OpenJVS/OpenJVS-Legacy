@@ -10,8 +10,13 @@ int main(void) {
     set_interface_attribs(serial, B115200);
     setSystemSwitch(5, 0);
     setSystemSwitch(4, 0);
-    setAnalogue(0, 0xFF);
+    setAnalogue(0, 0xFE);
+    setPlayerSwitch(0, 0, 0);
     setPlayerSwitch(0, 1, 0);
+    setPlayerSwitch(0, 2, 0);
+    setPlayerSwitch(0, 3, 0);
+    setPlayerSwitch(0, 4, 0);
+    setPlayerSwitch(0, 5, 0);
     setPlayerSwitch(0, 9, 0);
     while (1) {
         getPacket();
