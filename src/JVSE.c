@@ -16,6 +16,7 @@ int main(void) {
 
     /* Setup the serial interface here */
     serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
+    
     if (serial < 0) {
         printf("JVSE: Failed to connect\n");
         return -1;

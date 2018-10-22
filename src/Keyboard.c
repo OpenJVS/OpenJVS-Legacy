@@ -10,6 +10,20 @@ int initKeyboard() {
   return 0;
 }
 
+void runKeyboard() {
+/*  input_event event;
+  while (read(kbd_fd, &event, sizeof(input_event)) > 0) {
+    if (event.type == EV_KEY) {
+      if (event.value == KEY_PRESS) {
+        printf("PRESS %d\n", event.code);
+      }
+      else if (event.value == KEY_RELEASE) {
+        printf("RELEASE %d\n", event.code);
+      }
+    }
+  }*/
+}
+
 void closeKeyboard() {
   close(kbd_fd);
 }
