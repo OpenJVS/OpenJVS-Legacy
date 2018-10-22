@@ -1,5 +1,11 @@
-/* Here you can set the serial device */
-char* portName = "/dev/ttyUSB0";
+#define _BSD_SOURCE
+#ifndef CONFIG_H_
+#define CONFIG_H_
 
-/* allDeviceMode replies to all requests regardless of deviceID */
-int allDeviceMode = 1;
+extern char* portName;
+extern int allDeviceMode;
+extern char* configPath;
+
+int initConfig();
+
+#endif // CONFIG_H_

@@ -1,5 +1,8 @@
-/* This file defines the commands from the JVS spec */
+#define _BSD_SOURCE
+#ifndef DEFINITIONS_H_
+#define DEFINITIONS_H_
 
+/* This file defines the commands from the JVS spec */
 #define CMD_BROADCAST 0xFF
 #define CMD_ESCAPE 0xD0
 #define CMD_SYNC 0xE0
@@ -49,3 +52,5 @@
 #define PLAYER_PUSH6 4
 #define PLAYER_PUSH7 3
 #define PLAYER_PUSH8 2
+
+#endif // DEFINITIONS_H_

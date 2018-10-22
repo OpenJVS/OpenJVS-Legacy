@@ -1,13 +1,33 @@
 #include "JVSE.h"
 
+void intHandler(int dummy) {
+  closeKeyboard();
+  close(serial);
+  exit(0);
+}
+
 int main(void) {
-    init();
+    /* Setup signal handlers */
+    signal(SIGINT, intHandler);
+
+    /* Print out information */
+    printf("JVSE: OpenJVS Emulator %d.%d\n", majorVersion, minorVersion);
+    printf("JVSE: (C) Robert Dilley 2018\n\n");
+
+    /* Setup the serial interface here */
     serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
+    
     if (serial < 0) {
         printf("JVSE: Failed to connect\n");
         return -1;
     }
     set_interface_attribs(serial, B115200);
+
+    /* Init the modules here */
+    initControl();
+    initConfig();
+
+    /* Setup some example keys */
     setSystemSwitch(5, 0);
     setSystemSwitch(4, 0);
     setAnalogue(0, 0xFE);
@@ -18,9 +38,12 @@ int main(void) {
     setPlayerSwitch(0, 4, 0);
     setPlayerSwitch(0, 5, 0);
     setPlayerSwitch(0, 9, 0);
+
+    /* Run the system forever */
     while (1) {
         getPacket();
     }
+
     return 0;
 }
 
@@ -28,52 +51,8 @@ void debug(char* string) {
 	//printf("%s", string);
 }
 
-unsigned char reverse(unsigned char b) {
-	b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
-	b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
-	b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
-	return b;
-}
-
-void init() {
-	systemSwitches = 0x0;
-	for(int i = 0 ; i < players * bytesPerPlayer ; i++) {
-		playerSwitches[i] = 0x0;
-	}
-
-	for(int i = 0 ; i < analogueChannels ; i++) {
-		analogue[i] = 0x0;
-	}
-}
-
-void setSystemSwitch(int bit, int value) {
-	if(value == 1) {
-		systemSwitches |= 1 << bit;
-	} else if(value == 0) {
-		systemSwitches &= ~(1 << bit);
-	}
-}
-
-void setPlayerSwitch(int player, int bit, int value) {
-	if(value == 1) {
-		playerSwitches[player * bytesPerPlayer + (bit / 8)] |= 1 << (bit - (8 * (bit / 8)));
-	} else if(value == 0) {
-		playerSwitches[player * bytesPerPlayer + (bit / 8)] &= ~(1 << (bit - (8 * (bit / 8))));
-	}
-}
-
-void setAnalogue(int channel, char value) {
-	analogue[channel] = value;
-}
-
-void incrementCoin() {
-	coin++;
-}
-
-
-
+/* Write the byte to the serial buffer adding appropriate escape bytes */
 void writeEscaped(unsigned char byte) {
-    /* Write the byte to the serial buffer adding appropriate escape bytes */
     if (byte == CMD_SYNC || byte == CMD_ESCAPE) {
         unsigned char buffer[] = {
             CMD_ESCAPE
