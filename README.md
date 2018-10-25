@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/bobbydilley/OpenJVS.svg?branch=master)](https://travis-ci.com/bobbydilley/OpenJVS)
+
 # OpenJVS
 
 OpenJVS is a software replacement for the JVS I/O boards used in arcade systems such as the Sega Naomi, Triforce, Chihiro and Lindbergh as well as other systems by other manufacturers. The software is written in C and aims to run on a Raspberry Pi allowing users to use their existing peripherals such as keyboards, AimTraks, mice, joysticks and steering wheels to control the games.
