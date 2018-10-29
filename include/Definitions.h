@@ -1,4 +1,3 @@
-#define _DEFAULT_SOURCE
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 

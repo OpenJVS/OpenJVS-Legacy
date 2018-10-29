@@ -1,4 +1,3 @@
-#define _DEFAULT_SOURCE
 #ifndef CONTROL_H_
 #define CONTROL_H_
 

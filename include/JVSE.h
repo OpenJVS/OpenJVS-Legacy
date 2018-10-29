@@ -1,4 +1,3 @@
-#define _DEFAULT_SOURCE
 #ifndef JVSE_H_
 #define JVSE_H_
 

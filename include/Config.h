@@ -1,4 +1,3 @@
-#define _BSD_SOURCE
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
