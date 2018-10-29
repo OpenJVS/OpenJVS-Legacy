@@ -23,10 +23,10 @@ int set_interface_attribs(int fd, int speed) {
     tty.c_cflag &= ~(PARENB | PARODD);
     tty.c_cflag &= ~CSTOPB;
     tty.c_cflag &= ~CRTSCTS;
-    tty.c_cflag |= (CS8 | MDMBUF);
+    tty.c_cflag |= (CS8);
 
     tty.c_oflag &= ~OPOST;
-    tty.c_lflag |= (PENDIN | NOKERNINFO);
+    tty.c_lflag |= (PENDIN);
     tty.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
 
 
