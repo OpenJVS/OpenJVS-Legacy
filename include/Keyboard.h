@@ -1,4 +1,4 @@
-#define _BSD_SOURCE
+#define _DEFAULT_SOURCE
 #ifndef KEYBOARD_H_
 #define KEYBOARD_H_
 

@@ -1,4 +1,4 @@
-#define _BSD_SOURCE
+#define _DEFAULT_SOURCE
 #ifndef UTILITIES_H_
 #define UTILITIES_H_
 
