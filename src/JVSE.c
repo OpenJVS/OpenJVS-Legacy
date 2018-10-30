@@ -14,6 +14,9 @@ int main(void) {
     printf("JVSE: OpenJVS Emulator %d.%d\n", majorVersion, minorVersion);
     printf("JVSE: (C) Robert Dilley 2018\n\n");
 
+    initKeyboard();
+    runKeyboard();
+    
     /* Setup the serial interface here */
     serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
     
@@ -225,14 +228,14 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 command_size = 2;
                 writeByte(STATUS_SUCCESS);
 
-								if(packet[1] != analogueChannels) {
-									printf("JVSE: Analogue Channel Requests differs\n");
-								}
+		if(packet[1] != analogueChannels) {
+			//printf("JVSE: Analogue Channel Requests differs\n");
+		}
 
-								for(int i = 0 ; i < packet[1] ; i++) {
-									writeByte(0x00);
-									writeByte(analogue[i]);
-								}
+		for(int i = 0 ; i < packet[1] ; i++) {
+			writeByte(0x00);
+			writeByte(analogue[i]);
+		}
             } else if (packet[0] == CMD_READSCREENPOS) {
                 debug("CMD_READSCREENPOS\n");
                 command_size = 2;

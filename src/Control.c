@@ -7,9 +7,9 @@ char bytesPerPlayer = 2;
 char playerSwitches[255];
 char systemSwitches = 0x0;
 char boardID[255];
-char analogueChannels = 4;
+char analogueChannels = 8;
 char analogue[255];
-char coin = 1;
+char coin = 10;
 
 unsigned char reverse(unsigned char b) {
 	b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
@@ -25,7 +25,7 @@ void initControl() {
 	}
 
 	for(int i = 0 ; i < analogueChannels ; i++) {
-		analogue[i] = 0x0;
+		analogue[i] = 0x05;
 	}
 }
 
@@ -47,6 +47,10 @@ void setPlayerSwitch(int player, int bit, int value) {
 
 void setAnalogue(int channel, char value) {
 	analogue[channel] = value;
+}
+
+int getAnalogue(int channel) {
+	return analogue[channel];
 }
 
 void incrementCoin() {

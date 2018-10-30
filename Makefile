@@ -1,6 +1,6 @@
 CC := gcc
 TARGET := bin/JVSE
-CFLAGS := -std=gnu99
+CFLAGS := -std=gnu99 -pthread
 INC := include
 SRCDIR := src
 BUILDDIR := build

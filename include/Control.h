@@ -18,5 +18,6 @@ void setPlayerSwitch(int player, int bit, int value);
 void setAnalogue(int channel, char value);
 void incrementCoin();
 unsigned char reverse(unsigned char b);
+int getAnalogue(int channel);
 
 #endif // CONTROL_H_
