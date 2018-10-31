@@ -24,7 +24,9 @@ git clone http://github.com/bobbydilley/OpenJVS
 cd OpenJVS
 ```
 
-At this point you should navigate to the include/Config.h file, and edit it to the address of your serial device. The default is `dev/ttyUSB0` on the Raspberry Pi.
+At this point you should navigate to the src/Config.c file, and edit it to the address of your serial device. The default is `dev/ttyUSB0` on the Raspberry Pi.
+
+You may also want to navigate to src/Keyboard.c to change the keyboard input address.
 
 After you've made sure the device path is setup, run these commands.
 
