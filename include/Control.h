@@ -10,6 +10,8 @@ extern char systemSwitches;
 extern char boardID[255];
 extern char analogueChannels;
 extern char analogue[255];
+extern char rotaryChannels;
+extern char rotary[255];
 extern char coin;
 
 void initControl(void);

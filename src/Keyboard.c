@@ -41,11 +41,10 @@ void *keyboardThread(void *arg) {
 	if(event.code == KEY_O) setPlayerSwitch(0, 8, event.value);
 	if(event.code == KEY_P) setPlayerSwitch(0, 9, event.value);
 
-	
-	if(event.code == KEY_DOWN) setAnalogue(2, getAnalogue(2) - 1);
-	if(event.code == KEY_UP) setAnalogue(2, getAnalogue(2) + 1);
-	if(event.code == KEY_LEFT) setAnalogue(5, getAnalogue(5) - 1);
-	if(event.code == KEY_RIGHT) setAnalogue(5, getAnalogue(5) + 1);
+	for(int i = 0 ; i < 8 ; i++) {	
+		if(event.code == KEY_DOWN) setAnalogue(i, getAnalogue(i) - 1);
+		if(event.code == KEY_UP) setAnalogue(i, getAnalogue(i) + 1);
+	}
     }
   }
 }

@@ -9,6 +9,8 @@ char systemSwitches = 0x0;
 char boardID[255];
 char analogueChannels = 8;
 char analogue[255];
+char rotaryChannels = 8;
+char rotary[255];
 char coin = 10;
 
 unsigned char reverse(unsigned char b) {
@@ -26,6 +28,10 @@ void initControl() {
 
 	for(int i = 0 ; i < analogueChannels ; i++) {
 		analogue[i] = 0x05;
+	}
+
+	for(int i = 0 ; i < rotaryChannels ; i++) {
+		rotary[i] = 0x05;
 	}
 }
 
@@ -51,6 +57,15 @@ void setAnalogue(int channel, char value) {
 
 int getAnalogue(int channel) {
 	return analogue[channel];
+}
+
+
+void setRotary(int channel, char value) {
+	rotary[channel] = value;
+}
+
+int getRotary(int channel) {
+	return rotary[channel];
 }
 
 void incrementCoin() {

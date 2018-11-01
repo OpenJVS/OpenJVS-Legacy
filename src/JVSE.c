@@ -123,7 +123,7 @@ void sendReply() {
     if (replyCount > 0) {
         int checksum = BUS_MASTER + replyCount + 2 + STATUS_SUCCESS;
 
-				/* Write out the sync packet */
+	/* Write out the sync packet */
         unsigned char buffer[] = {
             CMD_SYNC
         };
@@ -186,6 +186,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                     0x01, players, bytesPerPlayer * 8, 0x00,
                     0x02, 0x02, 0x00, 0x00,
                     0x03, analogueChannels, 0x08, 0x00,
+                    0x04, rotaryChannels, 0x00, 0x00,
                     0x06, 0x08, 0x08, 0x02,
                     0x00
                 };
@@ -194,12 +195,12 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 debug("CMD_READSWITCHES\n");
                 writeByte(STATUS_SUCCESS);
                 writeByte(reverse(systemSwitches));
-								if(packet[1] != players || packet[2] != bytesPerPlayer) {
-									printf("JVSE: Switch request differs from offered no. of players\n");
-								}
-								for(int i = 0 ; i < packet[1] * packet[2] ; i++) {
-										writeByte(reverse(playerSwitches[i]));
-								}
+		if(packet[1] != players || packet[2] != bytesPerPlayer) {
+			printf("JVSE: Switch request differs from offered no. of players\n");
+		}
+		for(int i = 0 ; i < packet[1] * packet[2] ; i++) {
+				writeByte(reverse(playerSwitches[i]));
+		}
                 command_size = 3;
             } else if (packet[0] == CMD_WRITEGPIO1) {
                 debug("CMD_WRITEGPIO1\n");
@@ -209,10 +210,10 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 debug("CMD_MAINBOARDID\n");
                 int counter = 1;
                 while (packet[counter] != 0x00 && counter <= packet_length) {
-										boardID[counter - 1] = packet[counter];
+		    boardID[counter - 1] = packet[counter];
                     counter++;
                 }
-								boardID[counter - 1] = 0x00;
+		boardID[counter - 1] = 0x00;
                 command_size = counter;
                 writeByte(STATUS_SUCCESS);
             } else if (packet[0] == CMD_READCOIN) {
@@ -232,6 +233,14 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
 			//printf("JVSE: Analogue Channel Requests differs\n");
 		}
 
+		for(int i = 0 ; i < packet[1] ; i++) {
+			writeByte(analogue[i]);
+			writeByte(analogue[i]);
+		}
+            } else if (packet[0] == CMD_READROTARY) {
+		debug("CMD_READROTARY\n");
+		command_size = 2;
+		writeByte(STATUS_SUCCESS);
 		for(int i = 0 ; i < packet[1] ; i++) {
 			writeByte(0x00);
 			writeByte(analogue[i]);
