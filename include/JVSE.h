@@ -27,7 +27,7 @@ int replyCount = 0;
 
 /* Version number of the program */
 int majorVersion = 0;
-int minorVersion = 9;
+int minorVersion = 10;
 
 /* Function definitions */
 void intHandler(int dummy);
