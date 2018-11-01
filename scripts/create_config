@@ -1,0 +1,2 @@
+#!/bin/bash
+cp -n ../docs/default_config ~/.openjvs

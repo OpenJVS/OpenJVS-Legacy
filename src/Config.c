@@ -12,8 +12,9 @@ char* configPath = ".config";
 int initConfig() {
   FILE *fp;
   char buffer[1024];
-
-  if((fp = fopen(".config", "r")) != NULL) {
+  char fileName[1024];
+  strcat(strcpy(fileName, getenv("HOME")), "/.openjvs");
+  if((fp = fopen(fileName, "r")) != NULL) {
     
     fgets(buffer, 1024, fp);
     while(!feof(fp)) {
