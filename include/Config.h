@@ -1,7 +1,10 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
-extern char* portName;
+#include <stdio.h>
+#include <string.h>
+
+extern char portName[];
 extern int allDeviceMode;
 extern char* configPath;
 

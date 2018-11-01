@@ -7,10 +7,10 @@ BUILDDIR := build
 
 all: $(TARGET)
 
-$(TARGET): JVSE.o Utilities.o Control.o Config.o Keyboard.o
+$(TARGET): JVSE.o Utilities.o Control.o Config.o
 	mkdir -p bin
-	$(CC) $(CFLAGS) -o $(TARGET) $(BUILDDIR)/JVSE.o $(BUILDDIR)/Utilities.o $(BUILDDIR)/Control.o $(BUILDDIR)/Config.o $(BUILDDIR)/Keyboard.o
-	cp docs/.default_config bin/.config
+	$(CC) $(CFLAGS) -o $(TARGET) $(BUILDDIR)/JVSE.o $(BUILDDIR)/Utilities.o $(BUILDDIR)/Control.o $(BUILDDIR)/Config.o
+	cp -n docs/default_config bin/.config
 
 JVSE.o: $(SRCDIR)/JVSE.c $(INC)/Utilities.h $(INC)/Control.h $(INC)/Config.h
 	mkdir -p $(BUILDDIR)

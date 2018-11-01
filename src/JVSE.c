@@ -1,7 +1,7 @@
 #include "JVSE.h"
 
 void intHandler(int dummy) {
-  closeKeyboard();
+  //closeKeyboard();
   close(serial);
   exit(0);
 }
@@ -14,9 +14,13 @@ int main(void) {
     printf("JVSE: OpenJVS Emulator %d.%d\n", majorVersion, minorVersion);
     printf("JVSE: (C) Robert Dilley 2018\n\n");
 
-    initKeyboard();
-    runKeyboard();
-    
+    initConfig();
+
+    //initKeyboard();
+    //runKeyboard();
+   
+    printf("JVSE: Connecting to %s\n", portName);
+ 
     /* Setup the serial interface here */
     serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
     
@@ -28,7 +32,6 @@ int main(void) {
 
     /* Init the modules here */
     initControl();
-    initConfig();
 
     /* Setup some example keys */
     setSystemSwitch(5, 0);
