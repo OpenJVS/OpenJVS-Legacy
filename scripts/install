@@ -1,0 +1,6 @@
+#!/bin/bash
+cd ..
+make
+./scripts/create_config
+clear
+sudo bin/JVSE
