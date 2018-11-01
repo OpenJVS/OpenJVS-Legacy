@@ -48,3 +48,16 @@ brew install build-essential git
 ### Debian x86
 
 OpenJVS is known to work on debian on a standard x86 computer, and can be installed in exactly the same was as on the Raspberry Pi.
+
+## Config
+
+The configuration file is called `.config` and is stored in the `bin` directory. When building the software a default config file is copied from `docs/default_config` to the real config file.
+
+The config file is setup as a list of key value pairs, with a single space as the delimeter. Starting a line with a `#` symbol will make that line a comment, and so won't be read. An example configuration file is below:
+
+```
+# Default configuration file for OpenJVS
+
+# RS485 Converter Path
+DEVICE_PATH /dev/ttyUSB0
+```
