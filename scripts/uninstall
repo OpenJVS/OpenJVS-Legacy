@@ -1,0 +1,3 @@
+#!/bin/bash
+sudo rm /usr/bin/openjvs
+rm ~/.openjvs

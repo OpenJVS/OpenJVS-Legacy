@@ -1,6 +1,8 @@
 #!/bin/bash
 cd ..
 make
-./scripts/create_config
-clear
-sudo bin/JVSE
+cd scripts
+./create_config
+cd ..
+sudo cp bin/JVSE /usr/bin/openjvs
+cd scripts
