@@ -13,6 +13,7 @@ extern char analogue[255];
 extern char rotaryChannels;
 extern char rotary[255];
 extern char coin;
+extern char analogueDefault[255];
 
 void initControl(void);
 void setSystemSwitch(int bit, int value);

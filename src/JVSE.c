@@ -16,8 +16,8 @@ int main(void) {
 
     initConfig();
 
-    //initKeyboard();
-    //runKeyboard();
+    initKeyboard();
+    runKeyboard();
    
     printf("JVSE: Connecting to %s\n", portName);
  
@@ -33,17 +33,6 @@ int main(void) {
     /* Init the modules here */
     initControl();
 
-    /* Setup some example keys */
-    setSystemSwitch(5, 0);
-    setSystemSwitch(4, 0);
-    setAnalogue(0, 0xFE);
-    setPlayerSwitch(0, 0, 0);
-    setPlayerSwitch(0, 1, 0);
-    setPlayerSwitch(0, 2, 0);
-    setPlayerSwitch(0, 3, 0);
-    setPlayerSwitch(0, 4, 0);
-    setPlayerSwitch(0, 5, 0);
-    setPlayerSwitch(0, 9, 0);
 
     /* Run the system forever */
     while (1) {
@@ -238,7 +227,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
 
 		for(int i = 0 ; i < packet[1] ; i++) {
 			writeByte(analogue[i]);
-			writeByte(analogue[i]);
+			writeByte(0x00);
 		}
             } else if (packet[0] == CMD_READROTARY) {
 		debug("CMD_READROTARY\n");

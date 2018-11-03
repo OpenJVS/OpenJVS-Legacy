@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "Definitions.h"
+#include "Control.h"
 
 typedef struct {
   int value;

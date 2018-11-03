@@ -16,6 +16,7 @@
 #include <pthread.h>
 
 #include "Control.h"
+#include "Config.h"
 
 int initKeyboard();
 void runKeyboard();

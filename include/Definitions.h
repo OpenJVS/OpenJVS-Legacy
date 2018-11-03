@@ -2,9 +2,9 @@
 #define DEFINITIONS_H_
 
 /* Settings for keyboard types */
-#define KEY_BIND 0
-#define KEY_PLUS 1
-#define KEY_MINUS 2
+#define CONFIG_KEY_BIND 0
+#define CONFIG_KEY_PLUS 1
+#define CONFIG_KEY_MINUS 2
 
 /* This file defines the commands from the JVS spec */
 #define CMD_BROADCAST 0xFF

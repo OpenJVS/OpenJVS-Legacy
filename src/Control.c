@@ -12,6 +12,7 @@ char analogue[255];
 char rotaryChannels = 8;
 char rotary[255];
 char coin = 10;
+char analogueDefault[255];
 
 unsigned char reverse(unsigned char b) {
 	b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
@@ -27,12 +28,13 @@ void initControl() {
 	}
 
 	for(int i = 0 ; i < analogueChannels ; i++) {
-		analogue[i] = 0x05;
+		analogue[i] = analogueDefault[i];
 	}
 
 	for(int i = 0 ; i < rotaryChannels ; i++) {
 		rotary[i] = 0x05;
 	}
+
 }
 
 void setSystemSwitch(int bit, int value) {
