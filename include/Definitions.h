@@ -1,6 +1,11 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
+/* Settings for keyboard types */
+#define KEY_BIND 0
+#define KEY_PLUS 1
+#define KEY_MINUS 2
+
 /* This file defines the commands from the JVS spec */
 #define CMD_BROADCAST 0xFF
 #define CMD_ESCAPE 0xD0

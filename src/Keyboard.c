@@ -12,44 +12,34 @@ int initKeyboard() {
 }
 
 void runKeyboard() {
-    pthread_create(&thread_id, NULL, keyboardThread, NULL); 
-    printf("JVSE: Keyboard Listener Started\n"); 
+    pthread_create(&thread_id, NULL, keyboardThread, NULL);
+    printf("JVSE: Keyboard Listener Started\n");
 }
 
 void *keyboardThread(void *arg) {
   struct input_event event;
   while (read(kbd_fd, &event, sizeof(struct input_event)) > 0) {
     if (event.type == EV_KEY) {
-	int switchLevel = 1;
-	if(event.code == 2) setSystemSwitch(0, event.value);
-	if(event.code == 3) setSystemSwitch(1, event.value);
-	if(event.code == 4) setSystemSwitch(2, event.value);
-	if(event.code == 5) setSystemSwitch(3, event.value);
-	if(event.code == 6) setSystemSwitch(4, event.value);
-	if(event.code == 7) setSystemSwitch(5, event.value);
-	if(event.code == 8) setSystemSwitch(6, event.value);
-	if(event.code == 9) setSystemSwitch(7, event.value);
+      printf("Key %d\n", event.code);
+      if(inputConfig[event.code].type != -1) {
+        setPlayerSwitch(inputConfig[event.code].player, inputConfig[event.code].value, event.value);
+        printf("Key found\n");
+      }
 
-	if(event.code == KEY_Q) setPlayerSwitch(0, 0, event.value);
-	if(event.code == KEY_W) setPlayerSwitch(0, 1, event.value);
-	if(event.code == KEY_E) setPlayerSwitch(0, 2, event.value);
-	if(event.code == KEY_R) setPlayerSwitch(0, 3, event.value);
-	if(event.code == KEY_T) setPlayerSwitch(0, 4, event.value);
-	if(event.code == KEY_Y) setPlayerSwitch(0, 5, event.value);
-	if(event.code == KEY_U) setPlayerSwitch(0, 6, event.value);
-	if(event.code == KEY_I) setPlayerSwitch(0, 7, event.value);
-	if(event.code == KEY_O) setPlayerSwitch(0, 8, event.value);
-	if(event.code == KEY_P) setPlayerSwitch(0, 9, event.value);
+    	if(event.code == 2) setSystemSwitch(0, event.value);
+    	if(event.code == 3) setSystemSwitch(1, event.value);
+    	if(event.code == 4) setSystemSwitch(2, event.value);
+    	if(event.code == 5) setSystemSwitch(3, event.value);
+    	if(event.code == 6) setSystemSwitch(4, event.value);
+    	if(event.code == 7) setSystemSwitch(5, event.value);
+    	if(event.code == 8) setSystemSwitch(6, event.value);
+    	if(event.code == 9) setSystemSwitch(7, event.value);
 
-	for(int i = 0 ; i < 8 ; i++) {	
-		if(event.code == KEY_DOWN) setAnalogue(i, getAnalogue(i) - 1);
-		if(event.code == KEY_UP) setAnalogue(i, getAnalogue(i) + 1);
-	}
     }
   }
 }
 
 void closeKeyboard() {
-    pthread_join(thread_id, NULL); 
+    pthread_join(thread_id, NULL);
     close(kbd_fd);
 }
