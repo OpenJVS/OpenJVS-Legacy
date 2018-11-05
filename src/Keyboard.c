@@ -5,7 +5,7 @@ pthread_t thread_id;
 
 int initKeyboard() {
   if((kbd_fd = open("/dev/input/by-path/platform-i8042-serio-0-event-kbd", O_RDONLY)) == -1) {
-    printf("JVSE: Failed to open keyboard file descriptor.");
+    printf("JVSE: Failed to open keyboard file descriptor\n");
     return -1;
   }
   return 0;

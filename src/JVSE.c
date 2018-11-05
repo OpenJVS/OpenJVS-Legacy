@@ -16,8 +16,9 @@ int main(void) {
 
     initConfig();
 
-    initKeyboard();
-    runKeyboard();
+    if(initKeyboard() == 0) {
+        runKeyboard();
+    }
    
     printf("JVSE: Connecting to %s\n", portName);
  

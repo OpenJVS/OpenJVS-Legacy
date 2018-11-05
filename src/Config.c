@@ -27,7 +27,7 @@ int initConfig() {
   FILE *fp;
   char buffer[1024];
   char fileName[1024];
-  strcat(strcpy(fileName, getenv("HOME")), "/.openjvs");
+  strcat(strcpy(fileName, getenv("HOME")), "/.openjvs/global_config");
   if((fp = fopen(fileName, "r")) != NULL) {
     fgets(buffer, 1024, fp);
     while(!feof(fp)) {
