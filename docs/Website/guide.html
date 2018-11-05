@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <title>OpenJVS</title>
+    <link href="style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <nav>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" height="50px"/>
+
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#">Guides</a></li>
+            <li><a href="#">Downloads</a></li>
+          </ul>
+      </nav>
+    </header>
+    <div class="under_header">
+      <a href="#">Back to Naomi</a>
+    </div>
+
+    <main>
+
+    
+
+<h1 id="openjvs">Sega Naomi</h1>
+
+<hr>
+
+<p>OpenJVS is a software replacement for the JVS I/O boards used in arcade systems such as the Sega Naomi, Triforce, Chihiro and Lindbergh as well as other systems by other manufacturers. The software is written in C and aims to run on a Raspberry Pi allowing users to use their existing peripherals such as keyboards, AimTraks, mice, joysticks and steering wheels to control the games.</p>
+
+<p>This is the new version of the JVSEmulator repository at http://github.com/bobbydilley/JVSEmulator.</p>
+
+<h2 id="hardware">Hardware</h2>
+
+<p>OpenJVS requires a RS232 to RS485 converter, wired to the JVS controller cable. Many of these are available, and come in different formats such as USB dongles, or chips that can be wired to the GPIO on a raspberry pi.</p>
+
+<p>Instructions on building the cable can be found here: https://github.com/bobbydilley/JVSEmulator/wiki/The-JVSE-Cable</p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="raspberrypi">Raspberry Pi</h3>
+
+<p>OpenJVS supports a few Naomi games on the Raspberry Pi. To install run the commands below:</p>
+
+<pre><code>sudo apt install build-essential git
+git clone http://github.com/bobbydilley/OpenJVS
+cd OpenJVS
+</code></pre>
+
+<p>At this point you should navigate to the src/Config.c file, and edit it to the address of your serial device. The default is <code>dev/ttyUSB0</code> on the Raspberry Pi.</p>
+
+<p>You may also want to navigate to src/Keyboard.c to change the keyboard input address.</p>
+
+<p>After you've made sure the device path is setup, run these commands.</p>
+
+<pre><code>make
+sudo bin/JVSE
+</code></pre>
+
+<p>Make sure you run the program as root, or it cannot access the device properly.</p>
+
+<h3 id="macos">Mac OS</h3>
+
+<p>OpenJVS is known to work on Mac OS, and can be installed using the same method as on the Raspberry Pi. Brew should instead be used to install the initial software.</p>
+
+<pre><code>brew install build-essential git
+</code></pre>
+
+<h3 id="debianx86">Debian x86</h3>
+
+<p>OpenJVS is known to work on debian on a standard x86 computer, and can be installed in exactly the same was as on the Raspberry Pi.</p>
+    </main>
+
+    <footer>
+      <h3>Links</h3>
+      <p><a href="#">Home</a></p>
+      <p><a href="#">Downloads</a></p>
+      <p><a href="#">Guides</a></p>
+    </footer>
+  </body>
+</html>
