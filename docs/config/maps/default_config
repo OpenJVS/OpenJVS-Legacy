@@ -1,9 +1,10 @@
-# GLOBAL SETTINGS
-DEVICE_PATH /dev/ttyUSB0
-KEYBOARD_PATH /dev/input/by-path/platform-i8042-serio-0-event-kbd
+# Game: Crazy Taxi
+# Platform: Sega Naomi
+# Author: Bobby Dilley
+# Date: 14/11/2018
 
-# CRAZY TAXI
 # Player 2 Keys On Top Row
+# KEY_BIND KEYBOARD_KEY PLAYER NAOMI_KEY
 KEY_BIND 16 1 0
 KEY_BIND 17 1 1
 KEY_BIND 18 1 2
@@ -27,13 +28,14 @@ KEY_BIND 37 0 7
 KEY_BIND 38 0 8
 KEY_BIND 39 0 9
 
-# Set Analogue Default For Steering Wheel To Middle
+# ANALOGUE_DEFAULT NAOMI_ANALOGUE_CHANNEL DEFAULT
 ANALOGUE_DEFAULT 0 128
 
-# Key Up Sets Accel to full
+# Make up key accelerate
+# KEY_PLUS KEYBOARD_KEY ANALOGUE_CHANNEL VALUE
 KEY_PLUS 103 1 255
 
-# Key Down Sets Break To Full
+# Make down key break
 KEY_PLUS 108 2 255
 
 # Key Left Sets Steering To Full Left

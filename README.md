@@ -51,7 +51,7 @@ OpenJVS is known to work on debian on a standard x86 computer, and can be instal
 
 ## Config
 
-The configuration file is called `.openjvs` and is stored in the current users home directory. To generate the config file simply run `scripts/create_config` and the config file will be copied from `docs/default_config` to the real config file in your home directory.
+The configuration file is called `~/.openjvs/global_config` and is stored in the current users home directory. To generate the config file simply run `scripts/create_config` and the config file will be copied from `docs/config/global_config` to the real config file in your home directory.
 
 The config file is setup as a list of key value pairs, with a single space as the delimeter. Starting a line with a `#` symbol will make that line a comment, and so won't be read. An example configuration file is below:
 
@@ -60,4 +60,5 @@ The config file is setup as a list of key value pairs, with a single space as th
 
 # RS485 Converter Path
 DEVICE_PATH /dev/ttyUSB0
+KEYBOARD_PATH /dev/input/kbd-0
 ```

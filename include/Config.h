@@ -21,5 +21,5 @@ extern InputStruct inputConfig[];
 extern int inputConfigCount;
 
 int initConfig();
-
+int parseConfig(char* fileName);
 #endif // CONFIG_H_

@@ -24,10 +24,17 @@ int initConfig() {
     analogueDefault[i] = 0;
   }
 
+  char fileName[1024];
+  strcat(strcpy(fileName, getenv("HOME")), "/.openjvs/global_config");
+  parseConfig(fileName);
+
+  strcat(strcpy(fileName, getenv("HOME")), "/.openjvs/maps/default_config");
+  parseConfig(fileName);
+}
+
+int parseConfig(char* fileName) {
   FILE *fp;
   char buffer[1024];
-  char fileName[1024];
-  strcat(strcpy(fileName, getenv("HOME")), "/.openjvs");
   if((fp = fopen(fileName, "r")) != NULL) {
     fgets(buffer, 1024, fp);
     while(!feof(fp)) {
