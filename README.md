@@ -14,7 +14,7 @@ Instructions on building the cable can be found here: https://github.com/bobbydi
 
 ## Installation
 
-### Raspberry Pi
+### Debian Linux (PC + RaspberryPi)
 
 OpenJVS supports a few Naomi games on the Raspberry Pi. To install run the commands below:
 
@@ -22,36 +22,21 @@ OpenJVS supports a few Naomi games on the Raspberry Pi. To install run the comma
 sudo apt install build-essential git
 git clone http://github.com/bobbydilley/OpenJVS
 cd OpenJVS
+cd scripts
+./install
 ```
 
-At this point you should navigate to the src/Config.c file, and edit it to the address of your serial device. The default is `dev/ttyUSB0` on the Raspberry Pi.
-
-You may also want to navigate to src/Keyboard.c to change the keyboard input address.
-
-After you've made sure the device path is setup, run these commands.
+After you have installed OpenJVS, setup the configuration files (shown in the section below) and run OpenJVS as root by following the commands below:
 
 ```
-make
-sudo bin/JVSE
+sudo openjvs
 ```
 
 Make sure you run the program as root, or it cannot access the device properly.
 
-### Mac OS
-
-OpenJVS is known to work on Mac OS, and can be installed using the same method as on the Raspberry Pi. Brew should instead be used to install the initial software.
-
-```
-brew install build-essential git
-```
-
-### Debian x86
-
-OpenJVS is known to work on debian on a standard x86 computer, and can be installed in exactly the same was as on the Raspberry Pi.
-
 ## Config
 
-The configuration file is called `~/.openjvs/global_config` and is stored in the current users home directory. To generate the config file simply run `scripts/create_config` and the config file will be copied from `docs/config/global_config` to the real config file in your home directory.
+The configuration file is called `~/.openjvs/global_config` and is stored in the current users home directory. For OpenJVS to work you need to give it the path of your RS485 device, and the path of your keyboard.
 
 The config file is setup as a list of key value pairs, with a single space as the delimeter. Starting a line with a `#` symbol will make that line a comment, and so won't be read. An example configuration file is below:
 
@@ -62,3 +47,7 @@ The config file is setup as a list of key value pairs, with a single space as th
 DEVICE_PATH /dev/ttyUSB0
 KEYBOARD_PATH /dev/input/kbd-0
 ```
+
+## Maps
+
+The map files are used to tell OpenJVS what keys on the input device are mapped to which inputs on the JVS arcade system. The default map is stored in `~/.openjvs/maps/default_config` and contains an example to play Crazy Taxi on the Sega Naomi with a keyboard. Currently OpenJVS will always load this map. A tutorial on how to write maps, and what commands are supposed will come soon.
