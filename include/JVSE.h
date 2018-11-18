@@ -18,6 +18,7 @@
 #include "Definitions.h"
 #include "Config.h"
 #include "Keyboard.h"
+#include "Mouse.h"
 
 /* Variables used in the program */
 int deviceID;

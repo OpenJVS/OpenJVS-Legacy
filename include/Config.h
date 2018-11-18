@@ -15,10 +15,15 @@ typedef struct {
 
 
 extern char portName[];
+extern char keyboardName[];
+extern char mouseName[];
 extern int allDeviceMode;
 extern char* configPath;
 extern InputStruct inputConfig[];
-extern int inputConfigCount;
+
+extern InputStruct mouseInputConfig[];
+extern int AbsChannel[];
+extern int AbsMax[];
 
 int initConfig();
 int parseConfig(char* fileName);

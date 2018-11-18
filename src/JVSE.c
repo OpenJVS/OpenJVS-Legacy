@@ -1,7 +1,8 @@
 #include "JVSE.h"
 
 void intHandler(int dummy) {
-  //closeKeyboard();
+  closeKeyboard();
+  closeMouse();
   close(serial);
   exit(0);
 }
@@ -19,6 +20,10 @@ int main(void) {
     if(initKeyboard() == 0) {
         runKeyboard();
     }
+
+    if(initMouse() == 0) {
+        runMouse();
+    }
    
     printf("JVSE: Connecting to %s\n", portName);
  
@@ -27,7 +32,8 @@ int main(void) {
     
     if (serial < 0) {
         printf("JVSE: Failed to connect\n");
-        return -1;
+        while(1){}
+	return -1;
     }
     set_interface_attribs(serial, B115200);
 

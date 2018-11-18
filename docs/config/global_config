@@ -3,6 +3,8 @@
 # The path of your RS485 dongle
 DEVICE_PATH /dev/ttyUSB0
 
-# The path of your keyboard device, which is currently the only supported input
+# The path of your keyboard device
 KEYBOARD_PATH /dev/input/by-path/platform-i8042-serio-0-event-kbd
 
+# The path of your mouse device
+MOUSE_PATH /dev/input/by-path/platform-i8042-serio-1-event-mouse

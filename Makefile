@@ -7,9 +7,9 @@ BUILDDIR := build
 
 all: $(TARGET)
 
-$(TARGET): JVSE.o Utilities.o Control.o Config.o Keyboard.o
+$(TARGET): JVSE.o Utilities.o Control.o Config.o Keyboard.o Mouse.o
 	mkdir -p bin
-	$(CC) $(CFLAGS) -o $(TARGET) $(BUILDDIR)/JVSE.o $(BUILDDIR)/Utilities.o $(BUILDDIR)/Control.o $(BUILDDIR)/Config.o $(BUILDDIR)/Keyboard.o
+	$(CC) $(CFLAGS) -o $(TARGET) $(BUILDDIR)/JVSE.o $(BUILDDIR)/Utilities.o $(BUILDDIR)/Control.o $(BUILDDIR)/Config.o $(BUILDDIR)/Keyboard.o $(BUILDDIR)/Mouse.o
 
 JVSE.o: $(SRCDIR)/JVSE.c $(INC)/Utilities.h $(INC)/Control.h $(INC)/Config.h
 	mkdir -p $(BUILDDIR)
@@ -30,6 +30,10 @@ Config.o: $(SRCDIR)/Config.c
 Keyboard.o: $(SRCDIR)/Keyboard.c
 	mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) -I $(INC) -o $(BUILDDIR)/Keyboard.o -c $(SRCDIR)/Keyboard.c
+
+Mouse.o: $(SRCDIR)/Mouse.c
+	mkdir -p $(BUILDDIR)
+	$(CC) $(CFLAGS) -I $(INC) -o $(BUILDDIR)/Mouse.o -c $(SRCDIR)/Mouse.c
 
 clean:
 	$(RM) -r $(BUILDDIR) $(TARGET)
