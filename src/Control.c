@@ -7,9 +7,9 @@ char bytesPerPlayer = 2;
 char playerSwitches[255];
 char systemSwitches = 0x0;
 char boardID[255];
-char analogueChannels = 8;
+char analogueChannels = 12;
 char analogue[255];
-char rotaryChannels = 8;
+char rotaryChannels = 12;
 char rotary[255];
 char coin = 10;
 char analogueDefault[255];
@@ -38,6 +38,8 @@ void initControl() {
 }
 
 void setSystemSwitch(int bit, int value) {
+
+	printf("system switch %d value %d\n", bit, value);
 	if(value == 1) {
 		systemSwitches |= 1 << bit;
 	} else if(value == 0) {
@@ -46,6 +48,7 @@ void setSystemSwitch(int bit, int value) {
 }
 
 void setPlayerSwitch(int player, int bit, int value) {
+	printf("player %d switch %d value %d\n", player, bit, value);
 	if(value == 1) {
 		playerSwitches[player * bytesPerPlayer + (bit / 8)] |= 1 << (bit - (8 * (bit / 8)));
 	} else if(value == 0) {
@@ -54,6 +57,7 @@ void setPlayerSwitch(int player, int bit, int value) {
 }
 
 void setAnalogue(int channel, char value) {
+	printf("analogue channel %d value %d", channel, value);
 	analogue[channel] = value;
 }
 

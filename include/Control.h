@@ -1,5 +1,6 @@
 #ifndef CONTROL_H_
 #define CONTROL_H_
+#include <stdio.h>
 
 extern char* deviceName;
 

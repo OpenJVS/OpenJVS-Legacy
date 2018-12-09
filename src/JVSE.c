@@ -50,7 +50,7 @@ int main(void) {
 }
 
 void debug(char* string) {
-	//printf("%s", string);
+	printf("%s", string);
 }
 
 /* Write the byte to the serial buffer adding appropriate escape bytes */
@@ -186,7 +186,10 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                     0x02, 0x02, 0x00, 0x00,
                     0x03, analogueChannels, 0x08, 0x00,
                     0x04, rotaryChannels, 0x00, 0x00,
+                    0x07, 0x00, 0x08, 0x00,
+                    0x13, 0x08, 0x00, 0x00,
                     0x06, 0x08, 0x08, 0x02,
+                    0x12, 0x08, 0x00, 0x00,
                     0x00
                 };
                 writeBytes(features, sizeof(features));
@@ -272,7 +275,7 @@ void getPacket() {
     int ourChecksum = 0;
 
     while (getByte() != CMD_SYNC);
-    //printf("SYNC\n");
+    printf("SYNC\n");
     unsigned char packet_address = getByte();
     ourChecksum += packet_address;
 
