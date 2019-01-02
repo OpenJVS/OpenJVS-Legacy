@@ -1,4 +1,7 @@
 #/bin/bash
+echo "OpenJVS Utilies"
+echo "Running with rawmode"
+
 make clean
 make
 sudo stty -F /dev/ttyUSB0 raw

@@ -1,8 +1,15 @@
 #!/bin/bash
+echo "OpenJVS Utilies"
+echo "Installing OpenJVS..."
+
 cd ..
-make
+echo "Compiling Project"
+make -s
 cd scripts
+echo "Creating Config"
 ./create_config
 cd ..
+echo "Copying over executable to /usr/bin/openjvs"
 sudo cp bin/JVSE /usr/bin/openjvs
 cd scripts
+echo "Installed"

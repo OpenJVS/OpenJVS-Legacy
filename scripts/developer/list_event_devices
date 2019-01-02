@@ -1,0 +1,15 @@
+#!/bin/bash
+echo "OpenJVS Utilies"
+echo "Listing Input Devices"
+echo ""
+
+echo "Device Name - Device Path"
+devices=$(ls /sys/class/input/event* | grep sys/class | cat)
+devices="${devices//:}"
+device_array=($devices)
+for i in ${device_array[@]}
+do
+	dev_name=$(cat "$i/device/name")
+	echo "$dev_name - /dev/input/${i//\/sys\/class\/input\/}"
+done
+

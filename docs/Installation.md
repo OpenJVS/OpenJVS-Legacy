@@ -5,9 +5,9 @@
 Making the JVSE project is simple and can be done on any computer with the correct setup. The steps are listed below, and then explained in more detail later on.
 
 - Make sure `build-essential` and `git` is installed on your linux computer.
-- Clone the repository.
+- Clone the repository using `git clone http://github.com/bobbydilley/OpenJVS`
 - Goto the `scripts` directory and run `./install`.
-- Modify the `~/.openjvs` file to your needs.
+- Modify the `~/.openjvs/global_config` file to your needs.
 - Run `sudo openjvs` from anywhere.
 
 ### Installing the requirements
@@ -18,7 +18,7 @@ To install the requirements simply run the command below, pressing enter when it
 sudo apt install build-essential git
 ```
 
-### Cloning the repostiryo
+### Cloning the repository
 
 Navigate to somewhere on your computer where you would like to store the project files, and run the command below.
 
