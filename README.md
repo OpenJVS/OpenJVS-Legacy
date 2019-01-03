@@ -32,6 +32,15 @@ After you have installed OpenJVS, setup the configuration files (shown in the se
 sudo openjvs
 ```
 
+On a raspberry pi, you may need to run:
+
+```
+cd scripts
+sudo run_with_rawmode
+```
+
+This attempts to setup the serial port to go faster!
+
 Make sure you run the program as root, or it cannot access the device properly.
 
 ## Config
