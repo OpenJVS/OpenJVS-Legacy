@@ -2,7 +2,7 @@
 
 # OpenJVS
 
-OpenJVS is a software replacement for the JVS I/O boards used in arcade systems. The only known system OpenJVS currently works with is the Sega Naomi. This is due to the fact that the Sega Naomi does not follow the correct procedures with the sense line, and so this allows us to use any USB to RS485 dongle to control it. The software is written in C and aims to run on a Raspberry Pi allowing users to use their existing peripherals such as keyboards, AimTraks, mice, joysticks and steering wheels to control the games.
+OpenJVS is a software replacement for the JVS I/O boards used in arcade systems. The only known system OpenJVS currently works with fully is the Sega Naomi. This is due to the fact that the Sega Naomi does not follow the correct procedures with the sense line, and so this allows us to use any USB to RS485 dongle to control it. OpenJVS is compatible with all other systems, but requires some circutry to run the Sense Line which is not yet released. The software is written in C and aims to run on a Raspberry Pi allowing users to use their existing peripherals such as keyboards, AimTraks, mice, joysticks and steering wheels to control the games.
 
 This is the new version of the JVSEmulator repository at http://github.com/bobbydilley/JVSEmulator.
 
