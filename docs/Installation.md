@@ -1,6 +1,6 @@
-# Installation
+# Installation on Linux (Debian, Raspbian, Ubuntu)
 
-## Installing the Project on Linux (Debian, Raspbian, Ubuntu)
+## Overview
 
 Making the JVSE project is simple and can be done on any computer with the correct setup. The steps are listed below, and then explained in more detail later on.
 
@@ -9,6 +9,8 @@ Making the JVSE project is simple and can be done on any computer with the corre
 - Goto the `scripts` directory and run `./install`.
 - Modify the `~/.openjvs/global_config` file to your needs.
 - Run `sudo openjvs` from anywhere.
+
+## Details
 
 ### Installing the requirements
 
