@@ -55,31 +55,33 @@ Both the controller, and mouse devices can be any sort of EVDEV device which sup
 
 Here I will note how to setup the config values for the maps:
 
+Everything inside a `<` and `>` is a value that should be replaced with a number. Everything not in one of those is the keywords that should be written exactly, in the correct case. All values should be taken from `evtest` program on linux.
+
 Please note, for `PLAYER` 0 means it will set the system keys, 1 means set player 1 and 2 means set player 2.
 
 ```
-KEY_BIND KEYBOARD_KEY PLAYER NAOMI_KEY
-MOUSE_KEY_BIND KEYBOARD_KEY PLAYER NAOMI_KEY
-CONTROLLER_KEY_BIND KEYBOARD_KEY PLAYER NAOMI_KEY
+KEY_BIND <KEYBOARD_KEY> <PLAYER> <NAOMI_KEY>
+MOUSE_KEY_BIND <KEYBOARD_KEY> <PLAYER> <NAOMI_KEY>
+CONTROLLER_KEY_BIND <KEYBOARD_KEY> <PLAYER> <NAOMI_KEY>
 ```
 
 For the next set of configuration values, please note that `ADD` will add the value specified to the value got from the mouse/controller before anything else happens. So for example if your joystick was reporting values of -128 to 127, if you set the `ADD` value to 128, it would now report between 0 and 255. You would then set the `MAX` to 255, as this is the maximum value it can produce. If your joystick was giving you values between 0 and 1024 then you would set the `MAX` to 1024 and the `ADD` to 0.
 
 ```
-MOUSE_ABS_BIND ABS_EVENT_CODE NAOMI_CHANNEL ADD MAX
-CONTROLLER_ABS_BIND ABS_EVENT_CODE NAOMI_CHANNEL ADD MAX
+MOUSE_ABS_BIND <ABS_EVENT_CODE> <NAOMI_CHANNEL> <ADD> <MAX>
+CONTROLLER_ABS_BIND <ABS_EVENT_CODE> <NAOMI_CHANNEL> <ADD> <MAX>
 ```
 
 The next set of commands allow keys to set analogue channels. The `ANALOGUE_DEFAULT` command will set the resting value of that analogue channel when nothing is attempting to move it.
 
 ```
-ANALOGUE_DEFAULT CHANNEL VALUE
+ANALOGUE_DEFAULT <CHANNEL> <VALUE>
 ```
 
 The `KEY_PLUS` command will give a keyboard key the ability to set the value of an analogue channel. Again if `PLAYER` is set to 0 then system keys will be set.
 
 ```
-KEY_PLUS KEYBOARD_KEY NAOMI_KEY PLAYER
+KEY_PLUS <KEYBOARD_KEY> <NAOMI_KEY> <PLAYER>
 ```
 
 ## Maps
