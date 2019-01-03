@@ -51,6 +51,37 @@ CONTROLLER_PATH /dev/input/controller-0
 
 Both the controller, and mouse devices can be any sort of EVDEV device which supports the EV_ABS and EV_KEY commands. This for example could be two mice, one on the MOUSE_PATH and one on the CONTROLLER_PATH or 2 play station controllers, or one mouse and one playstation controller etc. They are simply named MOUSE/CONTROLLER to seperate them. This allows you to play with 2 players.
 
+### Config Reference
+
+Here I will note how to setup the config values for the maps:
+
+Please note, for `PLAYER` 0 means it will set the system keys, 1 means set player 1 and 2 means set player 2.
+
+```
+KEY_BIND KEYBOARD_KEY PLAYER NAOMI_KEY
+MOUSE_KEY_BIND KEYBOARD_KEY PLAYER NAOMI_KEY
+CONTROLLER_KEY_BIND KEYBOARD_KEY PLAYER NAOMI_KEY
+```
+
+For the next set of configuration values, please note that `ADD` will add the value specified to the value got from the mouse/controller before anything else happens. So for example if your joystick was reporting values of -128 to 127, if you set the `ADD` value to 128, it would now report between 0 and 255. You would then set the `MAX` to 255, as this is the maximum value it can produce. If your joystick was giving you values between 0 and 1024 then you would set the `MAX` to 1024 and the `ADD` to 0.
+
+```
+MOUSE_ABS_BIND ABS_EVENT_CODE NAOMI_CHANNEL ADD MAX
+CONTROLLER_ABS_BIND ABS_EVENT_CODE NAOMI_CHANNEL ADD MAX
+```
+
+The next set of commands allow keys to set analogue channels. The `ANALOGUE_DEFAULT` command will set the resting value of that analogue channel when nothing is attempting to move it.
+
+```
+ANALOGUE_DEFAULT CHANNEL VALUE
+```
+
+The `KEY_PLUS` command will give a keyboard key the ability to set the value of an analogue channel. Again if `PLAYER` is set to 0 then system keys will be set.
+
+```
+KEY_PLUS KEYBOARD_KEY NAOMI_KEY PLAYER
+```
+
 ## Maps
 
 The map files are used to tell OpenJVS what keys on the input device are mapped to which inputs on the JVS arcade system. The default map is stored in `~/.openjvs/maps/default_config` and contains an example to play Crazy Taxi on the Sega Naomi with a keyboard. 
