@@ -22,8 +22,14 @@ extern char* configPath;
 extern InputStruct inputConfig[];
 
 extern InputStruct mouseInputConfig[];
-extern int AbsChannel[];
-extern int AbsMax[];
+extern int MouseAbsChannel[];
+extern int MouseAbsMax[];
+extern int MouseAbsAdd[];
+
+extern InputStruct controllerInputConfig[];
+extern int ControllerAbsChannel[];
+extern int ControllerAbsMax[];
+extern int ControllerAbsAdd[];
 
 int initConfig();
 int parseConfig(char* fileName);

@@ -38,7 +38,6 @@ void initControl() {
 }
 
 void setSystemSwitch(int bit, int value) {
-
 	printf("system switch %d value %d\n", bit, value);
 	if(value == 1) {
 		systemSwitches |= 1 << bit;

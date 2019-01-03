@@ -50,7 +50,7 @@ int main(void) {
 }
 
 void debug(char* string) {
-	printf("%s", string);
+	//printf("%s", string);
 }
 
 /* Write the byte to the serial buffer adding appropriate escape bytes */
@@ -275,7 +275,7 @@ void getPacket() {
     int ourChecksum = 0;
 
     while (getByte() != CMD_SYNC);
-    printf("SYNC\n");
+    
     unsigned char packet_address = getByte();
     ourChecksum += packet_address;
 
