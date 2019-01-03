@@ -10,6 +10,6 @@ echo "Creating Config"
 ./create_config
 cd ..
 echo "Copying over executable to /usr/bin/openjvs"
-sudo cp bin/JVSE /usr/bin/openjvs
+sudo cp bin/openjvs /usr/bin/.
 cd scripts
 echo "Installed"
