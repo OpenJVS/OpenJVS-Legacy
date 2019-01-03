@@ -19,6 +19,7 @@
 #include "Config.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "Controller.h"
 
 /* Variables used in the program */
 int deviceID;
@@ -27,12 +28,12 @@ char reply[256];
 int replyCount = 0;
 
 /* Version number of the program */
-int majorVersion = 0;
-int minorVersion = 10;
+int majorVersion = 1;
+int minorVersion = 0;
 
 /* Function definitions */
 void intHandler(int dummy);
-int main(void);
+int main( int argc, char* argv[] ) ;
 void writeEscaped(unsigned char byte);
 unsigned char getByte();
 void processPacket(unsigned char packet[], int packet_length, int packet_address);

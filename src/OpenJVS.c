@@ -1,45 +1,54 @@
 #include "OpenJVS.h"
 
 void intHandler(int dummy) {
-  closeKeyboard();
-  closeMouse();
-  close(serial);
-  exit(0);
+    closeKeyboard();
+    closeMouse();
+    closeController();
+    close(serial);
+    exit(0);
 }
 
-int main(void) {
+int main( int argc, char* argv[]) {
     /* Setup signal handlers */
     signal(SIGINT, intHandler);
 
     /* Print out information */
-    printf("JVSE: OpenJVS Emulator %d.%d\n", majorVersion, minorVersion);
-    printf("JVSE: (C) Robert Dilley 2018\n\n");
+    printf("OpenJVS Emulator %d.%d (Beta)\n", majorVersion, minorVersion);
+    printf("(C) Robert Dilley 2018\n\n");
+
+    if(argc > 1) {
+        strcpy(mapName, argv[1]);
+        printf("Using Map %s\n", mapName);
+    }
 
     initConfig();
 
-    if(initKeyboard() == 0) {
+
+    if (initKeyboard() == 0) {
         runKeyboard();
     }
 
-    if(initMouse() == 0) {
+    if (initMouse() == 0) {
         runMouse();
     }
-   
-    printf("JVSE: Connecting to %s\n", portName);
- 
+
+    if(initController() == 0) {
+        runController();
+    }
+
     /* Setup the serial interface here */
     serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
-    
+
     if (serial < 0) {
-        printf("JVSE: Failed to connect\n");
-        while(1){}
-	return -1;
+        printf("Failed to open RS485 Dongle file descriptor\n");
+        return -1;
     }
     set_interface_attribs(serial, B115200);
 
     /* Init the modules here */
     initControl();
 
+    printf("OpenJVS Started\n");
 
     /* Run the system forever */
     while (1) {
@@ -49,8 +58,8 @@ int main(void) {
     return 0;
 }
 
-void debug(char* string) {
-	//printf("%s", string);
+void debug(char * string) {
+    //printf("%s", string);
 }
 
 /* Write the byte to the serial buffer adding appropriate escape bytes */
@@ -61,7 +70,7 @@ void writeEscaped(unsigned char byte) {
         };
         int n = write(serial, buffer, sizeof(buffer));
         if (n != 1) {
-            printf("JVSE: Error from write: %d, %d\n", n, errno);
+            printf("Error from write: %d, %d\n", n, errno);
         }
         byte -= 1;
     }
@@ -71,7 +80,7 @@ void writeEscaped(unsigned char byte) {
     };
     int n = write(serial, buffer, sizeof(buffer));
     if (n != 1) {
-        printf("JVSE: Error from write: %d, %d\n", n, errno);
+        printf("Error from write: %d, %d\n", n, errno);
     }
     //usleep(10);
     //tcdrain(serial);
@@ -122,7 +131,7 @@ void sendReply() {
     if (replyCount > 0) {
         int checksum = BUS_MASTER + replyCount + 2 + STATUS_SUCCESS;
 
-	/* Write out the sync packet */
+        /* Write out the sync packet */
         unsigned char buffer[] = {
             CMD_SYNC
         };
@@ -182,14 +191,38 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 debug("CMD_GETFEATURES\n");
                 writeByte(STATUS_SUCCESS);
                 unsigned char features[] = {
-                    0x01, players, bytesPerPlayer * 8, 0x00,
-                    0x02, 0x02, 0x00, 0x00,
-                    0x03, analogueChannels, 0x08, 0x00,
-                    0x04, rotaryChannels, 0x00, 0x00,
-                    0x07, 0x00, 0x08, 0x00,
-                    0x13, 0x08, 0x00, 0x00,
-                    0x06, 0x08, 0x08, 0x02,
-                    0x12, 0x08, 0x00, 0x00,
+                    0x01,
+                    players,
+                    bytesPerPlayer * 8,
+                    0x00,
+                    0x02,
+                    0x02,
+                    0x00,
+                    0x00,
+                    0x03,
+                    analogueChannels,
+                    0x08,
+                    0x00,
+                    0x04,
+                    rotaryChannels,
+                    0x00,
+                    0x00,
+                    0x07,
+                    0x00,
+                    0x08,
+                    0x00,
+                    0x13,
+                    0x08,
+                    0x00,
+                    0x00,
+                    0x06,
+                    0x08,
+                    0x08,
+                    0x02,
+                    0x12,
+                    0x08,
+                    0x00,
+                    0x00,
                     0x00
                 };
                 writeBytes(features, sizeof(features));
@@ -197,12 +230,12 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 debug("CMD_READSWITCHES\n");
                 writeByte(STATUS_SUCCESS);
                 writeByte(reverse(systemSwitches));
-		if(packet[1] != players || packet[2] != bytesPerPlayer) {
-			printf("JVSE: Switch request differs from offered no. of players\n");
-		}
-		for(int i = 0 ; i < packet[1] * packet[2] ; i++) {
-				writeByte(reverse(playerSwitches[i]));
-		}
+                if (packet[1] != players || packet[2] != bytesPerPlayer) {
+                    printf("Warning: Switch request differs from offered no. of players\n");
+                }
+                for (int i = 0; i < packet[1] * packet[2]; i++) {
+                    writeByte(reverse(playerSwitches[i]));
+                }
                 command_size = 3;
             } else if (packet[0] == CMD_WRITEGPIO1) {
                 debug("CMD_WRITEGPIO1\n");
@@ -212,10 +245,10 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 debug("CMD_MAINBOARDID\n");
                 int counter = 1;
                 while (packet[counter] != 0x00 && counter <= packet_length) {
-		    boardID[counter - 1] = packet[counter];
+                    boardID[counter - 1] = packet[counter];
                     counter++;
                 }
-		boardID[counter - 1] = 0x00;
+                boardID[counter - 1] = 0x00;
                 command_size = counter;
                 writeByte(STATUS_SUCCESS);
             } else if (packet[0] == CMD_READCOIN) {
@@ -231,22 +264,18 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 command_size = 2;
                 writeByte(STATUS_SUCCESS);
 
-		if(packet[1] != analogueChannels) {
-			//printf("JVSE: Analogue Channel Requests differs\n");
-		}
-
-		for(int i = 0 ; i < packet[1] ; i++) {
-			writeByte(analogue[i]);
-			writeByte(0x00);
-		}
+                for (int i = 0; i < packet[1]; i++) {
+                    writeByte(analogue[i]);
+                    writeByte(0x00);
+                }
             } else if (packet[0] == CMD_READROTARY) {
-		debug("CMD_READROTARY\n");
-		command_size = 2;
-		writeByte(STATUS_SUCCESS);
-		for(int i = 0 ; i < packet[1] ; i++) {
-			writeByte(0x00);
-			writeByte(analogue[i]);
-		}
+                debug("CMD_READROTARY\n");
+                command_size = 2;
+                writeByte(STATUS_SUCCESS);
+                for (int i = 0; i < packet[1]; i++) {
+                    writeByte(0x00);
+                    writeByte(analogue[i]);
+                }
             } else if (packet[0] == CMD_READSCREENPOS) {
                 debug("CMD_READSCREENPOS\n");
                 command_size = 2;
@@ -255,10 +284,10 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 writeByte(analogue[0]);
                 writeByte(0x00);
                 writeByte(analogue[1]);
-						} else if (packet[0] == CMD_WRITECOINSUBTRACT) {
-							command_size = 4;
-							writeByte(STATUS_SUCCESS);
-							coin -= packet[3];
+            } else if (packet[0] == CMD_WRITECOINSUBTRACT) {
+                command_size = 4;
+                writeByte(STATUS_SUCCESS);
+                coin -= packet[3];
             } else {
                 printf("CMD_UNKNOWN %02hhX \n", packet[0]);
             }
@@ -275,7 +304,7 @@ void getPacket() {
     int ourChecksum = 0;
 
     while (getByte() != CMD_SYNC);
-    
+
     unsigned char packet_address = getByte();
     ourChecksum += packet_address;
 
@@ -298,7 +327,7 @@ void getPacket() {
     if ((ourChecksum & 0xFF) == theirChecksum) {
         processPacket(packet, packet_length, packet_address);
     } else {
-        printf("JVSE: Error Checksum Problem\n");
+        printf("Error: Checksum Problem\n");
     }
 
 }

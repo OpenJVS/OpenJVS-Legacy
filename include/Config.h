@@ -13,10 +13,11 @@ typedef struct {
   int type;
 } InputStruct;
 
-
+extern char mapName[];
 extern char portName[];
 extern char keyboardName[];
 extern char mouseName[];
+extern char controllerName[];
 extern int allDeviceMode;
 extern char* configPath;
 extern InputStruct inputConfig[];

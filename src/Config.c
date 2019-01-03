@@ -5,6 +5,7 @@ char portName[2024] = "/dev/ttyUSB0";
 char keyboardName[2024] = "/dev/ttyUSB0";
 char mouseName[2024] = "/dev/ttyUSB0";
 char controllerName[2024] = "/dev/ttyUSB0";
+char mapName[2024] = "default_config";
 
 /* allDeviceMode replies to all requests regardless of deviceID */
 int allDeviceMode = 1;
@@ -53,7 +54,8 @@ int initConfig() {
     strcat(strcpy(fileName, getenv("HOME")), "/.openjvs/global_config");
     parseConfig(fileName);
 
-    strcat(strcpy(fileName, getenv("HOME")), "/.openjvs/maps/default_config");
+    strcat(strcpy(fileName, getenv("HOME")), "/.openjvs/maps/");
+    strcat(fileName, mapName);
     parseConfig(fileName);
 }
 
@@ -124,7 +126,7 @@ int parseConfig(char * fileName) {
                     };
                 }
 
-                // EventCode Channel MaxValue
+                // EventCode Channel Add MaxValue
                 if (strcmp(token, "MOUSE_ABS_BIND") == 0) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
@@ -145,6 +147,44 @@ int parseConfig(char * fileName) {
                     MouseAbsChannel[code] = channel;
                     MouseAbsMax[code] = maxValue;
                     MouseAbsAdd[code] = add;
+                }
+
+                /* ControllerKey Player Value */
+                if (strcmp(token, "CONTROLLER_KEY_BIND") == 0) {
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    int key = atoi(token);
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    int player = atoi(token);
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    int value = atoi(token);
+                    controllerInputConfig[key] = (InputStruct) {.value = value, .player = player, .type = CONFIG_KEY_BIND
+                    };
+                }
+
+                // EventCode Channel Add MaxValue
+                if (strcmp(token, "CONTROLLER_ABS_BIND") == 0) {
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    int code = atoi(token);
+
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    int channel = atoi(token);
+
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    int add = atoi(token);
+
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    int maxValue = atoi(token);
+
+                    ControllerAbsChannel[code] = channel;
+                    ControllerAbsMax[code] = maxValue;
+                    ControllerAbsAdd[code] = add;
                 }
 
                 if (strcmp(token, "KEY_PLUS") == 0) {
@@ -174,7 +214,7 @@ int parseConfig(char * fileName) {
             fgets(buffer, 1024, fp);
         }
     } else {
-        printf("JVSE: Couldn't open the config file!\n");
+        printf("Failed to open config file at %s\n", fileName);
         return -1;
     }
     fclose(fp);

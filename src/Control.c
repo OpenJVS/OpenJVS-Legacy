@@ -1,6 +1,5 @@
 #include "Control.h"
 
-char* deviceName = "/events/mouse0";
 
 char players = 2;
 char bytesPerPlayer = 2;
@@ -38,7 +37,7 @@ void initControl() {
 }
 
 void setSystemSwitch(int bit, int value) {
-	printf("system switch %d value %d\n", bit, value);
+	printf("Info: System Switch switch %d value %d\n", bit, value);
 	if(value == 1) {
 		systemSwitches |= 1 << bit;
 	} else if(value == 0) {
@@ -47,7 +46,7 @@ void setSystemSwitch(int bit, int value) {
 }
 
 void setPlayerSwitch(int player, int bit, int value) {
-	printf("player %d switch %d value %d\n", player, bit, value);
+	printf("Info: Player Switch player %d switch %d value %d\n", player, bit, value);
 	if(value == 1) {
 		playerSwitches[player * bytesPerPlayer + (bit / 8)] |= 1 << (bit - (8 * (bit / 8)));
 	} else if(value == 0) {
@@ -56,7 +55,7 @@ void setPlayerSwitch(int player, int bit, int value) {
 }
 
 void setAnalogue(int channel, char value) {
-	printf("analogue channel %d value %d", channel, value);
+	printf("Info: Analogue channel %d value %d", channel, value);
 	analogue[channel] = value;
 }
 
