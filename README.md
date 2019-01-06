@@ -22,6 +22,7 @@ OpenJVS supports a few Naomi games on the Raspberry Pi. To install run the comma
 sudo apt install build-essential git
 git clone http://github.com/bobbydilley/OpenJVS
 cd OpenJVS
+make
 cd scripts
 ./install
 ```
@@ -29,14 +30,14 @@ cd scripts
 After you have installed OpenJVS, setup the configuration files (shown in the section below) and run OpenJVS as root by following the commands below:
 
 ```
-sudo openjvs
+sudo openjvs <name_of_map_file_if_not_default>
 ```
 
 On a raspberry pi, you may need to run:
 
 ```
 cd scripts
-sudo run_with_rawmode
+sudo run_with_rawmode <name_of_map_file_if_not_default>
 ```
 
 This attempts to setup the serial port to go faster!
@@ -55,7 +56,7 @@ The config file is setup as a list of key value pairs, with a single space as th
 DEVICE_PATH /dev/ttyUSB0
 KEYBOARD_PATH /dev/input/kbd-0
 MOUSE_PATH /dev/input/mouse-0
-CONTROLLER_PATH /dev/input/controller-0
+CONTROLLER_PATH /dev/input/event0
 ```
 
 Both the controller, and mouse devices can be any sort of EVDEV device which supports the EV_ABS and EV_KEY commands. This for example could be two mice, one on the MOUSE_PATH and one on the CONTROLLER_PATH or 2 play station controllers, or one mouse and one playstation controller etc. They are simply named MOUSE/CONTROLLER to seperate them. This allows you to play with 2 players.
