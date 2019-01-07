@@ -23,7 +23,7 @@ void *mouseThread(void *arg) {
     if(event.type == EV_ABS) {
       if(MouseAbsChannel[event.code] != -1) {
         int scaledValue = MouseAbsAdd[event.code] + ((double) event.value / (double) MouseAbsMax[event.code]) * 255;
-        setAnalogue(MouseAbsChannel[event.code], scaledValue);
+        setAnalogue(MouseAbsChannel[event.code], AnalogueFlip[MouseAbsChannel[event.code]] == 0 ? scaledValue : 255 - scaledValue);
       }
     }
 

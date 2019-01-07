@@ -4,10 +4,10 @@
 DEVICE_PATH /dev/ttyUSB0
 
 # The path of your keyboard device
-KEYBOARD_PATH /dev/input/by-path/platform-i8042-serio-0-event-kbd
+KEYBOARD_PATH /dev/input/event0
 
 # The path of your mouse device
-MOUSE_PATH /dev/input/by-path/platform-i8042-serio-1-event-mouse
+MOUSE_PATH /dev/input/mice
 
 # The path of your controller device
-CONTROLLER_PATH /dev/input/event0
+CONTROLLER_PATH /dev/input/js0

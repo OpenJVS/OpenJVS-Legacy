@@ -82,6 +82,13 @@ MOUSE_ABS_BIND <ABS_EVENT_CODE> <NAOMI_CHANNEL> <ADD> <MAX>
 CONTROLLER_ABS_BIND <ABS_EVENT_CODE> <NAOMI_CHANNEL> <ADD> <MAX>
 ```
 
+You may want to reverse the analogue values that you are sending. So that 0 becomes 255, and 255 becomes 0. For example on Airline Pilots the accelerator is set to full when 0 is sent, and is set to off when 255 is sent. For this you can use the analogue flip  command.
+
+
+```
+ANALOGUE_FLIP <ANALOGUE_CHANNEL>
+```
+
 The next set of commands allow keys to set analogue channels. The `ANALOGUE_DEFAULT` command will set the resting value of that analogue channel when nothing is attempting to move it.
 
 ```

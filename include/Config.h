@@ -32,6 +32,8 @@ extern int ControllerAbsChannel[];
 extern int ControllerAbsMax[];
 extern int ControllerAbsAdd[];
 
+extern int AnalogueFlip[];
+
 int initConfig();
 int parseConfig(char* fileName);
 #endif // CONFIG_H_

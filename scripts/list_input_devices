@@ -1,6 +1,0 @@
-#!/bin/bash
-echo "OpenJVS Utilies"
-echo "List Devices"
-echo ""
-
-ls /dev/input/by-path | grep event | cat

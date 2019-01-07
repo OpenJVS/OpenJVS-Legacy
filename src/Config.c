@@ -21,6 +21,9 @@ int ControllerAbsChannel[1024];
 int ControllerAbsMax[1024];
 int ControllerAbsAdd[1024];
 
+/* Setup the modifiers */
+int AnalogueFlip[1024];
+
 /* Setup input structures */
 InputStruct inputConfig[1024];
 InputStruct mouseInputConfig[1024];
@@ -48,6 +51,8 @@ int initConfig() {
         ControllerAbsChannel[i] = -1;
         ControllerAbsMax[i] = -1;
         ControllerAbsAdd[i] = 0;
+
+	AnalogueFlip[i] = 0;
     }
 
     char fileName[1024];
@@ -93,6 +98,16 @@ int parseConfig(char * fileName) {
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
                     strcpy(controllerName, token);
                 }
+
+		/* Modifiers */
+		if(strcmp(token, "ANALOGUE_FLIP") == 0) {
+		    token = strtok(NULL, " ");
+		    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    int key = atoi(token);
+		    AnalogueFlip[key] = 1;
+		    //printf("Analogue Flip %d\n", key);
+		}
+
 
                 /* Bindings */
 
