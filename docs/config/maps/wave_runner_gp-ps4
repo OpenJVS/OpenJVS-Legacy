@@ -1,14 +1,11 @@
-# Crazy Taxi PlayStation 4 Controller
+# Wave Runner GP Playstation 4 Controller
 
 # Start Button
 CONTROLLER_KEY_BIND 305 1 0
 
-# Accelerator
+# Accelerator (Requires a Flip)
 CONTROLLER_ABS_BIND 4 1 0 255
 ANALOGUE_FLIP 1
-
-# Break
-CONTROLLER_ABS_BIND 3 2 0 255
 
 # Steering
 CONTROLLER_ABS_BIND 0 0 0 255
