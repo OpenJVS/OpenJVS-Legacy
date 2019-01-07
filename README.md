@@ -91,7 +91,7 @@ ANALOGUE_DEFAULT <CHANNEL> <VALUE>
 The `KEY_PLUS` command will give a keyboard key the ability to set the value of an analogue channel. Again if `PLAYER` is set to 0 then system keys will be set.
 
 ```
-KEY_PLUS <KEYBOARD_KEY> <NAOMI_KEY> <PLAYER>
+KEY_PLUS <KEYBOARD_KEY> <CHANNEL> <VALUE>
 ```
 
 ## Maps
