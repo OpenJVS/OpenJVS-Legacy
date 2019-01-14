@@ -69,12 +69,12 @@ int netboot(char* filename, char* ipAddress)
 		return 1;
 	}
 	
-	printf("Received: '");
+	printf("Netboot Connected to Console\n");
 	for(i = 0; i < recv_len; i++)
 	{
-		printf("0x%02x ", recv_buf[i]);
+		//printf("0x%02x ", recv_buf[i]);
 	}
-	printf("'\n");
+	//printf("'\n");
 	
 	free(recv_buf);
 	
@@ -84,7 +84,7 @@ int netboot(char* filename, char* ipAddress)
 	
 	restart_host();
 	
-	printf("Entering infinite loop\n");
+	printf("Entering security loop\n");
 	while(running == 1)
 	{
 		set_time_limit(10*60*1000); 						/* Don't hurt me if this still doesn't work. D= Just converting all from python*/
@@ -252,7 +252,6 @@ void upload_file_dimm(char* gameFile)
 	printf("Uploading...\n");
 	while(1)
 	{
-		printf("\rAddress at: %08x", address);
 		char_read = fread(buff, sizeof(char), BUFFER_SIZE, game_file);	/* Take a chunk of size BUFFER_SIZE data from the file gameFile */
 		if(!char_read)
 			break;
@@ -261,7 +260,7 @@ void upload_file_dimm(char* gameFile)
 		address += char_read;											/* Keep track of the characters read from file */
 	}
 	fclose(game_file);
-	printf("\n");
+	printf("Uploading successfull!\n");
 	
 	crc = ~crc;
 	upload_dimm(address, "12345678", 1, 9); 	/* Not quite sure what's going on here. I know it's sending 
