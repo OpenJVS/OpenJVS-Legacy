@@ -279,15 +279,14 @@ static UINT_32 crc32_tab[] = {
     0x2d02ef8d
 };
 
-UINT_32 crc32(UINT_32 crc,
-    const void * buf, UINT_32 size) {
+UINT_32 crc32(UINT_32 crc, const void * buf, UINT_32 size) {
     const UINT_8 * p;
 
     p = (UINT_8 * ) buf;
-    crc = crc ^ ~0 U;
+    crc = crc ^ ~0U;
 
     while (size--)
         crc = crc32_tab[(crc ^ * p++) & 0xFF] ^ (crc >> 8);
 
-    return crc ^ ~0 U;
+    return crc ^ ~0U;
 }
