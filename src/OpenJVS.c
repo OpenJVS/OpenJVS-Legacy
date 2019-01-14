@@ -36,6 +36,11 @@ int main( int argc, char* argv[]) {
         runController();
     }
 
+    if(initNetboot() == 0) {
+	runNetboot();
+    }
+
+    
     /* Setup the serial interface here */
     serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
 
@@ -49,6 +54,7 @@ int main( int argc, char* argv[]) {
     initControl();
 
     printf("OpenJVS Started\n");
+
 
     /* Run the system forever */
     while (1) {

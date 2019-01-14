@@ -20,6 +20,7 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Controller.h"
+#include "Netboot.h"
 
 /* Variables used in the program */
 int deviceID;

@@ -7,6 +7,9 @@ char mouseName[2024] = "/dev/ttyUSB0";
 char controllerName[2024] = "/dev/ttyUSB0";
 char mapName[2024] = "default_config";
 
+char romDirectory[2024] = "~/.openjvs/roms/";
+char netbootIP[2024] = "10.0.0.111";
+
 /* allDeviceMode replies to all requests regardless of deviceID */
 int allDeviceMode = 1;
 
@@ -75,6 +78,18 @@ int parseConfig(char * fileName) {
 
                 /* Global Configurations */
 
+                if (strcmp(token, "ROM_DIR") == 0) {
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    strcpy(romDirectory, token);
+                }
+                
+		if (strcmp(token, "NETBOOT_IP") == 0) {
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    strcpy(netbootIP, token);
+                
+		}
                 if (strcmp(token, "DEVICE_PATH") == 0) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
