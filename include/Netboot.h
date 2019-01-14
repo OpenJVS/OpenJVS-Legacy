@@ -51,6 +51,7 @@ static void print_usage();
 
 extern UINT_32 crc32(UINT_32 crc, const void *buf, UINT_32 size);
 
+int netboot(char* filename, char* ipAddress);
 int initNetboot();
 void runNetboot();
 void closeNetboot();

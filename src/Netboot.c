@@ -1,27 +1,32 @@
 #include "Netboot.h"
 
 pthread_t thread_id;
+int running = 1;
 
 int initNetboot() {
     return 0;
 }
 
 void runNetboot() {
-    pthread_create( & thread_id, NULL, netbootThread, NULL);
+    pthread_create(&thread_id, NULL, netbootThread, NULL);
     printf("Netboot Module Started\n");
-    printf("Netboot IP %s\n", netbootIP);
 }
 
-void * netbootThread(void * arg) {
-    return 0;
+void *netbootThread(void * arg) {
+    char netbootPath[4096];
+    strcat(strcpy(netbootPath, romDirectory), mapName);
+    netboot(netbootPath, netbootIP);
+
 }
 
 void closeNetboot() {
-    pthread_join(thread_id, NULL);
+	running = 0;
+	pthread_join(thread_id, NULL);
 }
 
 int netboot(char* filename, char* ipAddress)
 {
+	printf("Netboot filename: %s IP: %s\n", filename, ipAddress);
 	struct sockaddr_in naomi_address;
 	char *recv_buf;
 	INT_32 recv_len;
@@ -80,7 +85,7 @@ int netboot(char* filename, char* ipAddress)
 	restart_host();
 	
 	printf("Entering infinite loop\n");
-	while(1)
+	while(running == 1)
 	{
 		set_time_limit(10*60*1000); 						/* Don't hurt me if this still doesn't work. D= Just converting all from python*/
 		sleep(5);

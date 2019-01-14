@@ -46,7 +46,7 @@ int main( int argc, char* argv[]) {
 
     if (serial < 0) {
         printf("Failed to open RS485 Dongle file descriptor\n");
-        return -1;
+        //return -1;
     }
     set_interface_attribs(serial, B115200);
 
