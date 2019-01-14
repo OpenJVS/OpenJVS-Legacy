@@ -110,3 +110,18 @@ To use a different map, simply place the map file in the `~/.openjvs/maps/` dire
 ```
 sudo openjvs lets-go-jungle-ps4
 ```
+
+## Netbooting
+
+> Please note that Netbooting is in very early stages, and will be made much better soon
+
+OpenJVS now supports netboot integrated into OpenJVS. To get started with netbooting you must do the following things:
+
+Place your roms in the `~/.openjvs/roms/` directory, and name them exactly the same as the map file. So if you wanted to boot Crazy Taxi when you run the `crazy_taxi-ps4` map file, then name the rom crazy_taxi-ps4.
+In the gobal configuration file in `~/.openjvs/global_config` make sure that these are set:
+```
+ROM_DIRECTORY ~/.openjvs/roms/
+NETBOOT_IP 10.0.0.8
+```
+
+Now when you run `openjvs crazy_taxi-ps4` OpenJVS will attempt to boot your Sega Naomi/Triforce/Chihiro with the correct game for that map file.
