@@ -12,6 +12,9 @@ int main( int argc, char* argv[]) {
     /* Setup signal handlers */
     signal(SIGINT, intHandler);
 
+    /* Decide weather to netboot */
+    int netboot = 1;
+
     /* Print out information */
     printf("OpenJVS Emulator %d.%d (Beta)\n", majorVersion, minorVersion);
     printf("(C) Robert Dilley 2018\n\n");
@@ -19,6 +22,10 @@ int main( int argc, char* argv[]) {
     if(argc > 1) {
         strcpy(mapName, argv[1]);
         printf("Using Map %s\n", mapName);
+    }
+
+    if(argc > 2) {
+        netboot = 0;
     }
 
     initConfig();
@@ -36,7 +43,7 @@ int main( int argc, char* argv[]) {
         runController();
     }
 
-    if(argc < 2 && initNetboot() == 0) {
+    if(netboot && initNetboot() == 0) {
 	runNetboot();
     }
 

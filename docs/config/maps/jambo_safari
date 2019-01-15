@@ -1,0 +1,20 @@
+# Jambo Safari PS4 Controller
+
+# Start Button
+CONTROLLER_KEY_BIND 305 1 0
+
+# Wheel
+CONTROLLER_ABS_BIND 0 0 0 255
+
+# Left Pedal
+CONTROLLER_ABS_BIND 4 1 0 255
+
+# Right Pedal
+CONTROLLER_ABS_BIND 3 2 0 255
+
+# Lever Down
+CONTROLLER_KEY_BIND 308 2 2
+
+# Lever Up
+CONTROLLER_KEY_BIND 309 2 3
+
