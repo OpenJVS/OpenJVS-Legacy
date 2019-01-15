@@ -3,4 +3,4 @@ echo "OpenJVS Utilies"
 echo "Running with rawmode"
 
 sudo stty -F /dev/ttyUSB0 raw
-sudo ../bin/openjvs $1
+sudo ../bin/openjvs $1 $2
