@@ -1,0 +1,10 @@
+# Monkey Ball PS4 Controller
+
+# Start Button
+CONTROLLER_KEY_BIND 305 1 0
+
+# Joystick H
+CONTROLLER_ABS_BIND 0 1 0 255
+
+# Joystick V
+CONTROLLER_ABS_BIND 1 0 0 255
