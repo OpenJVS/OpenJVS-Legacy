@@ -36,7 +36,7 @@ int main( int argc, char* argv[]) {
         runController();
     }
 
-    if(initNetboot() == 0) {
+    if(argc < 2 && initNetboot() == 0) {
 	runNetboot();
     }
 
