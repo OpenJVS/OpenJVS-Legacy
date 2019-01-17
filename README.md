@@ -10,11 +10,13 @@ This is the new version of the JVSEmulator repository at http://github.com/bobby
 
 OpenJVS requires a RS232 to RS485 converter, wired to the JVS controller cable. Many of these are available, and come in different formats such as USB dongles, or chips that can be wired to the GPIO on a raspberry pi.
 
+OpenJVS requires a Raspberry Pi 2 as minimum, as the Pi 1's don't have enough processing power.
+
 Instructions on building the cable can be found here: https://github.com/bobbydilley/JVSEmulator/wiki/The-JVSE-Cable
 
 ## Installation
 
-### Debian Linux (PC + RaspberryPi)
+### Debian Linux (PC + RaspberryPi 2/3)
 
 OpenJVS supports a few Naomi games on the Raspberry Pi. To install run the commands below:
 
