@@ -12,4 +12,5 @@ cd ..
 echo "Copying over executable to /usr/bin/openjvs"
 sudo cp bin/openjvs /usr/bin/.
 cd scripts
+sudo cp openjvs-pi /usr/bin/.
 echo "Installed"
