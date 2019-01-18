@@ -7,7 +7,7 @@ char mouseName[2024] = "/dev/ttyUSB0";
 char controllerName[2024] = "/dev/ttyUSB0";
 char mapName[2024] = "default_config";
 
-char romDirectory[2024] = "~/.openjvs/roms/";
+char romDirectory[2024] = "/etc/OpenJVS/roms/";
 char netbootIP[2024] = "10.0.0.111";
 
 /* allDeviceMode replies to all requests regardless of deviceID */
@@ -59,10 +59,10 @@ int initConfig() {
     }
 
     char fileName[1024];
-    strcat(strcpy(fileName, getenv("HOME")), "/.openjvs/global_config");
+    strcat(strcpy(fileName, "/etc/OpenJVS"), "/global_config");
     parseConfig(fileName);
 
-    strcat(strcpy(fileName, getenv("HOME")), "/.openjvs/maps/");
+    strcat(strcpy(fileName, "/etc/OpenJVS"), "/maps/");
     strcat(fileName, mapName);
     parseConfig(fileName);
 }
