@@ -1,0 +1,3 @@
+#/bin/bash
+sudo stty -F /dev/ttyUSB0 raw
+sudo openjvs $1 $2
