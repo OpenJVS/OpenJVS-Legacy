@@ -1,11 +1,11 @@
 #!/bin/bash
-echo "OpenJVS Utilies"
 echo "Uninstalling..."
 
-echo "Removing executable from /usr/bin/openjvs"
+echo "Removing executables from /usr/bin/openjvs"
 sudo rm /usr/bin/openjvs
+sudo rm /usr/bin/openjvs-pi
 
 echo "Remove config files"
-rm -rf ~/.openjvs/
+rm -rf /etc/OpenJVS
 
 echo "Uninstall finished"
