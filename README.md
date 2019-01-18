@@ -27,11 +27,15 @@ cd OpenJVS/scripts
 sudo ./install
 ```
 
-OpenJVS is now installed and ready to use on your Raspberry Pi. See the Config heading to learn how to set it up.
+OpenJVS is now installed and ready to use on your Raspberry Pi. See the Config heading to learn how to set it up. Once setup you can run it on a by using the following command
+
+```
+sudo openjvs-pi <map-name>
+```
 
 ## Config
 
-The configuration file is called `~/.openjvs/global_config` and is stored in the current users home directory. For OpenJVS to work you need to give it the path of your RS485 device, and the path of one of the input devices.
+The configuration file is parsed for each game and is stored at `/etc/OpenJVS/global_config`. For OpenJVS to work you need to give it the path of your RS485 device, and the path of one of the input devices.
 
 The config file is setup as a list of key value pairs, with a single space as the delimeter. Starting a line with a `#` symbol will make that line a comment, and so won't be read. An example configuration file is below:
 
@@ -105,8 +109,8 @@ OpenJVS now supports netboot integrated into OpenJVS. To get started with netboo
 Place your roms in the `~/.openjvs/roms/` directory, and name them exactly the same as the map file. So if you wanted to boot Crazy Taxi when you run the `crazy_taxi-ps4` map file, then name the rom crazy_taxi-ps4.
 In the gobal configuration file in `~/.openjvs/global_config` make sure that these are set:
 ```
-ROM_DIR ~/.openjvs/roms/
-NETBOOT_IP 10.0.0.8
+ROM_DIR /etc/OpenJVS/roms/
+NETBOOT_IP 10.0.0.111
 ```
 
-Now when you run `openjvs crazy_taxi-ps4` OpenJVS will attempt to boot your Sega Naomi/Triforce/Chihiro with the correct game for that map file.
+Now when you run `openjvs-pi crazy_taxi-ps4` OpenJVS will attempt to boot your Sega Naomi/Triforce/Chihiro with the correct game for that map file.
