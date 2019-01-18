@@ -106,8 +106,8 @@ sudo openjvs lets-go-jungle-ps4
 
 OpenJVS now supports netboot integrated into OpenJVS. To get started with netbooting you must do the following things:
 
-Place your roms in the `~/.openjvs/roms/` directory, and name them exactly the same as the map file. So if you wanted to boot Crazy Taxi when you run the `crazy_taxi-ps4` map file, then name the rom crazy_taxi-ps4.
-In the gobal configuration file in `~/.openjvs/global_config` make sure that these are set:
+Place your roms in the `/etc/OpenJVS/roms/` directory, and name them exactly the same as the map file. So if you wanted to boot Crazy Taxi when you run the `crazy_taxi-ps4` map file, then name the rom crazy_taxi-ps4.
+In the gobal configuration file in `/etc/OpenJVS/global_config` make sure that these are set:
 ```
 ROM_DIR /etc/OpenJVS/roms/
 NETBOOT_IP 10.0.0.111
