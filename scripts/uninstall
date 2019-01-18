@@ -6,6 +6,6 @@ sudo rm /usr/bin/openjvs
 sudo rm /usr/bin/openjvs-pi
 
 echo "Remove config files"
-rm -rf /etc/OpenJVS
+sudo rm -rf /etc/OpenJVS
 
 echo "Uninstall finished"

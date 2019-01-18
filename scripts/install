@@ -9,8 +9,9 @@ cd scripts
 
 # Create config
 echo "Creating Config in /etc/OpenJVS"
-mkdir -p /etc/OpenJVS
-cp -rn ../docs/config/ /etc/OpenJVS
+sudo mkdir -p /etc/OpenJVS
+sudo cp -rn ../docs/config/* /etc/OpenJVS/.
+sudo chmod -R 777 /etc/OpenJVS
 
 # Copy Executable
 echo "Copying over executable to /usr/bin/openjvs"
