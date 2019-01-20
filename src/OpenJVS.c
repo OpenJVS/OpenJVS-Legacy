@@ -12,6 +12,9 @@ int main( int argc, char* argv[]) {
     /* Setup signal handlers */
     signal(SIGINT, intHandler);
 
+    /* Decide weather to netboot */
+    int netboot = 1;
+
     /* Print out information */
     printf("OpenJVS Emulator %d.%d (Beta)\n", majorVersion, minorVersion);
     printf("(C) Robert Dilley 2018\n\n");
@@ -19,6 +22,10 @@ int main( int argc, char* argv[]) {
     if(argc > 1) {
         strcpy(mapName, argv[1]);
         printf("Using Map %s\n", mapName);
+    }
+
+    if(argc > 2) {
+        netboot = 0;
     }
 
     initConfig();
@@ -36,6 +43,11 @@ int main( int argc, char* argv[]) {
         runController();
     }
 
+    if(netboot && initNetboot() == 0) {
+	runNetboot();
+    }
+
+    
     /* Setup the serial interface here */
     serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
 
@@ -49,6 +61,7 @@ int main( int argc, char* argv[]) {
     initControl();
 
     printf("OpenJVS Started\n");
+
 
     /* Run the system forever */
     while (1) {

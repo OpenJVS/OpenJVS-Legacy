@@ -20,6 +20,7 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Controller.h"
+#include "Netboot.h"
 
 /* Variables used in the program */
 int deviceID;
@@ -29,7 +30,7 @@ int replyCount = 0;
 
 /* Version number of the program */
 int majorVersion = 1;
-int minorVersion = 0;
+int minorVersion = 1;
 
 /* Function definitions */
 void intHandler(int dummy);

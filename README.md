@@ -2,55 +2,42 @@
 
 # OpenJVS
 
-> Update - one has Ubuntu on it, so try ubuntu on your pi. Warning, at the moment the software works on my test raspberry pi, however when I attempt to install it on another it doesn't and still trying to work this out. Best to try running `sudo stty -F /dev/ttyUSB0 raw -echo`
 
-OpenJVS is a software replacement for the JVS I/O boards used in arcade systems. The only known system OpenJVS currently works with fully is the Sega Naomi. This is due to the fact that the Sega Naomi does not follow the correct procedures with the sense line, and so this allows us to use any USB to RS485 dongle to control it. OpenJVS is compatible with all other systems, but requires some circutry to run the Sense Line which is not yet released. The software is written in C and aims to run on a Raspberry Pi allowing users to use their existing peripherals such as keyboards, AimTraks, mice, joysticks and steering wheels to control the games.
-
-This is the new version of the JVSEmulator repository at http://github.com/bobbydilley/JVSEmulator.
-
-## Hardware
-
-OpenJVS requires a RS232 to RS485 converter, wired to the JVS controller cable. Many of these are available, and come in different formats such as USB dongles, or chips that can be wired to the GPIO on a raspberry pi.
-
-OpenJVS requires a Raspberry Pi 2 as minimum, as the Pi 1's don't have enough processing power.
-
-Instructions on building the cable can be found here: https://github.com/bobbydilley/JVSEmulator/wiki/The-JVSE-Cable
+OpenJVS is a software emulator for JVS I/O boards found in many modern arcade machines. To use JVS a USB to RS485 connector is required, along with a linux computer such as the Raspberry Pi 2 with Ubuntu Linux. OpenJVS currently fully supports the Sega Naomi, and supports other platforms with additional hardware.
 
 ## Installation
 
-### Debian Linux (PC + RaspberryPi 2/3)
+Installation is described on a Raspberry Pi 2 with Ubuntu Server Linux which can be downloaded here: https://wiki.ubuntu.com/ARM/RaspberryPi. Once the image has been installed, the USB to RS485 device and any controllers should be plugged in, and SSH enabled.
 
-OpenJVS supports a few Naomi games on the Raspberry Pi. To install run the commands below:
+
+First make sure you have the required software installed to download, install and run OpenJVS.
 
 ```
-sudo apt install build-essential git
+sudo apt install build-essential git evtest
+```
+
+Now download the OpenJVS software using git.
+
+```
 git clone http://github.com/bobbydilley/OpenJVS
-cd OpenJVS
-make
-cd scripts
-./install
 ```
 
-After you have installed OpenJVS, setup the configuration files (shown in the section below) and run OpenJVS as root by following the commands below:
+Now navigate into the downloaded folder, and run the install script.
 
 ```
-sudo openjvs <name_of_map_file_if_not_default>
+cd OpenJVS/scripts
+sudo ./install
 ```
 
-On a raspberry pi, you may need to run:
+OpenJVS is now installed and ready to use on your Raspberry Pi. See the Config heading to learn how to set it up. Once setup you can run it on a by using the following command
 
 ```
-cd scripts
-sudo run_with_rawmode <name_of_map_file_if_not_default>
+sudo openjvs-pi <map-name>
 ```
-
-This attempts to setup the serial port to go faster!
-
-Make sure you run the program as root, or it cannot access the device properly.
 
 ## Config
 
-The configuration file is called `~/.openjvs/global_config` and is stored in the current users home directory. For OpenJVS to work you need to give it the path of your RS485 device, and the path of one of the input devices.
+The configuration file is parsed for each game and is stored at `/etc/OpenJVS/global_config`. For OpenJVS to work you need to give it the path of your RS485 device, and the path of one of the input devices.
 
 The config file is setup as a list of key value pairs, with a single space as the delimeter. Starting a line with a `#` symbol will make that line a comment, and so won't be read. An example configuration file is below:
 
@@ -114,3 +101,18 @@ To use a different map, simply place the map file in the `~/.openjvs/maps/` dire
 ```
 sudo openjvs lets-go-jungle-ps4
 ```
+
+## Netbooting
+
+> Please note that Netbooting is in very early stages, and will be made much better soon
+
+OpenJVS now supports netboot integrated into OpenJVS. To get started with netbooting you must do the following things:
+
+Place your roms in the `/etc/OpenJVS/roms/` directory, and name them exactly the same as the map file. So if you wanted to boot Crazy Taxi when you run the `crazy_taxi-ps4` map file, then name the rom crazy_taxi-ps4.
+In the gobal configuration file in `/etc/OpenJVS/global_config` make sure that these are set:
+```
+ROM_DIR /etc/OpenJVS/roms/
+NETBOOT_IP 10.0.0.111
+```
+
+Now when you run `openjvs-pi crazy_taxi-ps4` OpenJVS will attempt to boot your Sega Naomi/Triforce/Chihiro with the correct game for that map file.

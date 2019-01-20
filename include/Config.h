@@ -13,6 +13,8 @@ typedef struct {
   int type;
 } InputStruct;
 
+extern char romDirectory[];
+extern char netbootIP[];
 extern char mapName[];
 extern char portName[];
 extern char keyboardName[];
