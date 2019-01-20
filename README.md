@@ -2,11 +2,13 @@
 
 # OpenJVS
 
+
 OpenJVS is a software emulator for JVS I/O boards found in many modern arcade machines. To use JVS a USB to RS485 connector is required, along with a linux computer such as the Raspberry Pi 2 with Ubuntu Linux. OpenJVS currently fully supports the Sega Naomi, and supports other platforms with additional hardware.
 
 ## Installation
 
 Installation is described on a Raspberry Pi 2 with Ubuntu Server Linux which can be downloaded here: https://wiki.ubuntu.com/ARM/RaspberryPi. Once the image has been installed, the USB to RS485 device and any controllers should be plugged in, and SSH enabled.
+
 
 First make sure you have the required software installed to download, install and run OpenJVS.
 
