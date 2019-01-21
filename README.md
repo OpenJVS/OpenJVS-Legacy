@@ -37,18 +37,9 @@ sudo openjvs-pi <map-name>
 
 ## Config
 
-The configuration file is parsed for each game and is stored at `/etc/OpenJVS/global_config`. For OpenJVS to work you need to give it the path of your RS485 device, and the path of one of the input devices.
+To configure OpenJVS, each time it is run 2 seperate configuration files are read. Every time you start OpenJVS, initially the `/etc/OpenJVS/global_config` file is read to pick up global configuration values that won't change such as the path of your RS485 device. After this, a map configuration file is read from `/etc/OpenJVS/maps/<map-name>` where the _map name_ is the name of the game you would like to run, and this contains all the individual configration for that game.
 
-The config file is setup as a list of key value pairs, with a single space as the delimeter. Starting a line with a `#` symbol will make that line a comment, and so won't be read. An example configuration file is below:
-
-```
-# Default configuration file for OpenJVS
-
-DEVICE_PATH /dev/ttyUSB0
-KEYBOARD_PATH /dev/input/kbd-0
-MOUSE_PATH /dev/input/mouse-0
-CONTROLLER_PATH /dev/input/event0
-```
+The configuration files are set out as a list of key to a list of value pairs, where the keys are in capital letters, and followed by a space and then the values, each seperated by a space.
 
 Both the controller, and mouse devices can be any sort of EVDEV device which supports the EV_ABS and EV_KEY commands. This for example could be two mice, one on the MOUSE_PATH and one on the CONTROLLER_PATH or 2 play station controllers, or one mouse and one playstation controller etc. They are simply named MOUSE/CONTROLLER to seperate them. This allows you to play with 2 players.
 
@@ -57,6 +48,15 @@ Both the controller, and mouse devices can be any sort of EVDEV device which sup
 Here I will note how to setup the config values for the maps:
 
 Everything inside a `<` and `>` is a value that should be replaced with a number. Everything not in one of those is the keywords that should be written exactly, in the correct case. All values should be taken from `evtest` program on linux.
+
+Below are the global configuration keys for the paths of the controllers are RS485 devices, and some example inputs.
+
+```
+DEVICE_PATH /dev/ttyUSB0
+KEYBOARD_PATH /dev/input/kbd-0
+MOUSE_PATH /dev/input/mouse-0
+CONTROLLER_PATH /dev/input/event0
+```
 
 Please note, for `PLAYER` 0 means it will set the system keys, 1 means set player 1 and 2 means set player 2.
 
@@ -92,21 +92,9 @@ The `KEY_PLUS` command will give a keyboard key the ability to set the value of 
 KEY_PLUS <KEYBOARD_KEY> <CHANNEL> <VALUE>
 ```
 
-## Maps
-
-The map files are used to tell OpenJVS what keys on the input device are mapped to which inputs on the JVS arcade system. The default map is stored in `~/.openjvs/maps/default_config` and contains an example to play Crazy Taxi on the Sega Naomi with a keyboard. 
-
-To use a different map, simply place the map file in the `~/.openjvs/maps/` directory, and place the map file name at the end of the command. For example, if the map was called `lets-go-jungle-ps4`, you would run.
-
-```
-sudo openjvs lets-go-jungle-ps4
-```
-
 ## Netbooting
 
-> Please note that Netbooting is in very early stages, and will be made much better soon
-
-OpenJVS now supports netboot integrated into OpenJVS. To get started with netbooting you must do the following things:
+OpenJVS now supports netbooting. To get started with netbooting you must do the following things:
 
 Place your roms in the `/etc/OpenJVS/roms/` directory, and name them exactly the same as the map file. So if you wanted to boot Crazy Taxi when you run the `crazy_taxi-ps4` map file, then name the rom crazy_taxi-ps4.
 In the gobal configuration file in `/etc/OpenJVS/global_config` make sure that these are set:
