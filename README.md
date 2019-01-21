@@ -45,17 +45,24 @@ Both the controller, and mouse devices can be any sort of EVDEV device which sup
 
 ### Config Reference
 
-Here I will note how to setup the config values for the maps:
-
-Everything inside a `<` and `>` is a value that should be replaced with a number. Everything not in one of those is the keywords that should be written exactly, in the correct case. All values should be taken from `evtest` program on linux.
-
-Below are the global configuration keys for the paths of the controllers are RS485 devices, and some example inputs.
-
+#### Device Path
 ```
-DEVICE_PATH /dev/ttyUSB0
-KEYBOARD_PATH /dev/input/kbd-0
-MOUSE_PATH /dev/input/mouse-0
-CONTROLLER_PATH /dev/input/event0
+DEVICE_PATH <PATH>
+```
+
+#### Keyboard Path
+```
+KEYBOARD_PATH <PATH>
+```
+
+#### Mouse Path
+```
+MOUSE_PATH <PATH>
+```
+
+#### Controller Path
+```
+CONTROLLER_PATH <PATH>
 ```
 
 Please note, for `PLAYER` 0 means it will set the system keys, 1 means set player 1 and 2 means set player 2.
