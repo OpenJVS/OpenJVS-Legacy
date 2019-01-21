@@ -49,26 +49,33 @@ Both the controller, and mouse devices can be any sort of EVDEV device which sup
 ```
 DEVICE_PATH <PATH>
 ```
+This will set the path to the RS485 device that is connected to the Naomi. An example path would be `/dev/ttyUSB0`.
 
 #### Keyboard Path
 ```
 KEYBOARD_PATH <PATH>
 ```
+This will set the path to the Keyboard device that is connected to the Raspberry Pi. An example path would be `/dev/input/event0`.
 
 #### Mouse Path
 ```
 MOUSE_PATH <PATH>
 ```
+This will set the path to the Mouse device that is connected to the Raspberry Pi. An example path would be `/dev/input/event1`.
 
 #### Controller Path
 ```
 CONTROLLER_PATH <PATH>
 ```
+This will set the path to the Controller device that is connected to the Raspberry Pi. An example path would be `/dev/input/event2`.
 
-Please note, for `PLAYER` 0 means it will set the system keys, 1 means set player 1 and 2 means set player 2.
-
+#### Keyboard Key Bind
 ```
 KEY_BIND <KEYBOARD_KEY> <PLAYER> <NAOMI_KEY>
+```
+This will bind a keyboard key press, to a Naomi key press. `<KEYBOARD_KEY>` is the EVDEV key code of the key, `<PLAYER>` is the number of the player on the Naomi you wish to set the key for and `<NAOMI_KEY>` is the key on the Naomi you wish this keyboard key to change. Please note, if `<PLAYER>` is set to 0 this means it will set the system keys, 1 means set player 1 and 2 means set player 2.
+
+```
 MOUSE_KEY_BIND <KEYBOARD_KEY> <PLAYER> <NAOMI_KEY>
 CONTROLLER_KEY_BIND <KEYBOARD_KEY> <PLAYER> <NAOMI_KEY>
 ```
