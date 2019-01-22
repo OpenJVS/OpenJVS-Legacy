@@ -12,6 +12,7 @@ char netbootIP[2024] = "10.0.0.111";
 
 /* allDeviceMode replies to all requests regardless of deviceID */
 int allDeviceMode = 1;
+int netboot = 0;
 
 /* Set the path of the config file */
 char * configPath = ".config";
@@ -84,12 +85,18 @@ int parseConfig(char * fileName) {
                     strcpy(romDirectory, token);
                 }
                 
+		if (strcmp(token, "NETBOOT_ENABLE") == 0) {
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    netboot = atoi(token);
+		}
+		    
 		if (strcmp(token, "NETBOOT_IP") == 0) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
                     strcpy(netbootIP, token);
-                
 		}
+		    
                 if (strcmp(token, "DEVICE_PATH") == 0) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
