@@ -131,4 +131,10 @@ ROM_DIR /etc/OpenJVS/roms/
 NETBOOT_IP 10.0.0.111
 ```
 
+Then in each game you would like to netboot simply add
+```
+NETBOOT_ENABLE 1
+```
+to the map file. Alternatively you can add this to the global_config file to netboot every game.
+
 Now when you run `openjvs-pi crazy_taxi-ps4` OpenJVS will attempt to boot your Sega Naomi/Triforce/Chihiro with the correct game for that map file.
