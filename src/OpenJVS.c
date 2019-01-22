@@ -12,9 +12,6 @@ int main( int argc, char* argv[]) {
     /* Setup signal handlers */
     signal(SIGINT, intHandler);
 
-    /* Decide weather to netboot */
-    int netboot = 1;
-
     /* Print out information */
     printf("OpenJVS Emulator %d.%d (Beta)\n", majorVersion, minorVersion);
     printf("(C) Robert Dilley 2018\n\n");
