@@ -22,7 +22,7 @@ int main( int argc, char* argv[]) {
     }
 
     if(argc > 2) {
-        netboot = 0;
+        netboot_enable = 0;
     }
 
     initConfig();
@@ -40,7 +40,7 @@ int main( int argc, char* argv[]) {
         runController();
     }
 
-    if(netboot && initNetboot() == 0) {
+    if(netboot_enable && initNetboot() == 0) {
 	runNetboot();
     }
 
