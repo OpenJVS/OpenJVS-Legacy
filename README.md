@@ -7,7 +7,9 @@ OpenJVS is a software emulator for JVS I/O boards found in many modern arcade ma
 
 ## Installation
 
-Installation is described on a Raspberry Pi 2 with Ubuntu Server Linux which can be downloaded here: https://wiki.ubuntu.com/ARM/RaspberryPi. Once the image has been installed, the USB to RS485 device and any controllers should be plugged in, and SSH enabled.
+Installation is described on a Raspberry Pi 2 with Ubuntu Server Linux which can be downloaded here: https://wiki.ubuntu.com/ARM/RaspberryPi. You should be able to download an official or unofficial image for your Raspberry Pi 2 or 3 form this link. This should also work on Ubuntu MATE for Raspberry Pi 2/3. It however does not work correctly on Debian/Arch on Pi's 1, 2 and 3.
+
+Once the image has been installed, the USB to RS485 device and any controllers should be plugged in, and SSH enabled.
 
 
 First make sure you have the required software installed to download, install and run OpenJVS.
