@@ -15,3 +15,4 @@ CONTROLLER_PATH /dev/input/event0
 # Netboot Settings
 ROM_DIR /etc/OpenJVS/roms/
 NETBOOT_IP 10.0.0.111
+NETBOOT_ENABLE 0
