@@ -1,0 +1,14 @@
+# Config for the switches on the Attendants Tower for SEGA's Special Arcade attractions
+
+# Keys along the top Q row are used
+
+KEY_BIND 16 0 0
+KEY_BIND 17 0 1
+KEY_BIND 18 0 2
+KEY_BIND 19 0 3
+KEY_BIND 20 0 4
+KEY_BIND 21 0 5
+KEY_BIND 22 0 6
+KEY_BIND 23 0 7
+KEY_BIND 24 0 8
+KEY_BIND 25 0 9
