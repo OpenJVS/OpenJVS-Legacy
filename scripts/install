@@ -18,4 +18,8 @@ echo "Copying over executable to /usr/bin/openjvs"
 sudo cp ../bin/openjvs /usr/bin/.
 sudo cp openjvs-pi /usr/bin/.
 
+# Add in service
+echo "Copying over service file to /etc/systemd/system/"
+sudo cp openjvs.service /etc/systemd/system/.
+
 echo "Installed"

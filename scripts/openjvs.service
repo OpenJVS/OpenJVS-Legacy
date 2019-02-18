@@ -1,0 +1,11 @@
+[Unit]
+Description=OpenJVS IO Emulator Service
+After=network.target
+
+[Service]
+User=root
+Type=simple
+ExecStart=/usr/bin/openjvs-pi
+
+[Install]
+WantedBy=multi-user.target

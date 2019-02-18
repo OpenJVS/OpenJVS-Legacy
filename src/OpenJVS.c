@@ -41,7 +41,7 @@ int main( int argc, char* argv[]) {
     }
 
     if(netboot_enable && initNetboot() == 0) {
-	runNetboot();
+	    runNetboot();
     }
 
     
