@@ -33,6 +33,6 @@ static int
 GPIOWrite(int pin, int value);
 
 int
-main(int argc, char *argv[]);
+testmain(int argc, char *argv[]);
 
 #endif // BLINK_H_

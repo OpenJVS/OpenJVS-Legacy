@@ -116,7 +116,7 @@ GPIOWrite(int pin, int value)
 }
 
 int
-main(int argc, char *argv[])
+testmain(int argc, char *argv[])
 {
 	int repeat = 10;
 
