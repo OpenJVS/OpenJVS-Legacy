@@ -1,9 +1,7 @@
-
 #include "Blink.h"
 
 
-static int
-GPIOExport(int pin)
+int GPIOExport(int pin)
 {
 #define BUFFER_MAX 3
 	char buffer[BUFFER_MAX];
@@ -22,8 +20,7 @@ GPIOExport(int pin)
 	return(0);
 }
 
-static int
-GPIOUnexport(int pin)
+int GPIOUnexport(int pin)
 {
 	char buffer[BUFFER_MAX];
 	ssize_t bytes_written;
@@ -41,8 +38,7 @@ GPIOUnexport(int pin)
 	return(0);
 }
 
-static int
-GPIODirection(int pin, int dir)
+int GPIODirection(int pin, int dir)
 {
 	static const char s_directions_str[]  = "in\0out";
 
@@ -66,8 +62,7 @@ GPIODirection(int pin, int dir)
 	return(0);
 }
 
-static int
-GPIORead(int pin)
+int GPIORead(int pin)
 {
 #define VALUE_MAX 30
 	char path[VALUE_MAX];
@@ -91,8 +86,7 @@ GPIORead(int pin)
 	return(atoi(value_str));
 }
 
-static int
-GPIOWrite(int pin, int value)
+int GPIOWrite(int pin, int value)
 {
 	static const char s_values_str[] = "01";
 

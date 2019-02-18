@@ -2,15 +2,15 @@
 
 
 char players = 2;
-char bytesPerPlayer = 2;
+char bytesPerPlayer = 4;
 char playerSwitches[255];
 char systemSwitches = 0x0;
 char boardID[255];
-char analogueChannels = 12;
+char analogueChannels = 18;
 char analogue[255];
-char rotaryChannels = 12;
+char rotaryChannels = 18;
 char rotary[255];
-char coin = 10;
+char coin = 15;
 char analogueDefault[255];
 
 unsigned char reverse(unsigned char b) {

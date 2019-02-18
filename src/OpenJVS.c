@@ -5,8 +5,7 @@ void intHandler(int dummy) {
     closeMouse();
     closeController();
     close(serial);
-    if (GPIOUnexport(POUT) == -1)
-  		return(4);
+    GPIOUnexport(POUT);
     exit(0);
 }
 
@@ -53,8 +52,6 @@ int main( int argc, char* argv[]) {
   	if (GPIODirection(POUT, IN) == -1)
   		printf("Failed to set gpio pin direction %d\n", POUT);
 
-		if (GPIOWrite(POUT, 0) == -1)
-			printf("Failed to write to gpio pin %d\n", POUT);
 
 
 
@@ -83,7 +80,7 @@ int main( int argc, char* argv[]) {
 }
 
 void debug(char * string) {
-    //printf("%s", string);
+   //printf("%s", string);
 }
 
 /* Write the byte to the serial buffer adding appropriate escape bytes */
@@ -190,15 +187,15 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 debug("CMD_RESET\n");
                 command_size = 2;
                 deviceID = -1;
-                if (GPIOWrite(POUT, 0) == -1 || GPIODirection(POUT, IN) == -1)
-            			printf("Failed to write to gpio pin %d\n", POUT);
+                if (GPIODirection(POUT, IN) == -1)
+            		printf("Failed to write to gpio pin %d\n", POUT);
             } else if (packet[0] == CMD_SETADDRESS) {
                 debug("CMD_SETADDRESS\n");
                 command_size = 2;
                 deviceID = packet[1];
                 writeByte(STATUS_SUCCESS);
-                if (GPIOWrite(POUT, 0) == -1 || GPIODirection(POUT, OUT) == -1)
-            			printf("Failed to write to gpio pin %d\n", POUT);
+                if (GPIODirection(POUT, OUT) == -1 || GPIOWrite(POUT, 0) == -1)
+            		printf("Failed to write to gpio pin %d\n", POUT);
             } else if (packet[0] == CMD_READID) {
                 debug("CMD_READID\n");
                 writeByte(STATUS_SUCCESS);

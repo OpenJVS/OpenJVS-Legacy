@@ -15,24 +15,18 @@
 #define HIGH 1
 
 #define PIN  24 /* P1-18 */
-#define POUT 4  /* P1-07 */
+#define POUT 12  /* P1-07 */
 
-static int
-GPIOUnexport(int pin);
+int GPIOUnexport(int pin);
 
-static int
-GPIOExport(int pin);
+int GPIOExport(int pin);
 
-static int
-GPIODirection(int pin, int dir);
+int GPIODirection(int pin, int dir);
 
-static int
-GPIORead(int pin);
+int GPIORead(int pin);
 
-static int
-GPIOWrite(int pin, int value);
+int GPIOWrite(int pin, int value);
 
-int
-testmain(int argc, char *argv[]);
+int testmain(int argc, char *argv[]);
 
 #endif // BLINK_H_
