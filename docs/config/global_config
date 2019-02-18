@@ -3,6 +3,9 @@
 # The path of your RS485 dongle
 DEVICE_PATH /dev/ttyUSB0
 
+# The path of your RS232 Lindbergh FFB Link
+FFB_PATH /dev/ttyUSB1
+
 # The path of your keyboard device
 KEYBOARD_PATH /dev/input/event1
 

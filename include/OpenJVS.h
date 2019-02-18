@@ -21,6 +21,8 @@
 #include "Mouse.h"
 #include "Controller.h"
 #include "Netboot.h"
+#include "Blink.h"
+
 
 /* Variables used in the program */
 int deviceID;
