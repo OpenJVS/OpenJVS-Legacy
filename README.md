@@ -37,6 +37,11 @@ OpenJVS is now installed and ready to use on your Raspberry Pi. See the Config h
 sudo openjvs-pi <map-name>
 ```
 
+
+## Sync Line
+
+The red wire coming from the JVS connector in the Sync line, and is required for use with the Lindbergh system. OpenJVS will operate the sync line on GPIO 12. You should connect the sync line directly to GPIO 12, and then a resistor ladder from GPIO 12 to GND.
+
 ## Config
 
 To configure OpenJVS, each time it is run 2 seperate configuration files are read. Every time you start OpenJVS, initially the `/etc/OpenJVS/global_config` file is read to pick up global configuration values that won't change such as the path of your RS485 device. After this, a map configuration file is read from `/etc/OpenJVS/maps/<map-name>` where the _map name_ is the name of the game you would like to run, and this contains all the individual configration for that game.
