@@ -17,6 +17,7 @@ int main( int argc, char* argv[]) {
     printf("OpenJVS Emulator %d.%d (Beta)\n", majorVersion, minorVersion);
     printf("(C) Robert Dilley 2018\n\n");
 
+
     if(argc > 1) {
         strcpy(mapName, argv[1]);
         printf("Using Map %s\n", mapName);
@@ -28,6 +29,9 @@ int main( int argc, char* argv[]) {
 
     initConfig();
 
+    if(debug_mode) {
+	printf("Debug mode enabled.\n");
+    }
 
     if (initKeyboard() == 0) {
         runKeyboard();

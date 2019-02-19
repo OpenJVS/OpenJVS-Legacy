@@ -26,3 +26,6 @@ NETBOOT_IP 10.0.0.111
 
 # Enable netboot for all games
 NETBOOT_ENABLE 0
+
+# Enable debug messages for trouble shooting
+DEBUG_MODE 0

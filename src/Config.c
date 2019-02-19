@@ -100,7 +100,7 @@ int parseConfig(char * fileName) {
                     netboot_enable = atoi(token);
 		}
 
-    if (strcmp(token, "DEBUG_MODE") == 0) {
+    		if (strcmp(token, "DEBUG_MODE") == 0) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
                     debug_mode = atoi(token);
