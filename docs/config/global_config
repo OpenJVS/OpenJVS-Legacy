@@ -3,6 +3,9 @@
 # The path of your RS485 dongle
 DEVICE_PATH /dev/ttyUSB0
 
+# The pin to run the Sync line on
+SYNC_PIN 12
+
 # The path of your RS232 Lindbergh FFB Link
 FFB_PATH /dev/ttyUSB1
 
@@ -15,7 +18,11 @@ MOUSE_PATH /dev/input/mice
 # The path of your controller device
 CONTROLLER_PATH /dev/input/event0
 
-# Netboot Settings
+# The path of the netboot rom directory
 ROM_DIR /etc/OpenJVS/roms/
+
+# The IP of the system to netboot to
 NETBOOT_IP 10.0.0.111
+
+# Enable netboot for all games
 NETBOOT_ENABLE 0
