@@ -14,8 +14,6 @@
 #define LOW  0
 #define HIGH 1
 
-#define PIN  24 /* P1-18 */
-#define POUT 12  /* P1-07 */
 
 int GPIOUnexport(int pin);
 
@@ -27,6 +25,5 @@ int GPIORead(int pin);
 
 int GPIOWrite(int pin, int value);
 
-int testmain(int argc, char *argv[]);
 
 #endif // BLINK_H_

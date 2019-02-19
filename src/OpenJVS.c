@@ -30,7 +30,7 @@ int main( int argc, char* argv[]) {
     initConfig();
 
     if(debug_mode) {
-	printf("Debug mode enabled.\n");
+	printf("Debug mode enabled\n");
     }
 
     if (initKeyboard() == 0) {
@@ -55,12 +55,10 @@ int main( int argc, char* argv[]) {
 
 	/* GPIO SYNC PINS */
 	if (GPIOExport(sync_pin) == -1)
-		printf("Failed to export gpio pin %d\n", sync_pin);
-
-	if (GPIODirection(sync_pin, IN) == -1)
-		printf("Failed to set gpio pin direction %d\n", sync_pin);
+		printf("Failed to export Sync pin %d\n", sync_pin);
 
 
+	syncFloat();
 
 
 
@@ -197,16 +195,14 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 debug("CMD_RESET\n");
                 command_size = 2;
                 deviceID = -1;
-                if (GPIODirection(sync_pin, IN) == -1)
-            		printf("Failed to write to gpio pin %d\n", sync_pin);
+		syncFloat();
             } else if (packet[0] == CMD_SETADDRESS) {
                 debug("CMD_SETADDRESS\n");
                 command_size = 2;
                 deviceID = packet[1];
                 writeByte(STATUS_SUCCESS);
-                if (GPIODirection(sync_pin, OUT) == -1 || GPIOWrite(sync_pin, 0) == -1)
-            		printf("Failed to write to gpio pin %d\n", sync_pin);
-            } else if (packet[0] == CMD_READID) {
+            	syncGround();
+	    } else if (packet[0] == CMD_READID) {
                 debug("CMD_READID\n");
                 writeByte(STATUS_SUCCESS);
                 writeString("JVSE Emulator;I/O BD JVS;837-13551;Ver1.00;98/10");
@@ -365,4 +361,18 @@ void getPacket() {
         printf("Error: Checksum Problem\n");
     }
 
+}
+
+void syncFloat() {
+	if (GPIODirection(sync_pin, IN) == -1) {
+		if(debug_mode)
+			printf("Failed to set gpio pin direction float %d\n", sync_pin);
+	}
+}
+
+void syncGround() {
+	if (GPIODirection(sync_pin, OUT) == -1 || GPIOWrite(sync_pin, 0) == -1) {
+		if(debug_mode)
+	        	printf("Failed to write/set direction to gpio pin ground %d\n", sync_pin);
+	}
 }

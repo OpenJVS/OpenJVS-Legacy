@@ -46,6 +46,7 @@ void sendReply();
 void writeByte(unsigned char byte);
 void writeString(char* string);
 void writeBytes(unsigned char bytes[], int size);
-
+void syncFloat();
+void syncGround();
 
 #endif // JVSE_H_
