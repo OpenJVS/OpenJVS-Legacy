@@ -19,6 +19,7 @@ extern char romDirectory[];
 extern char netbootIP[];
 extern char mapName[];
 extern char portName[];
+extern char ffbName[];
 extern char keyboardName[];
 extern char mouseName[];
 extern char controllerName[];
