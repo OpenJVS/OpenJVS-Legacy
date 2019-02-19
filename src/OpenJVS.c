@@ -5,7 +5,7 @@ void intHandler(int dummy) {
     closeMouse();
     closeController();
     close(serial);
-    GPIOUnexport(POUT);
+    GPIOUnexport(sync_pin);
     exit(0);
 }
 
@@ -45,12 +45,12 @@ int main( int argc, char* argv[]) {
 	    runNetboot();
     }
 
-    /* GPIO SYNC PINS */
-  	if (GPIOExport(POUT) == -1)
-  		printf("Failed to export gpio pin %d\n", POUT);
+	/* GPIO SYNC PINS */
+	if (GPIOExport(sync_pin) == -1)
+		printf("Failed to export gpio pin %d\n", sync_pin);
 
-  	if (GPIODirection(POUT, IN) == -1)
-  		printf("Failed to set gpio pin direction %d\n", POUT);
+	if (GPIODirection(sync_pin, IN) == -1)
+		printf("Failed to set gpio pin direction %d\n", sync_pin);
 
 
 
@@ -187,15 +187,15 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                 debug("CMD_RESET\n");
                 command_size = 2;
                 deviceID = -1;
-                if (GPIODirection(POUT, IN) == -1)
-            		printf("Failed to write to gpio pin %d\n", POUT);
+                if (GPIODirection(sync_pin, IN) == -1)
+            		printf("Failed to write to gpio pin %d\n", sync_pin);
             } else if (packet[0] == CMD_SETADDRESS) {
                 debug("CMD_SETADDRESS\n");
                 command_size = 2;
                 deviceID = packet[1];
                 writeByte(STATUS_SUCCESS);
-                if (GPIODirection(POUT, OUT) == -1 || GPIOWrite(POUT, 0) == -1)
-            		printf("Failed to write to gpio pin %d\n", POUT);
+                if (GPIODirection(sync_pin, OUT) == -1 || GPIOWrite(sync_pin, 0) == -1)
+            		printf("Failed to write to gpio pin %d\n", sync_pin);
             } else if (packet[0] == CMD_READID) {
                 debug("CMD_READID\n");
                 writeByte(STATUS_SUCCESS);
