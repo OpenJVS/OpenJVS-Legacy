@@ -145,3 +145,11 @@ NETBOOT_ENABLE 1
 to the map file. Alternatively you can add this to the global_config file to netboot every game.
 
 Now when you run `openjvs-pi crazy_taxi-ps4` OpenJVS will attempt to boot your Sega Naomi/Triforce/Chihiro with the correct game for that map file.
+
+## Force Feedback
+
+OpenJVS is now starting to support force feedback wheels, with the next versions. Please watch this space for updates on the FFB.
+
+Wheels to be supported:
+
+- Microsoft Sidewinder FFB Wheel
