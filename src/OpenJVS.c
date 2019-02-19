@@ -41,6 +41,10 @@ int main( int argc, char* argv[]) {
         runController();
     }
 
+    if(initFFB() == 0) {
+      runFFB();
+    }
+
     if(netboot_enable && initNetboot() == 0) {
 	    runNetboot();
     }
@@ -80,7 +84,9 @@ int main( int argc, char* argv[]) {
 }
 
 void debug(char * string) {
-   //printf("%s", string);
+  if(debug_mode) {
+    printf("%s", string);
+  }
 }
 
 /* Write the byte to the serial buffer adding appropriate escape bytes */

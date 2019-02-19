@@ -13,6 +13,7 @@ typedef struct {
   int type;
 } InputStruct;
 
+extern int debug_mode;
 extern int sync_pin;
 extern int netboot_enable;
 extern char romDirectory[];

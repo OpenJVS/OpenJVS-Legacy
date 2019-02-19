@@ -15,6 +15,7 @@ char netbootIP[2024] = "10.0.0.111";
 int allDeviceMode = 1;
 int netboot_enable = 0;
 int sync_pin = 12;
+int debug_mode = 0;
 
 /* Set the path of the config file */
 char * configPath = ".config";
@@ -86,31 +87,37 @@ int parseConfig(char * fileName) {
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
                     strcpy(romDirectory, token);
                 }
-		    
+
 	        if (strcmp(token, "SYNC_PIN") == 0) {
 		    token = strtok(NULL, " ");
 		    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
 		    sync_pin = atoi(token);
 		}
-                
+
 		if (strcmp(token, "NETBOOT_ENABLE") == 0) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
                     netboot_enable = atoi(token);
 		}
-		    
+
+    if (strcmp(token, "DEBUG_MODE") == 0) {
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    debug_mode = atoi(token);
+		}
+
 		if (strcmp(token, "NETBOOT_IP") == 0) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
                     strcpy(netbootIP, token);
 		}
-		    
+
                 if (strcmp(token, "DEVICE_PATH") == 0) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
                     strcpy(portName, token);
                 }
-		    
+
 		if (strcmp(token, "FFB_PATH") == 0) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';

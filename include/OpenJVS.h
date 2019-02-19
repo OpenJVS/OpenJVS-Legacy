@@ -22,6 +22,7 @@
 #include "Controller.h"
 #include "Netboot.h"
 #include "Blink.h"
+#include "FFB.h"
 
 
 /* Variables used in the program */
