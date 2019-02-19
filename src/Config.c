@@ -2,6 +2,7 @@
 
 /* Here you can set the serial device */
 char portName[2024] = "/dev/ttyUSB0";
+char ffbName[2024] = "/dev/ttyUSB1";
 char keyboardName[2024] = "/dev/ttyUSB0";
 char mouseName[2024] = "/dev/ttyUSB0";
 char controllerName[2024] = "/dev/ttyUSB0";
@@ -108,6 +109,12 @@ int parseConfig(char * fileName) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
                     strcpy(portName, token);
+                }
+		    
+		if (strcmp(token, "FFB_PATH") == 0) {
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    strcpy(ffbName, token);
                 }
 
                 if (strcmp(token, "KEYBOARD_PATH") == 0) {
