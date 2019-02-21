@@ -27,3 +27,13 @@ Here's right with the same behavior:
 84 0 76
 84 0 68
 84 0 58
+
+As an example:
+87 00 4D sets a target point at about 90 degrees right of center.
+84 01 00 tells it to go to that point and stay there.
+
+87 01 00 sets target point at center.
+84 01 00 tells it to go to that point and stay there.
+
+87 01 1A sets a target point left of center.
+84 01 00 tells it to go to that point and stay there.
