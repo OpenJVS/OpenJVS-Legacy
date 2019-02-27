@@ -7,9 +7,9 @@ int ffb_running = 0;
 int ffb_serial;
 
 char* ffwheel_device_name = "/dev/input/event0";
-
 struct ff_effect effect;
 struct input_event event;
+int device_handle;
 
 int initFFB() {
   /* Setup the serial interface here */
@@ -22,7 +22,14 @@ int initFFB() {
   }
   set_interface_attribs(ffb_serial, B38400);
   */
-  memset(&event,0,sizeof(event));
+
+	device_handle = open(ffwheel_device_name,O_RDWR|O_NONBLOCK);
+	if (device_handle<0) {
+		fprintf(stderr,"ERROR: can not open %s (%s) [%s:%d]\n",
+					ffwheel_device_name,strerror(errno),__FILE__,__LINE__);
+		return -1;
+	}
+	memset(&event,0,sizeof(event));
 	event.type=EV_FF;
 	event.code=FF_AUTOCENTER;
 	event.value=0;
@@ -50,7 +57,7 @@ int initFFB() {
   if (ioctl(device_handle,EVIOCSFF,&effect)<0) {
     fprintf(stderr,"ERROR: uploading effect failed (%s) [%s:%d]\n",
             strerror(errno),__FILE__,__LINE__);
-    exit(1);
+    return -1;
   }
 
   /* Start effect */
@@ -61,7 +68,7 @@ int initFFB() {
 	if (write(device_handle,&event,sizeof(event))!=sizeof(event)) {
 		fprintf(stderr,"ERROR: starting effect failed (%s) [%s:%d]\n",
 		        strerror(errno),__FILE__,__LINE__);
-		exit(1);
+		return -1;
   }
 
   ffb_running = 1;
@@ -74,11 +81,11 @@ void update_device(double force)
 	struct input_event event;
 
 	/* Delete effect */
-	if (stop_and_play && effect.id!=-1) {
+	if (effect.id!=-1) {
 		if (ioctl(device_handle,EVIOCRMFF,effect.id)<0) {
 			fprintf(stderr,"ERROR: removing effect failed (%s) [%s:%d]\n",
 			        strerror(errno),__FILE__,__LINE__);
-			exit(1);
+			return;
 		}
 		effect.id=-1;
 	}
@@ -99,7 +106,7 @@ void update_device(double force)
 	}
 
 	/* Start effect */
-	if (stop_and_play && effect.id!=-1) {
+	if (effect.id!=-1) {
 		memset(&event,0,sizeof(event));
 		event.type=EV_FF;
 		event.code=effect.id;
@@ -107,7 +114,7 @@ void update_device(double force)
 		if (write(device_handle,&event,sizeof(event))!=sizeof(event)) {
 			fprintf(stderr,"ERROR: re-starting effect failed (%s) [%s:%d]\n",
 			        strerror(errno),__FILE__,__LINE__);
-			exit(1);
+			return;
 		}
 	}
 }
