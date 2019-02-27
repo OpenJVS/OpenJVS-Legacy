@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "OpenJVS Setup Script"
+echo ""
+echo "Which controller would you like to use?"
