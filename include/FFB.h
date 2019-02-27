@@ -12,8 +12,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
-#include <unistd.h>  //Header file for sleep(). man 3 sleep for details. 
+#include <unistd.h>  //Header file for sleep(). man 3 sleep for details.
 #include <pthread.h>
+
+#include <linux/input.h>
+#include <sys/ioctl.h>
+#include <math.h>
 
 #include "Utilities.h"
 #include "Control.h"
@@ -23,5 +27,6 @@ int initFFB();
 void runFFB();
 void closeFFB();
 void *FFBThread(void *arg);
+void update_device(double force);
 
 #endif // FFB_H_
