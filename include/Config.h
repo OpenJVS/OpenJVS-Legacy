@@ -16,6 +16,7 @@ typedef struct {
 extern int debug_mode;
 extern int sync_pin;
 extern int netboot_enable;
+extern int ffb_enable;
 extern char romDirectory[];
 extern char netbootIP[];
 extern char mapName[];
