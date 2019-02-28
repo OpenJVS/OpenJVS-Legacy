@@ -9,6 +9,9 @@ SYNC_PIN 12
 # The path of your RS232 Lindbergh FFB Link
 FFB_PATH /dev/ttyUSB1
 
+# Enable ffb for all games
+FFB_ENABLE 0
+
 # The path of your keyboard device
 KEYBOARD_PATH /dev/input/event1
 
