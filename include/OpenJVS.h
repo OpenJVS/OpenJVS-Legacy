@@ -33,7 +33,7 @@ int replyCount = 0;
 
 /* Version number of the program */
 int majorVersion = 1;
-int minorVersion = 2;
+int minorVersion = 3;
 
 /* Function definitions */
 void intHandler(int dummy);

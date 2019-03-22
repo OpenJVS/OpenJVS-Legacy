@@ -1,6 +1,5 @@
 #include "Control.h"
 
-
 char players = 2;
 char bytesPerPlayer = 4;
 char playerSwitches[255];
@@ -10,7 +9,7 @@ char analogueChannels = 18;
 char analogue[255];
 char rotaryChannels = 18;
 char rotary[255];
-char coin = 15;
+char coin = 0;
 char analogueDefault[255];
 
 unsigned char reverse(unsigned char b) {
@@ -37,7 +36,6 @@ void initControl() {
 }
 
 void setSystemSwitch(int bit, int value) {
-	//printf("Info: System Switch switch %d value %d\n", bit, value);
 	if(value == 1) {
 		systemSwitches |= 1 << bit;
 	} else if(value == 0) {
@@ -46,7 +44,6 @@ void setSystemSwitch(int bit, int value) {
 }
 
 void setPlayerSwitch(int player, int bit, int value) {
-	//printf("Info: Player Switch player %d switch %d value %d\n", player, bit, value);
 	if(value == 1) {
 		playerSwitches[player * bytesPerPlayer + (bit / 8)] |= 1 << (bit - (8 * (bit / 8)));
 	} else if(value == 0) {
@@ -55,7 +52,6 @@ void setPlayerSwitch(int player, int bit, int value) {
 }
 
 void setAnalogue(int channel, char value) {
-	//printf("Info: Analogue channel %d value %d", channel, value);
 	analogue[channel] = value;
 }
 

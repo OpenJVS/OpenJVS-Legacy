@@ -7,7 +7,6 @@ char keyboardName[2024] = "/dev/ttyUSB0";
 char mouseName[2024] = "/dev/ttyUSB0";
 char controllerName[2024] = "/dev/ttyUSB0";
 char mapName[2024] = "default_config";
-
 char romDirectory[2024] = "/etc/OpenJVS/roms/";
 char netbootIP[2024] = "10.0.0.111";
 
@@ -17,9 +16,6 @@ int netboot_enable = 0;
 int ffb_enable = 0;
 int sync_pin = 12;
 int debug_mode = 0;
-
-/* Set the path of the config file */
-char * configPath = ".config";
 
 /* Set the absolute values */
 int MouseAbsChannel[1024];
@@ -39,12 +35,9 @@ InputStruct controllerInputConfig[1024];
 
 int initConfig() {
     for (int i = 0; i < 1024; i++) {
-        inputConfig[i] = (InputStruct) {.value = -1, .player = -1, .type = -1
-        };
-        mouseInputConfig[i] = (InputStruct) {.value = -1, .player = -1, .type = -1
-        };
-        controllerInputConfig[i] = (InputStruct) {.value = -1, .player = -1, .type = -1
-        };
+        inputConfig[i] = (InputStruct) {.value = -1, .player = -1, .type = -1};
+        mouseInputConfig[i] = (InputStruct) {.value = -1, .player = -1, .type = -1};
+        controllerInputConfig[i] = (InputStruct) {.value = -1, .player = -1, .type = -1};
     }
 
     for (int i = 0; i < analogueChannels; i++) {
@@ -60,7 +53,7 @@ int initConfig() {
         ControllerAbsMax[i] = -1;
         ControllerAbsAdd[i] = 0;
 
-	AnalogueFlip[i] = 0;
+        AnalogueFlip[i] = 0;
     }
 
     char fileName[1024];
@@ -82,25 +75,24 @@ int parseConfig(char * fileName) {
                 char * token = strtok(buffer, " ");
 
                 /* Global Configurations */
-
                 if (strcmp(token, "ROM_DIR") == 0) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
                     strcpy(romDirectory, token);
                 }
 
-	        if (strcmp(token, "SYNC_PIN") == 0) {
-		    token = strtok(NULL, " ");
-		    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
-		    sync_pin = atoi(token);
-		}
+                if (strcmp(token, "SYNC_PIN") == 0) {
+                  token = strtok(NULL, " ");
+                  if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                  sync_pin = atoi(token);
+                }
 
-		if (strcmp(token, "NETBOOT_ENABLE") == 0) {
-                    token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
-                    netboot_enable = atoi(token);
-		}
-		    
+            		if (strcmp(token, "NETBOOT_ENABLE") == 0) {
+                  token = strtok(NULL, " ");
+                  if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                  netboot_enable = atoi(token);
+            		}
+
 		if (strcmp(token, "FFB_ENABLE") == 0) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
@@ -155,7 +147,6 @@ int parseConfig(char * fileName) {
 		    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
                     int key = atoi(token);
 		    AnalogueFlip[key] = 1;
-		    //printf("Analogue Flip %d\n", key);
 		}
 
 
@@ -279,7 +270,7 @@ int parseConfig(char * fileName) {
             fgets(buffer, 1024, fp);
         }
     } else {
-        printf("Failed to open config file at %s\n", fileName);
+        printf("Error: Failed to open config file at %s\n", fileName);
         return -1;
     }
     fclose(fp);
