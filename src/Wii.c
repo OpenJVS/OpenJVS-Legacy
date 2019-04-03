@@ -1,6 +1,6 @@
+#ifdef WII_INCLUDE
 #include "Wii.h"
 #define PI	3.14159265358979323
-#ifdef WII_INCLUDE
 pthread_t thread_id;
 
 int mot_x = 0;
