@@ -1,6 +1,9 @@
 #ifndef JVSE_H_
 #define JVSE_H_
 
+#define MAJOR_VERSION 1
+#define MINOR_VERSION 3
+
 #include <stdio.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -22,8 +25,14 @@
 #include "Controller.h"
 #include "Netboot.h"
 #include "Blink.h"
-#include "FFB.h"
-#include "Wii.h"
+
+#ifdef WII_INCLUDE
+  #include "Wii.h"
+#endif
+
+#ifdef FFB_INCLUDE
+  #include "FFB.h"
+#endif
 
 /* Variables used in the program */
 int deviceID;
@@ -33,7 +42,7 @@ int replyCount = 0;
 
 /* Version number of the program */
 int majorVersion = 1;
-int minorVersion = 2;
+int minorVersion = 3;
 
 /* Function definitions */
 void intHandler(int dummy);

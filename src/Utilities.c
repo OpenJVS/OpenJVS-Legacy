@@ -9,8 +9,9 @@ int set_interface_attribs(int fd, int speed) {
         return -1;
     }
 
-    cfsetospeed( & tty, speed);
-    cfsetispeed( & tty, speed);
+    cfmakeraw(&tty);
+    cfsetospeed(&tty, speed);
+    cfsetispeed(&tty, speed);
 
     tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;
     tty.c_iflag &= ~IGNBRK;
@@ -29,6 +30,7 @@ int set_interface_attribs(int fd, int speed) {
     tty.c_lflag |= (PENDIN);
     tty.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
 
+    cfmakeraw(&tty); /* Make sure its extra raw */
 
 
     if (tcsetattr(fd, TCSANOW, & tty) != 0) {

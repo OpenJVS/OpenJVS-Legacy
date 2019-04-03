@@ -26,71 +26,66 @@ void closeNetboot() {
 
 int netboot(char* filename, char* ipAddress)
 {
-	printf("Netboot filename: %s IP: %s\n", filename, ipAddress);
+	printf("Netboot: Filename: %s IP: %s\n", filename, ipAddress);
 	struct sockaddr_in naomi_address;
 	char *recv_buf;
 	INT_32 recv_len;
 	INT_32 i;
-	
+
 	if(access(filename, F_OK | R_OK))
 	{
-		printf("Error: file not found or not accessible\n");
+		printf("Netboot Error: Game not found or not accessible\n");
 		return 1;
 	}
 
 	memset(&naomi_address, 0x00, sizeof(struct sockaddr_in));
-	if(inet_aton(ipAddress, (struct in_addr *) &naomi_address.sin_addr.s_addr) == 0) 
+	if(inet_aton(ipAddress, (struct in_addr *) &naomi_address.sin_addr.s_addr) == 0)
 	{
-        printf("Error: Failed on ip address translation\n");
+        printf("Netboot Error: Failed to translate IP Address\n");
         return 1;
     }
 	naomi_address.sin_family = AF_INET;
 	naomi_address.sin_port = htons(port);
 
-	if ((socket_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) 
+	if ((socket_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
 	{
-        printf("Error: socket initialization\n");
+        printf("Netboot Error: Socket Initialization Failed.\n");
 		return 1;
     }
-	
-	if (connect(socket_fd, (struct sockaddr *) &naomi_address, sizeof(struct sockaddr_in)) != 0) 
-	{
+
+	if (connect(socket_fd, (struct sockaddr *) &naomi_address, sizeof(struct sockaddr_in)) != 0) {
         close(socket_fd);
-		printf("Error: connecting\n");
+        printf("Netboot Error: Cannot connect to DIMM\n");
         return 1;
-    }
-	
+      }
+
 	recv_buf = malloc(MAXDATASIZE);
-	
+
 	recv_len = set_mode_host(recv_buf);
-	if(recv_len == -1)
-	{
+	if(recv_len == -1) {
 		free(recv_buf);
 		return 1;
 	}
-	
-	printf("Netboot Connected to Console\n");
-	for(i = 0; i < recv_len; i++)
-	{
-		//printf("0x%02x ", recv_buf[i]);
-	}
-	//printf("'\n");
-	
+
+	printf("Netboot: Connected to DIMM\n");
+
 	free(recv_buf);
-	
+
 	set_security_keycode(0);
-	
+
+  printf("Netboot: Uploading game...");
 	upload_file_dimm(filename);
-	
+  printf("Netboot: Upload successfull, restarting host.\n");
+
 	restart_host();
-	
-	printf("Entering security loop\n");
+
+	printf("Netboot: Entering security loop\n");
 	while(running == 1)
 	{
 		set_time_limit(10*60*1000); 						/* Don't hurt me if this still doesn't work. D= Just converting all from python*/
 		sleep(5);
 	}
-	
+
 }
 
 /*
@@ -98,19 +93,19 @@ int netboot(char* filename, char* ipAddress)
 **
 **	Parameters: [*buffer]
 **					pointer to allocated memory of size MAXDATASIZE
-**  
+**
 **	Return: Size of received data in bytes
 **
 */
 INT_32 read_socket(char *recv_buffer)
 {
 	INT_32 buf_len = recv(socket_fd, recv_buffer, MAXDATASIZE-1, 0);
-	if (buf_len == -1) 
+	if (buf_len == -1)
 	{
-		printf("Error: read_socket\n");
+		printf("Netboot Error: read_socket\n");
 		return -1;
 	}
-	
+
 	return buf_len;
 }
 
@@ -122,48 +117,48 @@ INT_32 read_socket(char *recv_buffer)
 **
 */
 void set_security_keycode(UINT_64 data)
-{	
+{
 	struct __attribute__((__packed__)) packet_struct		/* My system at time of programming this is 64-bit aligned so we're packing the struct */
 	{
 		UINT_32 opcode;
 		UINT_64 data;
 	} packet;
-	
+
 	packet.opcode = 0x7F000008;
 	packet.data = data;
-	
+
 	if (send(socket_fd, &packet, sizeof(struct packet_struct), 0) == -1)
 	{
-		printf("Error: sending in set_security_keycode\n");
+		printf("Netboot Error: sending in set_security_keycode\n");
 	}
 }
 
 /*
-**	Description: 
+**	Description:
 **
 **	Parameters: [*recv_buffer]
 **					Pointer to allocated memory of MAXDATASIZE
-**  
+**
 **	Return: Size of received data in bytes
 **
 */
 INT_32 set_mode_host(char *recv_buffer)
-{ 
+{
 	struct packet_struct
 	{
 		UINT_32 opcode;
 		UINT_32 data;
 	} packet;
-	
+
 	packet.opcode = 0x07000004;
 	packet.data = 1;
-	
+
 	if (send(socket_fd, &packet, sizeof(struct packet_struct), 0) == -1)
 	{
-		printf("Error: sending in set_mode_host\n");
-		return -1;;
+		printf("Netboot Error: sending in set_mode_host\n");
+		return -1;
 	}
-	
+
 	return read_socket(recv_buffer);
 }
 
@@ -185,15 +180,15 @@ void set_information_dimm(UINT_32 crc, UINT_32 length)
 		UINT_32 len;
 		UINT_32 packet_data;
 	} packet;
-	
+
 	packet.opcode = 0x1900000C;
 	packet.crc = crc;
 	packet.len = length;
 	packet.packet_data = 0;
-	
+
 	if (send(socket_fd, &packet, sizeof(struct packet_struct), 0) == -1)
 	{
-		printf("Error: sending in set_information_dimm\n");
+		printf("Netboot Error: sending in set_information_dimm\n");
 	}
 }
 
@@ -220,16 +215,16 @@ void upload_dimm(UINT_32 addr, char *buff, INT_32 mark, UINT_32 buff_size)
 		UINT_16 packet_data_3;
 		char 	game_data[buff_size];						/* Necessary to put this data after the other packet data */
 	} packet;
-	
+
 	packet.opcode_with_info = 0x04800000 | (buff_size + 10) | (mark << 16);
 	packet.packet_data_1 = 0;
 	packet.packet_data_2 = addr;
 	packet.packet_data_3 = 0;
 	memcpy(packet.game_data, buff, buff_size);
-	
+
 	if (send(socket_fd, &packet, sizeof(struct packet_struct), 0) == -1)
 	{
-		printf("Error: sending in upload_dimm\n");
+		printf("Netboot Error: sending in upload_dimm\n");
 	}
 }
 
@@ -241,15 +236,14 @@ void upload_dimm(UINT_32 addr, char *buff, INT_32 mark, UINT_32 buff_size)
 **
 */
 void upload_file_dimm(char* gameFile)
-{	
+{
 	UINT_32 address = 0;
 	UINT_32 crc = 0;
 	UINT_32 char_read;
 	char buff[BUFFER_SIZE];
-	
+
 	FILE * game_file = fopen(gameFile,"rb");
-	
-	printf("Uploading...\n");
+
 	while(1)
 	{
 		char_read = fread(buff, sizeof(char), BUFFER_SIZE, game_file);	/* Take a chunk of size BUFFER_SIZE data from the file gameFile */
@@ -260,10 +254,9 @@ void upload_file_dimm(char* gameFile)
 		address += char_read;											/* Keep track of the characters read from file */
 	}
 	fclose(game_file);
-	printf("Uploading successfull!\n");
-	
+
 	crc = ~crc;
-	upload_dimm(address, "12345678", 1, 9); 	/* Not quite sure what's going on here. I know it's sending 
+	upload_dimm(address, "12345678", 1, 9); 	/* Not quite sure what's going on here. I know it's sending
 													'1','2','3','4','5','6','7','8','\0' to the net dimm. Why? no idea. */
 	set_information_dimm(crc, address);			/* Send over the 32 bit CRC*/
 }
@@ -275,10 +268,10 @@ void upload_file_dimm(char* gameFile)
 void restart_host()
 {
 	UINT_32 packet = 0x0A000000;
-	
+
 	if (send(socket_fd, &packet, sizeof(UINT_32), 0) == -1)
 	{
-		printf("Error: sending in restart_host\n");
+		printf("Netboot Error: sending in restart_host\n");
 	}
 }
 
@@ -296,13 +289,13 @@ void set_time_limit(UINT_32 data)
 		UINT_32 opcode;
 		UINT_32 data;
 	} packet;
-	
+
 	packet.opcode = 0x17000004;
 	packet.data = data;
-	
+
 	if (send(socket_fd, &packet, sizeof(struct packet_struct), 0) == -1)
 	{
-		printf("Error: sending in set_time_limit\n");
+		printf("Netboot Error: sending in set_time_limit\n");
 	}
 }
 
