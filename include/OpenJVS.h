@@ -1,6 +1,11 @@
 #ifndef JVSE_H_
 #define JVSE_H_
 
+#define MAJOR_VERSION 1
+#define MINOR_VERSION 3
+#define WII_INCLUDE 0
+#define FFB_INCLUDE 0
+
 #include <stdio.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -22,7 +27,9 @@
 #include "Controller.h"
 #include "Netboot.h"
 #include "Blink.h"
-#include "FFB.h"
+#if FFB_INCLUDE == 1
+  #include "FFB.h"
+#endif
 
 
 /* Variables used in the program */
