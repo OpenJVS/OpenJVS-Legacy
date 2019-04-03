@@ -237,17 +237,41 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                   debug("CMD_GETFEATURES\n");
                   writeByte(STATUS_SUCCESS);
                   unsigned char features[] = {
-                      0x01,players,bytesPerPlayer * 8,0x00,
-                      0x02,0x04,0x00,0x00,
-                      0x03,analogueChannels,10,0x00,
-                      0x04,rotaryChannels,0x00,0x00,
-                      0x07,0x00,0x08,0x00,
-                      0x13,20,0x00,0x00,
-                      0x06,0x08,0x08,0x02,
-                      0x12,0x08,0x00,0x00,
-                      0x15,0x00,0x00,0x00,
-                      0x00
-                  };
+                  	0x01,
+                    players,
+                    bytesPerPlayer * 8,
+                    0x00,
+                    0x02,
+                    0x02,
+                    0x00,
+                    0x00,
+                    0x03,
+                    analogueChannels,
+                    0x08,
+                    0x00,
+                    0x04,
+                    rotaryChannels,
+                    0x00,
+                    0x00,
+                    0x07,
+                    0x00,
+                    0x08,
+                    0x00,
+                    0x13,
+                    0x08,
+                    0x00,
+                    0x00,
+                    0x06,
+                    0x08,
+                    0x08,
+                    0x02,
+                    0x12,
+                    0x08,
+                    0x00,
+                    0x00,
+                    0x00
+
+		  };
                   writeBytes(features, sizeof(features));
                   break;
               case CMD_READSWITCHES:
