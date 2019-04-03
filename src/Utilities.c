@@ -1,41 +1,36 @@
 #include "Utilities.h"
 
 /* Sets the configuration of the serial port */
-int set_interface_attribs(int fd, int speed) {
-    struct termios tty;
-    memset( & tty, 0, sizeof tty);
-    if (tcgetattr(fd, & tty) != 0) {
-        printf("JVSE: Error %d from tcgetattr", errno);
-        return -1;
-    }
+int set_interface_attribs(int fd, int myBaud) {
+	struct termios options;
+	int status;
+	tcgetattr (fd, &options) ;
 
-    cfmakeraw(&tty);
-    cfsetospeed(&tty, speed);
-    cfsetispeed(&tty, speed);
+	cfmakeraw   (&options) ;
+	cfsetispeed (&options, myBaud) ;
+	cfsetospeed (&options, myBaud) ;
 
-    tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;
-    tty.c_iflag &= ~IGNBRK;
-    tty.c_lflag = 0;
-    tty.c_oflag = 0;
-    tty.c_cc[VMIN] = 0;
-    tty.c_cc[VTIME] = 10;
-    tty.c_iflag &= ~(IXON | IXOFF | IXANY);
-    tty.c_cflag |= (CLOCAL | CREAD);
-    tty.c_cflag &= ~(PARENB | PARODD);
-    tty.c_cflag &= ~CSTOPB;
-    tty.c_cflag &= ~CRTSCTS;
-    tty.c_cflag |= (CS8);
+	options.c_cflag |= (CLOCAL | CREAD) ;
+	options.c_cflag &= ~PARENB ;
+	options.c_cflag &= ~CSTOPB ;
+	options.c_cflag &= ~CSIZE ;
+	options.c_cflag |= CS8 ;
+	options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG) ;
+	options.c_oflag &= ~OPOST ;
 
-    tty.c_oflag &= ~OPOST;
-    tty.c_lflag |= (PENDIN);
-    tty.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
+	options.c_cc [VMIN]  =   0 ;
+	options.c_cc [VTIME] = 100 ;	// Ten seconds (100 deciseconds)
 
-    cfmakeraw(&tty); /* Make sure its extra raw */
+	tcsetattr (fd, TCSANOW, &options) ;
 
+	ioctl (fd, TIOCMGET, &status);
 
-    if (tcsetattr(fd, TCSANOW, & tty) != 0) {
-        printf("JVSE: Error %d from tcsetattr", errno);
-        return -1;
-    }
-    return 0;
+	status |= TIOCM_DTR ;
+	status |= TIOCM_RTS ;
+
+	ioctl (fd, TIOCMSET, &status);
+
+	usleep (10000) ;	// 10mS
+
+	return 0;
 }
