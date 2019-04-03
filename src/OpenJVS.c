@@ -45,7 +45,7 @@ int main( int argc, char* argv[]) {
         runController();
     }
 	
-#if FFB_INCLUDE == 1
+#ifdef FFB_INCLUDE
     if(ffb_enable && initFFB() == 0) {
       runFFB();
     }
@@ -227,7 +227,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                     0x13,20,0x00,0x00,
                     0x06,0x08,0x08,0x02,
                     0x12,0x08,0x00,0x00,
-                    0x15,0x00,0x00,0x00
+                    0x15,0x00,0x00,0x00,
                     0x00
                 };
                 writeBytes(features, sizeof(features));

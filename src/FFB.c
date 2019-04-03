@@ -1,8 +1,7 @@
 #include "FFB.h"
-
+#ifdef FFB_INCLUDE
 int ffb_fd;
 pthread_t thread_id;
-
 int ffb_running = 0;
 int ffb_serial;
 
@@ -146,3 +145,4 @@ void closeFFB() {
     pthread_join(thread_id, NULL);
     close(ffb_fd);
 }
+#endif

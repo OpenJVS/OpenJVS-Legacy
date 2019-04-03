@@ -12,7 +12,7 @@ TARGET := bin/openjvs
 SRCEXT := c
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -std=gnu99
+CFLAGS := -std=gnu99 -DFFB_INCLUDE
 LIB := -pthread
 INC := -I include
 
@@ -29,6 +29,5 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 clean:
 	@echo " Cleaning"; 
 	@echo "  $(RM) -r $(BUILDDIR) $(TARGET) $(BINDIR)"; $(RM) -r $(BUILDDIR) $(TARGET) $(BINDIR)
-
 
 .PHONY: clean
