@@ -1,5 +1,5 @@
-#include "FFB.h"
 #ifdef FFB_INCLUDE
+#include "FFB.h"
 int ffb_fd;
 pthread_t thread_id;
 int ffb_running = 0;
