@@ -10,7 +10,6 @@ char analogue[255];
 char rotaryChannels = 8;
 char rotary[255];
 char coin = 10;
-char coin = 0;
 char analogueDefault[255];
 
 unsigned char reverse(unsigned char b) {

@@ -3,7 +3,12 @@
 void intHandler(int dummy) {
     closeKeyboard();
     closeMouse();
+#ifdef WII_INCLUDE
     closeWii();
+#endif
+#ifdef FFB_INCLUDE
+    closeFFB();
+#endif
     closeController();
     close(serial);
     GPIOUnexport(sync_pin);
@@ -52,9 +57,11 @@ int main( int argc, char* argv[]) {
     }
 #endif
 
+#ifdef WII_INCLUDE
     if(initWii() == 0) {
 	runWii();
     }
+#endif
 
     if(netboot_enable && initNetboot() == 0) {
 	    runNetboot();
