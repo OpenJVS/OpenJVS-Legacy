@@ -23,7 +23,7 @@ void *controllerThread(void *arg) {
     if(event.type == EV_ABS) {
       if(ControllerAbsChannel[event.code] != -1) {
         int scaledValue = ControllerAbsAdd[event.code] + ((double) event.value / (double) ControllerAbsMax[event.code]) * 255;
-        setAnalogue(ControllerAbsChannel[event.code], AnalogueFlip[ControllerAbsChannel[event.code]] == 0 ? scaledValue : 255 - scaledValue);
+	setAnalogue(ControllerAbsChannel[event.code], AnalogueFlip[ControllerAbsChannel[event.code]] == 0 ? scaledValue : 255 - scaledValue);
       }
     }
 

@@ -23,7 +23,7 @@
 #include "Netboot.h"
 #include "Blink.h"
 #include "FFB.h"
-
+#include "Wii.h"
 
 /* Variables used in the program */
 int deviceID;

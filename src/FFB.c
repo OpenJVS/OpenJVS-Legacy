@@ -13,15 +13,17 @@ int device_handle;
 
 int initFFB() {
   /* Setup the serial interface here */
-  /*
+  
   ffb_serial = open(ffbName, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
 
   if (ffb_serial < 0) {
       printf("Failed to open RS232 FFB file descriptor\n");
       return -1;
+  } else {
+	printf("opened fbb: %s\n", ffbName);
   }
   set_interface_attribs(ffb_serial, B38400);
-  */
+  
 
 	device_handle = open(ffwheel_device_name,O_RDWR|O_NONBLOCK);
 	if (device_handle<0) {
@@ -44,7 +46,7 @@ int initFFB() {
   effect.id=-1;
   effect.trigger.button=0;
   effect.trigger.interval=0;
-  effect.replay.length=0xffff;
+  effect.replay.length=0x1000;
   effect.replay.delay=0;
   effect.u.constant.level=0;
   effect.direction=0xC000;
@@ -126,20 +128,32 @@ void runFFB() {
 }
 
 void *FFBThread(void *arg) {
+	update_device(0.8);
+	sleep(2);
+	update_device(-1);
+	sleep(2);
+	update_device(0);
 
-  while (ffb_running) {
-    /*
-    unsigned char buffer[] = {
-        0x00
-    };
-    int n = -1;
-    while (n < 1) {
-        n = read(ffb_serial, buffer, 1);
-    }
-    printf("Serial FFB: %d", buffer[0]);
-    */
-    update_device(0.5);
-  }
+	sleep(2);
+	tcflush(ffb_serial, TCIOFLUSH);
+	while (ffb_running) {
+		unsigned char buffer[] = {
+			0x00
+		};
+		int n = -1;
+		while (n < 1) {
+		    n = read(ffb_serial, buffer, 1);
+		}
+
+		printf("%02hhX", buffer[0]);
+
+		usleep(10);
+
+		unsigned char send_buffer[] = {
+			0x11
+		};
+		write(ffb_serial, send_buffer, 1);
+	}
 }
 
 void closeFFB() {

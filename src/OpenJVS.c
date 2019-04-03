@@ -3,6 +3,7 @@
 void intHandler(int dummy) {
     closeKeyboard();
     closeMouse();
+    closeWii();
     closeController();
     close(serial);
     GPIOUnexport(sync_pin);
@@ -47,6 +48,10 @@ int main( int argc, char* argv[]) {
 
     if(initFFB() == 0) {
       runFFB();
+    }
+
+    if(initWii() == 0) {
+	runWii();
     }
 
     if(netboot_enable && initNetboot() == 0) {
