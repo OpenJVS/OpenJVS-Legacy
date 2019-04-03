@@ -14,6 +14,7 @@ char netbootIP[2024] = "10.0.0.111";
 /* allDeviceMode replies to all requests regardless of deviceID */
 int allDeviceMode = 1;
 int netboot_enable = 0;
+int ffb_enable = 0;
 int sync_pin = 12;
 int debug_mode = 0;
 
@@ -98,6 +99,12 @@ int parseConfig(char * fileName) {
                     token = strtok(NULL, " ");
                     if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
                     netboot_enable = atoi(token);
+		}
+		    
+		if (strcmp(token, "FFB_ENABLE") == 0) {
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    ffb_enable = atoi(token);
 		}
 
     		if (strcmp(token, "DEBUG_MODE") == 0) {

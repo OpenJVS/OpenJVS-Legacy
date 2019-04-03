@@ -46,7 +46,7 @@ int main( int argc, char* argv[]) {
         runController();
     }
 
-    if(initFFB() == 0) {
+    if(ffb_enable && initFFB() == 0) {
       runFFB();
     }
 

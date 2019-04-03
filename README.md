@@ -153,3 +153,9 @@ OpenJVS is now starting to support force feedback wheels, with the next versions
 Wheels to be supported:
 
 - Microsoft Sidewinder FFB Wheel
+
+To run the force feedback module, in each game you would like to run it (or globally in global_config) add
+
+```
+FFB_ENABLE 1
+```
