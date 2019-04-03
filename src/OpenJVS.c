@@ -214,7 +214,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
             } else if (packet[0] == CMD_READID) {
                 debug("CMD_READID\n");
                 writeByte(STATUS_SUCCESS);
-                writeString("JVSE Emulator;I/O BD JVS;837-13551;Ver1.00;98/10");
+                writeString("OpenJVS Emulator;I/O BD JVS;837-13551;Ver1.00;98/10");
             } else if (packet[0] == CMD_FORMATVERSION) {
                 debug("CMD_FORMATVERSION\n");
                 writeByte(STATUS_SUCCESS);
