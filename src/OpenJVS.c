@@ -44,10 +44,12 @@ int main( int argc, char* argv[]) {
     if(initController() == 0) {
         runController();
     }
-
+	
+#if FFB_INCLUDE == 1
     if(ffb_enable && initFFB() == 0) {
       runFFB();
     }
+#endif
 
     if(netboot_enable && initNetboot() == 0) {
 	    runNetboot();
