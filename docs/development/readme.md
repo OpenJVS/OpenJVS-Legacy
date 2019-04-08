@@ -6,7 +6,12 @@ OpenJVS is a software emulator for arcade I/O boards. It currently supports all 
 
 - Raspberry Pi 2/3
 - RS485 Converter
+- USB Cable
 - Range of USB perhiperals
+
+To wire the converter, you should strip the USB cable until you are left with 4 coloured wires. These colours correspond to Data Positive, Data Negative, Ground and Power. You should wire Data Positive to A+, Data Negative to B- and both Ground and Power to Ground on the JVS side respectively.
+
+This will be enough to run the system on a Sega Naomi. To use other systems wire the Power wire to GPIO pin 13 on the Raspberry Pi using 4 200 ohm resistors.
 
 ## Installation
 
