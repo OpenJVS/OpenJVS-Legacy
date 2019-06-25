@@ -40,7 +40,7 @@ sudo openjvs-pi <map-name>
 
 ## Sync Line
 
-The red wire coming from the JVS connector in the Sync line, and is required for use with the Lindbergh system. OpenJVS will operate the sync line on GPIO 12. You should connect the sync line directly to GPIO 12, and then a resistor ladder from GPIO 12 to GND.
+The red wire coming from the JVS connector in the Sync line, and is required for use with the Lindbergh + Chihiro system. OpenJVS will operate the sync line on GPIO 12. You should connect the sync line directly to GPIO 12, and then a resistor ladder from GPIO 12 to GND.
 
 ## Config
 
