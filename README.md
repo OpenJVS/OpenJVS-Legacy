@@ -34,7 +34,7 @@ sudo ./install
 OpenJVS is now installed and ready to use on your Raspberry Pi. See the Config heading to learn how to set it up. Once setup you can run it on a by using the following command
 
 ```
-sudo openjvs-pi <map-name>
+sudo openjvs <map-name>
 ```
 
 
