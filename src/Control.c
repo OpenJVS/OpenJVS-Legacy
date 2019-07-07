@@ -9,7 +9,7 @@ char analogueChannels = 8;
 char analogue[255];
 char rotaryChannels = 8;
 char rotary[255];
-char coin = 10;
+char coin = 20;
 char analogueDefault[255];
 
 unsigned char reverse(unsigned char b) {
@@ -26,7 +26,7 @@ void initControl() {
 	}
 
 	for(int i = 0 ; i < analogueChannels ; i++) {
-		analogue[i] = analogueDefault[i];
+		analogue[i] = analogueDefault[i] + 5;
 	}
 
 	for(int i = 0 ; i < rotaryChannels ; i++) {

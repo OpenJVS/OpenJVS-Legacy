@@ -41,13 +41,25 @@ void print_state(struct cwiid_state *state) {
 
         }
 
+	if(count == 0) {
+		
+		setPlayerSwitch(0, 7, 1);
+	} else {
+
+		setPlayerSwitch(0, 7, 0);
+	}
+
         float n_x = ((tmpx / count) / 1000) * 255;
         float n_y = ((tmpy / count) / 1000) * 255;
         mot_x = 255 - (int)n_x;
         mot_y = (int)n_y;
 	//printf("Roll: %f X: %d Y: %d\n", roll, mot_x, mot_y);
 
+
+
 	setPlayerSwitch(0, 0, (state->buttons & 8) == 8);
+	setPlayerSwitch(0, 8, (state->buttons & 8) == 8);
+	
 	setPlayerSwitch(0, 6, (state->buttons & 4) == 4);
 	setSystemSwitch(0, (state->buttons & 1) == 1);
 	setPlayerSwitch(0, 1, (state->buttons & 16) == 16);

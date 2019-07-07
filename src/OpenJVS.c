@@ -88,7 +88,10 @@ int main( int argc, char* argv[]) {
 
   printf("OpenJVS Started\n");
 
-
+  int on = 1;
+  for(int i = 0 ; i < 14 ; i++) {
+	setPlayerSwitch(0, i, on);
+  }
   /* Run the system forever */
   while (1) {
       getPacket();
@@ -216,7 +219,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
               case CMD_READID:
                   debug("CMD_READID\n");
                   writeByte(STATUS_SUCCESS);
-                  writeString("OpenJVS Emulator;I/O BD JVS;837-13551;Ver1.00;98/10");
+                  writeString("namco ltd.,;I/O CYBER LEAD;Ver1.0");
                   break;
               case CMD_FORMATVERSION:
                   debug("CMD_FORMATVERSION\n");
@@ -237,38 +240,14 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                   debug("CMD_GETFEATURES\n");
                   writeByte(STATUS_SUCCESS);
                   unsigned char features[] = {
-                  	0x01,
-                    players,
-                    bytesPerPlayer * 8,
-                    0x00,
-                    0x02,
-                    0x02,
-                    0x00,
-                    0x00,
-                    0x03,
-                    analogueChannels,
-                    0x08,
-                    0x00,
-                    0x04,
-                    rotaryChannels,
-                    0x00,
-                    0x00,
-                    0x07,
-                    0x00,
-                    0x08,
-                    0x00,
-                    0x13,
-                    0x08,
-                    0x00,
-                    0x00,
-                    0x06,
-                    0x08,
-                    0x08,
-                    0x02,
-                    0x12,
-                    0x08,
-                    0x00,
-                    0x00,
+                    0x01,players,14,0x00,
+                    0x02,0x02,0x00, 0x00,
+		    0x06,8,8,2,
+		    0x03, analogueChannels,0x08,0x00,
+		    0x04, analogueChannels,0x00,0x00,
+                    0x07, 0x00, 0x20, 0x00,
+                    0x12, 20, 0x00, 0x00,
+                    0x15, 0x00, 0x00, 0x00,
                     0x00
 
 		  };
@@ -328,6 +307,15 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                   writeByte(STATUS_SUCCESS);
                   for (int i = 0; i < packet[1]; i++) {
                       writeByte(analogue[i]);
+                      writeByte(0x00);
+                  }
+                  break;
+
+              case CMD_READGPIO:
+                  debug("CMD_READGENERAL\n");
+                  command_size = 2;
+                  writeByte(STATUS_SUCCESS);
+                  for (int i = 0; i < packet[1]; i++) {
                       writeByte(0x00);
                   }
                   break;
@@ -398,6 +386,9 @@ void syncFloat() {
 	if (GPIODirection(sync_pin, IN) == -1) {
 		if(debug_mode)
 			printf("Warning: Failed to float sync pin %d\n", sync_pin);
+	} else {
+		if(debug_mode)
+			printf("Float sync pin\n");
 	}
 }
 
@@ -405,5 +396,8 @@ void syncGround() {
 	if (GPIODirection(sync_pin, OUT) == -1 || GPIOWrite(sync_pin, 0) == -1) {
 		if(debug_mode)
 	        	printf("Warning: Failed to sink sync pin %d\n", sync_pin);
+	} else {
+		if(debug_mode)
+			printf("Ground sync pin\n");
 	}
 }

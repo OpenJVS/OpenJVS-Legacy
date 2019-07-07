@@ -79,12 +79,6 @@ int netboot(char* filename, char* ipAddress)
 
 	restart_host();
 
-	printf("Netboot: Entering security loop\n");
-	while(running == 1)
-	{
-		set_time_limit(10*60*1000); 						/* Don't hurt me if this still doesn't work. D= Just converting all from python*/
-		sleep(5);
-	}
 
 }
 
