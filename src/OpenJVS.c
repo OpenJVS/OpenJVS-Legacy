@@ -88,10 +88,6 @@ int main( int argc, char* argv[]) {
 
   printf("OpenJVS Started\n");
 
-  int on = 1;
-  for(int i = 0 ; i < 14 ; i++) {
-	setPlayerSwitch(0, i, on);
-  }
   /* Run the system forever */
   while (1) {
       getPacket();
@@ -219,7 +215,7 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
               case CMD_READID:
                   debug("CMD_READID\n");
                   writeByte(STATUS_SUCCESS);
-                  writeString("namco ltd.,;I/O CYBER LEAD;Ver1.0");
+                  writeString("namco ltd.;JYU-PCB;Ver1.00;JPN,2Coins 2Guns");
                   break;
               case CMD_FORMATVERSION:
                   debug("CMD_FORMATVERSION\n");
@@ -240,14 +236,10 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                   debug("CMD_GETFEATURES\n");
                   writeByte(STATUS_SUCCESS);
                   unsigned char features[] = {
-                    0x01,players,14,0x00,
+                    0x01,players,12,0x00,
                     0x02,0x02,0x00, 0x00,
-		    0x06,8,8,2,
-		    0x03, analogueChannels,0x08,0x00,
-		    0x04, analogueChannels,0x00,0x00,
-                    0x07, 0x00, 0x20, 0x00,
-                    0x12, 20, 0x00, 0x00,
-                    0x15, 0x00, 0x00, 0x00,
+		    0x06,16,16,2,
+                    0x12, 16, 0x00, 0x00,
                     0x00
 
 		  };
@@ -332,10 +324,10 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                   debug("CMD_READSCREENPOS\n");
                   command_size = 2;
                   writeByte(STATUS_SUCCESS);
+		  writeByte(0xFF);
                   writeByte(0x00);
-                  writeByte(analogue[0]);
+                  writeByte(0xFF);
                   writeByte(0x00);
-                  writeByte(analogue[1]);
                   break;
               case CMD_WRITECOINSUBTRACT:
                   command_size = 4;
