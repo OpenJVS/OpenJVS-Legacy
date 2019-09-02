@@ -12,62 +12,78 @@ char rotary[255];
 char coin = 10;
 char analogueDefault[255];
 
-unsigned char reverse(unsigned char b) {
+unsigned char reverse(unsigned char b)
+{
 	b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
 	b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
 	b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
 	return b;
 }
 
-void initControl() {
+void initControl()
+{
 	systemSwitches = 0x0;
-	for(int i = 0 ; i < players * bytesPerPlayer ; i++) {
+	for (int i = 0; i < players * bytesPerPlayer; i++)
+	{
 		playerSwitches[i] = 0x0;
 	}
 
-	for(int i = 0 ; i < analogueChannels ; i++) {
+	for (int i = 0; i < analogueChannels; i++)
+	{
 		analogue[i] = analogueDefault[i];
 	}
 
-	for(int i = 0 ; i < rotaryChannels ; i++) {
+	for (int i = 0; i < rotaryChannels; i++)
+	{
 		rotary[i] = 0x05;
 	}
-
 }
 
-void setSystemSwitch(int bit, int value) {
-	if(value == 1) {
+void setSystemSwitch(int bit, int value)
+{
+	if (value == 1)
+	{
 		systemSwitches |= 1 << bit;
-	} else if(value == 0) {
+	}
+	else if (value == 0)
+	{
 		systemSwitches &= ~(1 << bit);
 	}
 }
 
-void setPlayerSwitch(int player, int bit, int value) {
-	if(value == 1) {
+void setPlayerSwitch(int player, int bit, int value)
+{
+	if (value == 1)
+	{
 		playerSwitches[player * bytesPerPlayer + (bit / 8)] |= 1 << (bit - (8 * (bit / 8)));
-	} else if(value == 0) {
+	}
+	else if (value == 0)
+	{
 		playerSwitches[player * bytesPerPlayer + (bit / 8)] &= ~(1 << (bit - (8 * (bit / 8))));
 	}
 }
 
-void setAnalogue(int channel, char value) {
+void setAnalogue(int channel, char value)
+{
 	analogue[channel] = value;
 }
 
-int getAnalogue(int channel) {
+int getAnalogue(int channel)
+{
 	return analogue[channel];
 }
 
-
-void setRotary(int channel, char value) {
+void setRotary(int channel, char value)
+{
 	rotary[channel] = value;
 }
 
-int getRotary(int channel) {
+int getRotary(int channel)
+{
 	return rotary[channel];
 }
 
-void incrementCoin() {
+void incrementCoin()
+{
 	coin++;
 }

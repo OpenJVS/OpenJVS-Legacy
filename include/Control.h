@@ -2,8 +2,6 @@
 #define CONTROL_H_
 #include <stdio.h>
 
-
-
 extern char players;
 extern char bytesPerPlayer;
 extern char playerSwitches[255];

@@ -1,6 +1,7 @@
 #include "OpenJVS.h"
 
-void intHandler(int dummy) {
+void intHandler(int dummy)
+{
     closeKeyboard();
     closeMouse();
 #ifdef WII_INCLUDE
@@ -15,7 +16,8 @@ void intHandler(int dummy) {
     exit(0);
 }
 
-int main( int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
     /* Setup signal handlers */
     signal(SIGINT, intHandler);
 
@@ -23,165 +25,185 @@ int main( int argc, char* argv[]) {
     printf("OpenJVS Emulator %d.%d (Beta)\n", majorVersion, minorVersion);
     printf("(C) Robert Dilley 2018\n\n");
 
-
-    if(argc > 1) {
+    if (argc > 1)
+    {
         strcpy(mapName, argv[1]);
         printf("Using Map %s\n", mapName);
     }
 
-    if(argc > 2) {
+    if (argc > 2)
+    {
         netboot_enable = 0;
     }
 
     initConfig();
 
-    if(debug_mode) {
-    	printf("Info: Debug mode enabled\n");
+    if (debug_mode)
+    {
+        printf("Info: Debug mode enabled\n");
     }
 
-    if (initKeyboard() == 0) {
+    if (initKeyboard() == 0)
+    {
         runKeyboard();
     }
 
-    if (initMouse() == 0) {
+    if (initMouse() == 0)
+    {
         runMouse();
     }
 
-    if(initController() == 0) {
+    if (initController() == 0)
+    {
         runController();
     }
 
 #ifdef FFB_INCLUDE
-    if(ffb_enable && initFFB() == 0) {
-      runFFB();
+    if (ffb_enable && initFFB() == 0)
+    {
+        runFFB();
     }
 #endif
 
 #ifdef WII_INCLUDE
-    if(initWii() == 0) {
-	runWii();
+    if (initWii() == 0)
+    {
+        runWii();
     }
 #endif
 
-    if(netboot_enable && initNetboot() == 0) {
-	    runNetboot();
+    if (netboot_enable && initNetboot() == 0)
+    {
+        runNetboot();
     }
 
-	/* GPIO SYNC PINS */
-	if (GPIOExport(sync_pin) == -1) {
-		printf("Warning: Sync pin %d not available\n", sync_pin);
-  }
+    /* GPIO SYNC PINS */
+    if (GPIOExport(sync_pin) == -1)
+    {
+        printf("Warning: Sync pin %d not available\n", sync_pin);
+    }
 
-	syncFloat();
+    syncFloat();
 
-  /* Setup the serial interface here */
-  serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC);
+    /* Setup the serial interface here */
+    serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC);
 
-  if (serial < 0) {
-      printf("Failed to open RS485 Dongle file descriptor\n");
-      return -1;
-  }
-  set_interface_attribs(serial, B115200);
+    if (serial < 0)
+    {
+        printf("Failed to open RS485 Dongle file descriptor\n");
+        return -1;
+    }
+    set_interface_attribs(serial, B115200);
 
-  sleep(2);
-  tcflush(serial, TCIOFLUSH);
+    sleep(2);
+    tcflush(serial, TCIOFLUSH);
 
+    /* Init the modules here */
+    initControl();
 
-  /* Init the modules here */
-  initControl();
+    printf("OpenJVS Started\n");
 
-  printf("OpenJVS Started\n");
+    /* Run the system forever */
+    while (1)
+    {
+        getPacket();
+    }
 
-
-  /* Run the system forever */
-  while (1) {
-      getPacket();
-  }
-
-  return 0;
+    return 0;
 }
 
-void debug(char * string) {
-  if(debug_mode) {
-    printf("%s", string);
-  }
+void debug(char *string)
+{
+    if (debug_mode)
+    {
+        printf("%s", string);
+    }
 }
 
 /* Write the byte to the serial buffer adding appropriate escape bytes */
-void writeEscaped(unsigned char byte) {
-    if (byte == CMD_SYNC || byte == CMD_ESCAPE) {
+void writeEscaped(unsigned char byte)
+{
+    if (byte == CMD_SYNC || byte == CMD_ESCAPE)
+    {
         unsigned char buffer[] = {
-            CMD_ESCAPE
-        };
+            CMD_ESCAPE};
         int n = write(serial, buffer, sizeof(buffer));
         usleep(50);
-        if (n != 1) {
-                printf("Error from write: %d, %d\n", n, errno);
+        if (n != 1)
+        {
+            printf("Error from write: %d, %d\n", n, errno);
         }
         byte -= 1;
     }
     unsigned char buffer[] = {
-        byte
-    };
+        byte};
 
     int n = write(serial, buffer, sizeof(buffer));
 
-        usleep(50);
-    if (n != 1) {
+    usleep(50);
+    if (n != 1)
+    {
         printf("Error from write: %d, %d\n", n, errno);
     }
 }
 
-
-unsigned char getByte() {
+unsigned char getByte()
+{
     unsigned char buffer[] = {
-        0x00
-    };
+        0x00};
     int n = -1;
-    while (n < 1) {
+    while (n < 1)
+    {
 
-            n = read(serial, buffer, 1);
+        n = read(serial, buffer, 1);
     }
-usleep(50);
-    if (buffer[0] == CMD_ESCAPE) {
+    usleep(50);
+    if (buffer[0] == CMD_ESCAPE)
+    {
         n = -1;
-        while (n < 1) {
+        while (n < 1)
+        {
             n = read(serial, buffer, 1);
         }
-    usleep(50);
+        usleep(50);
         return buffer[0] + 1;
     }
     return buffer[0];
 }
 
-
-void writeByte(unsigned char byte) {
+void writeByte(unsigned char byte)
+{
     reply[replyCount] = byte;
     replyCount++;
 }
 
-void writeString(char * string) {
-    for (int i = 0; i < strlen(string); i++) {
+void writeString(char *string)
+{
+    for (int i = 0; i < strlen(string); i++)
+    {
         reply[replyCount] = string[i];
         replyCount++;
     }
 }
 
-void writeBytes(unsigned char bytes[], int size) {
-    for (int i = 0; i < size; i++) {
+void writeBytes(unsigned char bytes[], int size)
+{
+    for (int i = 0; i < size; i++)
+    {
         reply[replyCount] = bytes[i];
         replyCount++;
     }
 }
 
-void sendReply() {
-    if (replyCount > 0) {
+void sendReply()
+{
+    if (replyCount > 0)
+    {
         int checksum = BUS_MASTER + replyCount + 2 + STATUS_SUCCESS;
 
         /* Write out the sync packet */
         unsigned char buffer[] = {
-            CMD_SYNC
-        };
+            CMD_SYNC};
         write(serial, buffer, 1);
 
         writeEscaped(BUS_MASTER);
@@ -189,7 +211,8 @@ void sendReply() {
         writeEscaped(STATUS_SUCCESS);
 
         int count = 0;
-        while (count < replyCount) {
+        while (count < replyCount)
+        {
             checksum += reply[count];
             writeEscaped(reply[count]);
             count++;
@@ -201,50 +224,53 @@ void sendReply() {
     }
 }
 
-
-void processPacket(unsigned char packet[], int packet_length, int packet_address) {
-    if (packet_address == CMD_BROADCAST || packet_address == deviceID || allDeviceMode) {
-        while (packet_length > 0) {
+void processPacket(unsigned char packet[], int packet_length, int packet_address)
+{
+    if (packet_address == CMD_BROADCAST || packet_address == deviceID || allDeviceMode)
+    {
+        while (packet_length > 0)
+        {
             int command_size = 1;
-            switch (packet[0]) {
-              case CMD_RESET:
-                  debug("CMD_RESET\n");
-                  command_size = 2;
-                  deviceID = -1;
-                  syncFloat();
-                  break;
-              case CMD_SETADDRESS:
-                  debug("CMD_SETADDRESS\n");
-                  command_size = 2;
-                  deviceID = packet[1];
-                  writeByte(STATUS_SUCCESS);
-                  syncGround();
-                  break;
-              case CMD_READID:
-                  debug("CMD_READID\n");
-                  writeByte(STATUS_SUCCESS);
-                  writeString("OpenJVS Emulator;I/O BD JVS;837-13551;Ver1.00;98/10");
-                  break;
-              case CMD_FORMATVERSION:
-                  debug("CMD_FORMATVERSION\n");
-                  writeByte(STATUS_SUCCESS);
-                  writeByte(0x11);
-                  break;
-              case CMD_JVSVERSION:
-                  debug("CMD_JVSVERSION\n");
-                  writeByte(STATUS_SUCCESS);
-                  writeByte(0x20);
-                  break;
-              case CMD_COMMSVERSION:
-                  debug("CMD_COMMSVERSION\n");
-                  writeByte(STATUS_SUCCESS);
-                  writeByte(0x10);
-                  break;
-              case CMD_GETFEATURES:
-                  debug("CMD_GETFEATURES\n");
-                  writeByte(STATUS_SUCCESS);
-                  unsigned char features[] = {
-                  	0x01,
+            switch (packet[0])
+            {
+            case CMD_RESET:
+                debug("CMD_RESET\n");
+                command_size = 2;
+                deviceID = -1;
+                syncFloat();
+                break;
+            case CMD_SETADDRESS:
+                debug("CMD_SETADDRESS\n");
+                command_size = 2;
+                deviceID = packet[1];
+                writeByte(STATUS_SUCCESS);
+                syncGround();
+                break;
+            case CMD_READID:
+                debug("CMD_READID\n");
+                writeByte(STATUS_SUCCESS);
+                writeString("OpenJVS Emulator;I/O BD JVS;837-13551;Ver1.00;98/10");
+                break;
+            case CMD_FORMATVERSION:
+                debug("CMD_FORMATVERSION\n");
+                writeByte(STATUS_SUCCESS);
+                writeByte(0x11);
+                break;
+            case CMD_JVSVERSION:
+                debug("CMD_JVSVERSION\n");
+                writeByte(STATUS_SUCCESS);
+                writeByte(0x20);
+                break;
+            case CMD_COMMSVERSION:
+                debug("CMD_COMMSVERSION\n");
+                writeByte(STATUS_SUCCESS);
+                writeByte(0x10);
+                break;
+            case CMD_GETFEATURES:
+                debug("CMD_GETFEATURES\n");
+                writeByte(STATUS_SUCCESS);
+                unsigned char features[] = {
+                    0x01,
                     players,
                     bytesPerPlayer * 8,
                     0x00,
@@ -278,91 +304,96 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
                     0x00,
                     0x00
 
-		  };
-                  writeBytes(features, sizeof(features));
-                  break;
-              case CMD_READSWITCHES:
-                  debug("CMD_READSWITCHES\n");
-                  writeByte(STATUS_SUCCESS);
-                  writeByte(reverse(systemSwitches));
-                  if (packet[1] != players || packet[2] != bytesPerPlayer) {
-                      printf("Warning: Switch request differs from offered no. of players\n");
-                  }
-                  for (int i = 0; i < packet[1] * packet[2]; i++) {
-                      writeByte(reverse(playerSwitches[i]));
-                  }
-                  command_size = 3;
-                  break;
-              case CMD_WRITEGPIO1:
-                  debug("CMD_WRITEGPIO1\n");
-                  command_size = 2 + packet[1];
-                  writeByte(STATUS_SUCCESS);
-                  break;
-              case CMD_WRITEGPIOBYTE:
-                  debug("CMD_WRITEGPIOBYTE\n");
-                  command_size = 3;
-                  writeByte(STATUS_SUCCESS);
-                  break;
-              case CMD_WRITEGPIOBIT:
-                  debug("CMD_WRITEGPIOBIT\n");
-                  command_size = 3;
-                  writeByte(STATUS_SUCCESS);
-                  break;
-              case CMD_SETMAINBOARDID:
-                  debug("CMD_MAINBOARDID\n");
-                  int counter = 1;
-                  while (packet[counter] != 0x00 && counter <= packet_length) {
-                      boardID[counter - 1] = packet[counter];
-                      counter++;
-                  }
-                  boardID[counter - 1] = 0x00;
-                  command_size = counter;
-                  printf("Main ID written\n");
-                  writeByte(STATUS_SUCCESS);
-                  break;
-              case CMD_READCOIN:
-                  debug("CMD_READCOIN\n");
-                  writeByte(STATUS_SUCCESS);
-                  writeByte(0x00);
-                  writeByte(coin);
-                  writeByte(0x00);
-                  writeByte(0x00);
-                  command_size = 2;
-                  break;
-              case CMD_READANALOG:
-                  debug("CMD_READANALOG\n");
-                  command_size = 2;
-                  writeByte(STATUS_SUCCESS);
-                  for (int i = 0; i < packet[1]; i++) {
-                      writeByte(analogue[i]);
-                      writeByte(0x00);
-                  }
-                  break;
-              case CMD_READROTARY:
-                  debug("CMD_READROTARY\n");
-                  command_size = 2;
-                  writeByte(STATUS_SUCCESS);
-                  for (int i = 0; i < packet[1]; i++) {
-                      writeByte(rotary[i]);
-                      writeByte(0x00);
-                  }
-                  break;
-              case CMD_READSCREENPOS:
-                  debug("CMD_READSCREENPOS\n");
-                  command_size = 2;
-                  writeByte(STATUS_SUCCESS);
-                  writeByte(0x00);
-                  writeByte(analogue[0]);
-                  writeByte(0x00);
-                  writeByte(analogue[1]);
-                  break;
-              case CMD_WRITECOINSUBTRACT:
-                  command_size = 4;
-                  writeByte(STATUS_SUCCESS);
-                  coin -= packet[3];
-                  break;
-              default:
-                  printf("CMD_UNKNOWN %02hhX\n", packet[0]);
+                };
+                writeBytes(features, sizeof(features));
+                break;
+            case CMD_READSWITCHES:
+                debug("CMD_READSWITCHES\n");
+                writeByte(STATUS_SUCCESS);
+                writeByte(reverse(systemSwitches));
+                if (packet[1] != players || packet[2] != bytesPerPlayer)
+                {
+                    printf("Warning: Switch request differs from offered no. of players\n");
+                }
+                for (int i = 0; i < packet[1] * packet[2]; i++)
+                {
+                    writeByte(reverse(playerSwitches[i]));
+                }
+                command_size = 3;
+                break;
+            case CMD_WRITEGPIO1:
+                debug("CMD_WRITEGPIO1\n");
+                command_size = 2 + packet[1];
+                writeByte(STATUS_SUCCESS);
+                break;
+            case CMD_WRITEGPIOBYTE:
+                debug("CMD_WRITEGPIOBYTE\n");
+                command_size = 3;
+                writeByte(STATUS_SUCCESS);
+                break;
+            case CMD_WRITEGPIOBIT:
+                debug("CMD_WRITEGPIOBIT\n");
+                command_size = 3;
+                writeByte(STATUS_SUCCESS);
+                break;
+            case CMD_SETMAINBOARDID:
+                debug("CMD_MAINBOARDID\n");
+                int counter = 1;
+                while (packet[counter] != 0x00 && counter <= packet_length)
+                {
+                    boardID[counter - 1] = packet[counter];
+                    counter++;
+                }
+                boardID[counter - 1] = 0x00;
+                command_size = counter;
+                printf("Main ID written\n");
+                writeByte(STATUS_SUCCESS);
+                break;
+            case CMD_READCOIN:
+                debug("CMD_READCOIN\n");
+                writeByte(STATUS_SUCCESS);
+                writeByte(0x00);
+                writeByte(coin);
+                writeByte(0x00);
+                writeByte(0x00);
+                command_size = 2;
+                break;
+            case CMD_READANALOG:
+                debug("CMD_READANALOG\n");
+                command_size = 2;
+                writeByte(STATUS_SUCCESS);
+                for (int i = 0; i < packet[1]; i++)
+                {
+                    writeByte(analogue[i]);
+                    writeByte(0x00);
+                }
+                break;
+            case CMD_READROTARY:
+                debug("CMD_READROTARY\n");
+                command_size = 2;
+                writeByte(STATUS_SUCCESS);
+                for (int i = 0; i < packet[1]; i++)
+                {
+                    writeByte(rotary[i]);
+                    writeByte(0x00);
+                }
+                break;
+            case CMD_READSCREENPOS:
+                debug("CMD_READSCREENPOS\n");
+                command_size = 2;
+                writeByte(STATUS_SUCCESS);
+                writeByte(0x00);
+                writeByte(analogue[0]);
+                writeByte(0x00);
+                writeByte(analogue[1]);
+                break;
+            case CMD_WRITECOINSUBTRACT:
+                command_size = 4;
+                writeByte(STATUS_SUCCESS);
+                coin -= packet[3];
+                break;
+            default:
+                printf("CMD_UNKNOWN %02hhX\n", packet[0]);
             }
 
             packet_length -= command_size;
@@ -372,10 +403,12 @@ void processPacket(unsigned char packet[], int packet_length, int packet_address
     }
 }
 
-void getPacket() {
+void getPacket()
+{
     int ourChecksum = 0;
 
-    while (getByte() != CMD_SYNC);
+    while (getByte() != CMD_SYNC)
+        ;
 
     unsigned char packet_address = getByte();
     ourChecksum += packet_address;
@@ -385,7 +418,8 @@ void getPacket() {
 
     unsigned char packet[packet_length];
     int counter = 0;
-    while (counter < packet_length) {
+    while (counter < packet_length)
+    {
         unsigned char byte = getByte();
         packet[counter] = byte;
         counter += 1;
@@ -393,24 +427,30 @@ void getPacket() {
     }
 
     unsigned char theirChecksum = getByte();
-    if ((ourChecksum & 0xFF) == theirChecksum) {
+    if ((ourChecksum & 0xFF) == theirChecksum)
+    {
         processPacket(packet, packet_length, packet_address);
-    } else {
+    }
+    else
+    {
         printf("Error: Checksum Problem\n");
     }
-
 }
 
-void syncFloat() {
-	if (GPIODirection(sync_pin, IN) == -1) {
-		if(debug_mode)
-			printf("Warning: Failed to float sync pin %d\n", sync_pin);
-	}
+void syncFloat()
+{
+    if (GPIODirection(sync_pin, IN) == -1)
+    {
+        if (debug_mode)
+            printf("Warning: Failed to float sync pin %d\n", sync_pin);
+    }
 }
 
-void syncGround() {
-	if (GPIODirection(sync_pin, OUT) == -1 || GPIOWrite(sync_pin, 0) == -1) {
-		if(debug_mode)
-	        	printf("Warning: Failed to sink sync pin %d\n", sync_pin);
-	}
+void syncGround()
+{
+    if (GPIODirection(sync_pin, OUT) == -1 || GPIOWrite(sync_pin, 0) == -1)
+    {
+        if (debug_mode)
+            printf("Warning: Failed to sink sync pin %d\n", sync_pin);
+    }
 }

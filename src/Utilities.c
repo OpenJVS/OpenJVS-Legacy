@@ -1,36 +1,37 @@
 #include "Utilities.h"
 
 /* Sets the configuration of the serial port */
-int set_interface_attribs(int fd, int myBaud) {
+int set_interface_attribs(int fd, int myBaud)
+{
 	struct termios options;
 	int status;
-	tcgetattr (fd, &options) ;
+	tcgetattr(fd, &options);
 
-	cfmakeraw   (&options) ;
-	cfsetispeed (&options, myBaud) ;
-	cfsetospeed (&options, myBaud) ;
+	cfmakeraw(&options);
+	cfsetispeed(&options, myBaud);
+	cfsetospeed(&options, myBaud);
 
-	options.c_cflag |= (CLOCAL | CREAD) ;
-	options.c_cflag &= ~PARENB ;
-	options.c_cflag &= ~CSTOPB ;
-	options.c_cflag &= ~CSIZE ;
-	options.c_cflag |= CS8 ;
-	options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG) ;
-	options.c_oflag &= ~OPOST ;
+	options.c_cflag |= (CLOCAL | CREAD);
+	options.c_cflag &= ~PARENB;
+	options.c_cflag &= ~CSTOPB;
+	options.c_cflag &= ~CSIZE;
+	options.c_cflag |= CS8;
+	options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
+	options.c_oflag &= ~OPOST;
 
-	options.c_cc [VMIN]  =   0 ;
-	options.c_cc [VTIME] = 100 ;	// Ten seconds (100 deciseconds)
+	options.c_cc[VMIN] = 0;
+	options.c_cc[VTIME] = 100; // Ten seconds (100 deciseconds)
 
-	tcsetattr (fd, TCSANOW, &options) ;
+	tcsetattr(fd, TCSANOW, &options);
 
-	ioctl (fd, TIOCMGET, &status);
+	ioctl(fd, TIOCMGET, &status);
 
-	status |= TIOCM_DTR ;
-	status |= TIOCM_RTS ;
+	status |= TIOCM_DTR;
+	status |= TIOCM_RTS;
 
-	ioctl (fd, TIOCMSET, &status);
+	ioctl(fd, TIOCMSET, &status);
 
-	usleep (10000) ;	// 10mS
+	usleep(10000); // 10mS
 
 	return 0;
 }

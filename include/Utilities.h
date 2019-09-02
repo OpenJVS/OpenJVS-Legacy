@@ -11,8 +11,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/ioctl.h> 
+#include <sys/ioctl.h>
 
-int set_interface_attribs (int fd, int speed);
+int set_interface_attribs(int fd, int speed);
 
 #endif // UTILITIES_H_

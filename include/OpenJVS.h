@@ -27,11 +27,11 @@
 #include "Blink.h"
 
 #ifdef WII_INCLUDE
-  #include "Wii.h"
+#include "Wii.h"
 #endif
 
 #ifdef FFB_INCLUDE
-  #include "FFB.h"
+#include "FFB.h"
 #endif
 
 /* Variables used in the program */
@@ -46,14 +46,14 @@ int minorVersion = 3;
 
 /* Function definitions */
 void intHandler(int dummy);
-int main( int argc, char* argv[] ) ;
+int main(int argc, char *argv[]);
 void writeEscaped(unsigned char byte);
 unsigned char getByte();
 void processPacket(unsigned char packet[], int packet_length, int packet_address);
 void getPacket();
 void sendReply();
 void writeByte(unsigned char byte);
-void writeString(char* string);
+void writeString(char *string);
 void writeBytes(unsigned char bytes[], int size);
 void syncFloat();
 void syncGround();

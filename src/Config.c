@@ -33,18 +33,22 @@ InputStruct inputConfig[1024];
 InputStruct mouseInputConfig[1024];
 InputStruct controllerInputConfig[1024];
 
-int initConfig() {
-    for (int i = 0; i < 1024; i++) {
-        inputConfig[i] = (InputStruct) {.value = -1, .player = -1, .type = -1};
-        mouseInputConfig[i] = (InputStruct) {.value = -1, .player = -1, .type = -1};
-        controllerInputConfig[i] = (InputStruct) {.value = -1, .player = -1, .type = -1};
+int initConfig()
+{
+    for (int i = 0; i < 1024; i++)
+    {
+        inputConfig[i] = (InputStruct){.value = -1, .player = -1, .type = -1};
+        mouseInputConfig[i] = (InputStruct){.value = -1, .player = -1, .type = -1};
+        controllerInputConfig[i] = (InputStruct){.value = -1, .player = -1, .type = -1};
     }
 
-    for (int i = 0; i < analogueChannels; i++) {
+    for (int i = 0; i < analogueChannels; i++)
+    {
         analogueDefault[i] = 0;
     }
 
-    for (int i = 0; i < 1024; i++) {
+    for (int i = 0; i < 1024; i++)
+    {
         MouseAbsChannel[i] = -1;
         MouseAbsMax[i] = -1;
         MouseAbsAdd[i] = 0;
@@ -65,139 +69,176 @@ int initConfig() {
     parseConfig(fileName);
 }
 
-int parseConfig(char * fileName) {
-    FILE * fp;
+int parseConfig(char *fileName)
+{
+    FILE *fp;
     char buffer[1024];
-    if ((fp = fopen(fileName, "r")) != NULL) {
+    if ((fp = fopen(fileName, "r")) != NULL)
+    {
         fgets(buffer, 1024, fp);
-        while (!feof(fp)) {
-            if (buffer[0] != '#' && buffer[0] != 0 && strcmp(buffer, "") != 0) {
-                char * token = strtok(buffer, " ");
+        while (!feof(fp))
+        {
+            if (buffer[0] != '#' && buffer[0] != 0 && strcmp(buffer, "") != 0)
+            {
+                char *token = strtok(buffer, " ");
 
                 /* Global Configurations */
-                if (strcmp(token, "ROM_DIR") == 0) {
+                if (strcmp(token, "ROM_DIR") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     strcpy(romDirectory, token);
                 }
 
-                if (strcmp(token, "SYNC_PIN") == 0) {
-                  token = strtok(NULL, " ");
-                  if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
-                  sync_pin = atoi(token);
+                if (strcmp(token, "SYNC_PIN") == 0)
+                {
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
+                    sync_pin = atoi(token);
                 }
 
-            		if (strcmp(token, "NETBOOT_ENABLE") == 0) {
-                  token = strtok(NULL, " ");
-                  if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
-                  netboot_enable = atoi(token);
-            		}
-
-		if (strcmp(token, "FFB_ENABLE") == 0) {
+                if (strcmp(token, "NETBOOT_ENABLE") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
+                    netboot_enable = atoi(token);
+                }
+
+                if (strcmp(token, "FFB_ENABLE") == 0)
+                {
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     ffb_enable = atoi(token);
-		}
+                }
 
-    		if (strcmp(token, "DEBUG_MODE") == 0) {
+                if (strcmp(token, "DEBUG_MODE") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     debug_mode = atoi(token);
-		}
+                }
 
-		if (strcmp(token, "NETBOOT_IP") == 0) {
+                if (strcmp(token, "NETBOOT_IP") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     strcpy(netbootIP, token);
-		}
+                }
 
-                if (strcmp(token, "DEVICE_PATH") == 0) {
+                if (strcmp(token, "DEVICE_PATH") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     strcpy(portName, token);
                 }
 
-		if (strcmp(token, "FFB_PATH") == 0) {
+                if (strcmp(token, "FFB_PATH") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     strcpy(ffbName, token);
                 }
 
-                if (strcmp(token, "KEYBOARD_PATH") == 0) {
+                if (strcmp(token, "KEYBOARD_PATH") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     strcpy(keyboardName, token);
                 }
 
-                if (strcmp(token, "MOUSE_PATH") == 0) {
+                if (strcmp(token, "MOUSE_PATH") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     strcpy(mouseName, token);
                 }
 
-                if (strcmp(token, "CONTROLLER_PATH") == 0) {
+                if (strcmp(token, "CONTROLLER_PATH") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     strcpy(controllerName, token);
                 }
 
-		/* Modifiers */
-		if(strcmp(token, "ANALOGUE_FLIP") == 0) {
-		    token = strtok(NULL, " ");
-		    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                /* Modifiers */
+                if (strcmp(token, "ANALOGUE_FLIP") == 0)
+                {
+                    token = strtok(NULL, " ");
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int key = atoi(token);
-		    AnalogueFlip[key] = 1;
-		}
-
+                    AnalogueFlip[key] = 1;
+                }
 
                 /* Bindings */
 
                 /* KEY_BIND KEYBOARD_KEY PLAYER NAOMI_KEY */
-                if (strcmp(token, "KEY_BIND") == 0) {
+                if (strcmp(token, "KEY_BIND") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int key = atoi(token);
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int player = atoi(token);
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int value = atoi(token);
-                    inputConfig[key] = (InputStruct) {.value = value, .player = player, .type = CONFIG_KEY_BIND
-                    };
+                    inputConfig[key] = (InputStruct){.value = value, .player = player, .type = CONFIG_KEY_BIND};
                 }
 
-
-                if (strcmp(token, "MOUSE_KEY_BIND") == 0) {
+                if (strcmp(token, "MOUSE_KEY_BIND") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int key = atoi(token);
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int player = atoi(token);
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int value = atoi(token);
-                    mouseInputConfig[key] = (InputStruct) {.value = value, .player = player, .type = CONFIG_KEY_BIND
-                    };
+                    mouseInputConfig[key] = (InputStruct){.value = value, .player = player, .type = CONFIG_KEY_BIND};
                 }
 
                 // EventCode Channel Add MaxValue
-                if (strcmp(token, "MOUSE_ABS_BIND") == 0) {
+                if (strcmp(token, "MOUSE_ABS_BIND") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int code = atoi(token);
 
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int channel = atoi(token);
 
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int add = atoi(token);
 
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int maxValue = atoi(token);
 
                     MouseAbsChannel[code] = channel;
@@ -206,36 +247,44 @@ int parseConfig(char * fileName) {
                 }
 
                 /* ControllerKey Player Value */
-                if (strcmp(token, "CONTROLLER_KEY_BIND") == 0) {
+                if (strcmp(token, "CONTROLLER_KEY_BIND") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int key = atoi(token);
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int player = atoi(token);
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int value = atoi(token);
-                    controllerInputConfig[key] = (InputStruct) {.value = value, .player = player, .type = CONFIG_KEY_BIND
-                    };
+                    controllerInputConfig[key] = (InputStruct){.value = value, .player = player, .type = CONFIG_KEY_BIND};
                 }
 
                 // EventCode Channel Add MaxValue
-                if (strcmp(token, "CONTROLLER_ABS_BIND") == 0) {
+                if (strcmp(token, "CONTROLLER_ABS_BIND") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int code = atoi(token);
 
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int channel = atoi(token);
 
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int add = atoi(token);
 
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int maxValue = atoi(token);
 
                     ControllerAbsChannel[code] = channel;
@@ -243,33 +292,41 @@ int parseConfig(char * fileName) {
                     ControllerAbsAdd[code] = add;
                 }
 
-                if (strcmp(token, "KEY_PLUS") == 0) {
+                if (strcmp(token, "KEY_PLUS") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int key = atoi(token);
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int value = atoi(token);
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int player = atoi(token);
-                    inputConfig[key] = (InputStruct) {.value = value, .player = player, .type = CONFIG_KEY_PLUS
-                    };
+                    inputConfig[key] = (InputStruct){.value = value, .player = player, .type = CONFIG_KEY_PLUS};
                 }
 
-                if (strcmp(token, "ANALOGUE_DEFAULT") == 0) {
+                if (strcmp(token, "ANALOGUE_DEFAULT") == 0)
+                {
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int key = atoi(token);
                     token = strtok(NULL, " ");
-                    if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
+                    if (token[strlen(token) - 1] == '\n')
+                        token[strlen(token) - 1] = '\0';
                     int value = atoi(token);
                     analogueDefault[key] = value;
                 }
             }
             fgets(buffer, 1024, fp);
         }
-    } else {
+    }
+    else
+    {
         printf("Error: Failed to open config file at %s\n", fileName);
         return -1;
     }

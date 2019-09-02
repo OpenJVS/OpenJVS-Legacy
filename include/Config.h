@@ -7,7 +7,8 @@
 #include "Definitions.h"
 #include "Control.h"
 
-typedef struct {
+typedef struct
+{
   int value;
   int player;
   int type;
@@ -26,7 +27,7 @@ extern char keyboardName[];
 extern char mouseName[];
 extern char controllerName[];
 extern int allDeviceMode;
-extern char* configPath;
+extern char *configPath;
 extern InputStruct inputConfig[];
 
 extern InputStruct mouseInputConfig[];
@@ -42,5 +43,5 @@ extern int ControllerAbsAdd[];
 extern int AnalogueFlip[];
 
 int initConfig();
-int parseConfig(char* fileName);
+int parseConfig(char *fileName);
 #endif // CONFIG_H_
