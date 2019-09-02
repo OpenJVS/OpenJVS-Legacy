@@ -75,13 +75,17 @@ int main( int argc, char* argv[]) {
 	syncFloat();
 
   /* Setup the serial interface here */
-  serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
+  serial = open(portName, O_RDWR | O_NOCTTY | O_SYNC);
 
   if (serial < 0) {
       printf("Failed to open RS485 Dongle file descriptor\n");
       return -1;
   }
   set_interface_attribs(serial, B115200);
+
+  sleep(2);
+  tcflush(serial, TCIOFLUSH);
+
 
   /* Init the modules here */
   initControl();
@@ -110,21 +114,24 @@ void writeEscaped(unsigned char byte) {
             CMD_ESCAPE
         };
         int n = write(serial, buffer, sizeof(buffer));
+        usleep(50);
         if (n != 1) {
-            printf("Error from write: %d, %d\n", n, errno);
+                printf("Error from write: %d, %d\n", n, errno);
         }
         byte -= 1;
     }
-
     unsigned char buffer[] = {
         byte
     };
 
     int n = write(serial, buffer, sizeof(buffer));
+
+        usleep(50);
     if (n != 1) {
         printf("Error from write: %d, %d\n", n, errno);
     }
 }
+
 
 unsigned char getByte() {
     unsigned char buffer[] = {
@@ -132,18 +139,21 @@ unsigned char getByte() {
     };
     int n = -1;
     while (n < 1) {
-        n = read(serial, buffer, 1);
-    }
 
+            n = read(serial, buffer, 1);
+    }
+usleep(50);
     if (buffer[0] == CMD_ESCAPE) {
         n = -1;
         while (n < 1) {
             n = read(serial, buffer, 1);
         }
+    usleep(50);
         return buffer[0] + 1;
     }
     return buffer[0];
 }
+
 
 void writeByte(unsigned char byte) {
     reply[replyCount] = byte;
@@ -189,11 +199,8 @@ void sendReply() {
 
         replyCount = 0;
     }
-
-    /* Warning: This may break, we should check. */
-    tcflush(serial, TCIOFLUSH);
-    tcdrain(serial);
 }
+
 
 void processPacket(unsigned char packet[], int packet_length, int packet_address) {
     if (packet_address == CMD_BROADCAST || packet_address == deviceID || allDeviceMode) {
