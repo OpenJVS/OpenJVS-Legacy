@@ -1,5 +1,25 @@
 #include "Utilities.h"
 
+/* Sets the configuration of the serial port to low latency mode */
+int set_low_latency(int fd)
+{
+	struct serial_struct serial_settings;
+
+	if (ioctl(fd, TIOCGSERIAL, &serial_settings) < 0)
+	{
+		printf("Failed to read serial settings for low latency mode\n");
+		return 0;
+	}
+
+	serial_settings.flags |= ASYNC_LOW_LATENCY;
+	if (ioctl(fd, TIOCSSERIAL, &serial_settings) < 0)
+	{
+		printf("Failed to write serial settings for low latency mode\n");
+		return 0;
+	}
+	return 1;
+}
+
 /* Sets the configuration of the serial port */
 int set_interface_attribs(int fd, int myBaud)
 {

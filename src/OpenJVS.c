@@ -94,6 +94,7 @@ int main(int argc, char *argv[])
         return -1;
     }
     set_interface_attribs(serial, B115200);
+    set_low_latency(serial);
 
     sleep(2);
     tcflush(serial, TCIOFLUSH);
