@@ -2,17 +2,17 @@
 
 char players = 2;
 char bytesPerPlayer = 2;
-char playerSwitches[255];
+uint8_t playerSwitches[255];
 char systemSwitches = 0x0;
 char boardID[255];
 char analogueChannels = 8;
 char analogue[255];
 char rotaryChannels = 8;
 char rotary[255];
-char coin = 10;
+uint16_t coin = 10;
 char analogueDefault[255];
 
-unsigned char reverse(unsigned char b)
+uint8_t reverse(uint8_t b)
 {
 	b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
 	b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
@@ -53,14 +53,14 @@ void setSystemSwitch(int bit, int value)
 
 void setPlayerSwitch(int player, int bit, int value)
 {
-	if (value == 1)
-	{
-		playerSwitches[player * bytesPerPlayer + (bit / 8)] |= 1 << (bit - (8 * (bit / 8)));
-	}
-	else if (value == 0)
-	{
-		playerSwitches[player * bytesPerPlayer + (bit / 8)] &= ~(1 << (bit - (8 * (bit / 8))));
-	}
+  if (value == 1)
+  {
+    playerSwitches[player * bytesPerPlayer + (bit / 8)] |= (1 << (bit % 8));
+  }
+  else if (value == 0)
+  {
+    playerSwitches[player * bytesPerPlayer + (bit / 8)] &= ~(1 << (bit % 8));
+  }
 }
 
 void setAnalogue(int channel, char value)

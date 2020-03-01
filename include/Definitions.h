@@ -1,6 +1,10 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
+/* JVS IO */
+static const char OPEN_JVS_ID[] = "SEGA CORPORATION;I/O BD JVS;837-14572;Ver1.00;2005/10";
+static const uint8_t OPEN_JVS_COMMAND_REVISION = 0x13;
+
 /* Settings for keyboard types */
 #define CONFIG_KEY_BIND 0
 #define CONFIG_KEY_PLUS 1
@@ -38,7 +42,46 @@
 #define CMD_WRITEGPIOBYTE 0x37
 #define CMD_WRITEGPIOBIT 0x38
 #define BUS_MASTER 0x00
-#define STATUS_SUCCESS 0x01
+
+
+/* JVS status Codes*/
+#define JVS_STATUS_NORMAL 0x01
+#define JVS_STATUS_COMMAND_UNKNOWN 0x02
+#define JVS_STATUS_SUM_ERR 0x03
+#define JVS_STATUS_ACK_OVERFLOW 0x04
+
+#define JVS_REPORT_NORMAL 0x1
+#define JVS_REPORT_PARAMETER_ERROR 0x02
+#define JVS_REPORT_PARAMETER_ERROR2 0x3
+#define JVS_REPORT_BUSY 0x4
+
+/* Message Layout:
+ * |Sync (1byte) | Node Number (1byte) | Number Bytes Payload (1byte) | Cmd (1byte) | ...(Payload-1) | Checksum (1byte)| */
+
+
+#define CMD_IDX_SNY 0
+#define CMD_IDX_NODE_NUMBER 1
+#define CMD_IDX_NUMBER_BYTES_PAYLOAD 2
+/* Request: Command byte, Reply: Status byte */
+#define CMD_IDX_CMD_STATUS 3
+#define CMD_IDX_PAYLOAD 4
+
+/* HEADER_LEN: 3: SYN + Node Number + Number Bytes Payload  (WITH SYN)*/
+#define CMD_LEN_HEADER 3
+#define CMD_LEN_CHECKSUM 1
+#define CMD_LEN_SYNC 1
+#define CMD_LEN_NUMBER_BYTES 1
+#define CMD_LEN_CMD 1
+#define CMD_STATUS 1
+#define CMD_LEN_NODE 1
+
+#define GET_MSG_REQ_LEN(packet) (packet[CMD_IDX_NUMBER_BYTES_PAYLOAD] + CMD_LEN_HEADER)
+
+#define GET_MSG_REQ_PAYLOAD_LEN(packet) (packet[CMD_IDX_NUMBER_BYTES_PAYLOAD] - CMD_LEN_CHECKSUM)
+
+/* Only valid in process_cmd() */
+#define PROCESS_CMD_IDX_CMD 0
+#define PROCESS_CMD_IDX_PAYLOAD 1
 
 /* Buttons */
 #define SYSTEM_TEST 7

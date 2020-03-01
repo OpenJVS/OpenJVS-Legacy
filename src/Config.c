@@ -11,7 +11,7 @@ char romDirectory[2024] = "/etc/OpenJVS/roms/";
 char netbootIP[2024] = "10.0.0.111";
 
 /* allDeviceMode replies to all requests regardless of deviceID */
-int allDeviceMode = 1;
+bool allDeviceMode = 1;
 int netboot_enable = 0;
 int ffb_enable = 0;
 int sync_pin = 12;
