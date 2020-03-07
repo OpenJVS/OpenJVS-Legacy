@@ -29,8 +29,12 @@ void *controllerThread(void *arg)
     {
       if (ControllerAbsChannel[event.code] != -1)
       {
-        int scaledValue = ((ControllerAbsAdd[event.code] + (double)event.value) / (double)ControllerAbsMax[event.code]) * 255;
-        setAnalogue(ControllerAbsChannel[event.code], AnalogueFlip[ControllerAbsChannel[event.code]] == 0 ? scaledValue : 255 - scaledValue);
+        uint16_t max_analog = jvs_get_analog_max();
+
+        int scaledValue = ((ControllerAbsAdd[event.code] + (double)event.value) / (double)ControllerAbsMax[event.code]) * max_analog;
+        /* AnalogueFlip is not necessary - with some trickery when can use a negative ControllerAbsMax and only correct the 2s complement */
+        setAnalogue(ControllerAbsChannel[event.code], (scaledValue >= 0) ? scaledValue : (scaledValue -1));
+        //setAnalogue(ControllerAbsChannel[event.code], AnalogueFlip[ControllerAbsChannel[event.code]] == 0 ? scaledValue : 255 - scaledValue);
       }
     }
 

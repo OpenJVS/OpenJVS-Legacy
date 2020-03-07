@@ -51,36 +51,6 @@
 
 #define new_min(x,y) ((x) <= (y)) ? (x) : (y)
 
-typedef enum
-{
-	OPEN_JVS_ERR_OK = 0,
-	OPEN_JVS_ERR_REC_BUFFER,
-	OPEN_JVS_ERR_SERIAL_READ,
-	OPEN_JVS_ERR_SERIAL_WRITE,
-	OPEN_JVS_ERR_STATE,
-	OPEN_JVS_ERR_CHECKSUM,
-	OPEN_JVS_ERR_TIMEOUT,
-	OPEN_JVS_ERR_NULL,
-	OPEN_JVS_ERR_WAIT_BYTES,
-	OPEN_JVS_ERR_INVALID_CMD,
-	OPEN_JVS_ERR_REPORT,
-
-	OPEN_JVS_ERR_SYNC_BYTE,
-	OPEN_JVS_FOUND_HEADER,
-	OPEN_JVS_FOUND_MESSAGE,
-
-} open_jvs_status_t;
-
-
-typedef enum
-{
-	OPEN_JVS_STATE_WAITING_MESSAGE = 0,
-	OPEN_JVS_STATE_WAITING_FOR_HEADER,
-	OPEN_JVS_STATE_WAITING_FOR_PAYLOAD,
-	OPEN_JVS_STATE_ERROR
-} open_jvs_state_t;
-
-
 /* Function definitions */
 void intHandler(int dummy);
 int main( int argc, char* argv[] ) ;
@@ -93,5 +63,14 @@ void writeString(char* string);
 void writeBytes(unsigned char bytes[], int size);
 void syncFloat();
 void syncGround();
+
+uint16_t jvs_get_analog_mask(void);
+void jvs_set_analog_mask(uint16_t mask);
+
+uint16_t jvs_get_analog_max(void);
+void jvs_set_analog_max(uint16_t max);
+
+open_jvs_status_t jvs_get_io_profile(jvs_io_t ** jvs_io_p);
+void jvs_set_io_profile(jvs_io_t * jvs_profile_p);
 
 #endif // JVSE_H_

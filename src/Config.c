@@ -1,4 +1,6 @@
 #include "Config.h"
+#include "OpenJVS.h"
+
 
 /* Here you can set the serial device */
 char portName[2024] = "/dev/ttyUSB0";
@@ -33,31 +35,38 @@ InputStruct inputConfig[1024];
 InputStruct mouseInputConfig[1024];
 InputStruct controllerInputConfig[1024];
 
-int initConfig()
+open_jvs_status_t initConfig(void)
 {
+  open_jvs_status_t retval;
+  jvs_io_t * jvs_io = NULL;
+
+  retval = jvs_get_io_profile(&jvs_io);
+
+  if(OPEN_JVS_ERR_OK == retval)
+  {
     for (int i = 0; i < 1024; i++)
     {
-        inputConfig[i] = (InputStruct){.value = -1, .player = -1, .type = -1};
-        mouseInputConfig[i] = (InputStruct){.value = -1, .player = -1, .type = -1};
-        controllerInputConfig[i] = (InputStruct){.value = -1, .player = -1, .type = -1};
+      inputConfig[i] = (InputStruct){.value = -1, .player = -1, .type = -1};
+      mouseInputConfig[i] = (InputStruct){.value = -1, .player = -1, .type = -1};
+      controllerInputConfig[i] = (InputStruct){.value = -1, .player = -1, .type = -1};
     }
 
-    for (int i = 0; i < analogueChannels; i++)
+    for (int i = 0; i < jvs_io->jvs_analog_channels; i++)
     {
-        analogueDefault[i] = 0;
+      analogueDefault[i] = 0;
     }
 
     for (int i = 0; i < 1024; i++)
     {
-        MouseAbsChannel[i] = -1;
-        MouseAbsMax[i] = -1;
-        MouseAbsAdd[i] = 0;
+      MouseAbsChannel[i] = -1;
+      MouseAbsMax[i] = -1;
+      MouseAbsAdd[i] = 0;
 
-        ControllerAbsChannel[i] = -1;
-        ControllerAbsMax[i] = -1;
-        ControllerAbsAdd[i] = 0;
+      ControllerAbsChannel[i] = -1;
+      ControllerAbsMax[i] = -1;
+      ControllerAbsAdd[i] = 0;
 
-        AnalogueFlip[i] = 0;
+      AnalogueFlip[i] = 0;
     }
 
     char fileName[1024];
@@ -67,6 +76,9 @@ int initConfig()
     strcat(strcpy(fileName, "/etc/OpenJVS"), "/maps/");
     strcat(fileName, mapName);
     parseConfig(fileName);
+
+  }
+  return retval;
 }
 
 int parseConfig(char *fileName)

@@ -3,6 +3,10 @@
 //#define OFFLINE_MODE
 //#define USE_DEBUG_PIN
 
+static jvs_io_t * jvs_io_profile = NULL;
+static uint16_t jvs_analog_mask = 0;
+static uint16_t jvs_analog_max = 0;
+
 /* Variables used in the program */
 uint16_t deviceID = 0xFFFF;
 int serial;
@@ -45,6 +49,74 @@ open_jvs_status_t check_message (uint8_t *request, uint32_t request_len);
 open_jvs_status_t processPacket (uint8_t *request, uint8_t *resp_packet, uint32_t *out_resp_len);
 open_jvs_status_t check_checksum (uint8_t *message);
 uint8_t calc_checksum (uint8_t *message, uint8_t len);
+
+//void initJvs(void);
+
+open_jvs_status_t initJvsProfile(jvs_io_t * jvs_profile_p)
+{
+  open_jvs_status_t retval = OPEN_JVS_ERR_OK;
+
+  /* Set JVS IO */
+  // todo: @Bobby:add an option to the config to choose standard lindbergh, naomi...JVS profiles?
+  if(NULL != jvs_profile_p)
+  {
+    jvs_set_io_profile(jvs_profile_p);
+  }
+  else
+  {
+    retval = OPEN_JVS_ERR_JVS_PROFILE_NULL;
+  }
+
+  if(OPEN_JVS_ERR_OK == retval)
+  {
+    jvs_set_analog_max(0);
+    jvs_set_analog_mask(0);
+
+    if(jvs_profile_p->jvs_analog_number_bits > (sizeof(jvs_analog_mask) * 8))
+    {
+      retval = OPEN_JVS_ERR_ANALOG_MASK;
+    }
+
+    if(jvs_profile_p->jvs_analog_number_bits > (sizeof(jvs_analog_max) * 8))
+    {
+      retval = OPEN_JVS_ERR_ANALOG_MASK;
+    }
+
+    if(OPEN_JVS_ERR_OK == retval)
+    {
+      /* Set max value that is supported for the set number of bits set for the analog channel */
+
+      uint16_t max = 0;
+      uint16_t mask = 0;
+
+      printf("jvs_analog_number_bits:%d\n", jvs_profile_p->jvs_analog_number_bits);
+
+      for(int16_t i = 0; i < jvs_profile_p->jvs_analog_number_bits; i++)
+      {
+        max |= (1 << i);
+      }
+
+      for(int16_t i = 0; i <= (jvs_profile_p->jvs_analog_number_bits - 1); i++)
+      {
+        mask |= (1 << (((sizeof(jvs_analog_mask) * 8)-1) -i));
+      }
+
+      jvs_set_analog_max(max);
+      jvs_set_analog_mask(mask);
+
+    }
+
+    // DEBUG ONLY
+    printf("Retval : %d \n", retval);
+    printf("jvs_analog_max:%04X \n", jvs_get_analog_max());
+    printf("jvs_analog_mask:%04X \n", jvs_get_analog_mask());
+
+  }
+
+
+  return retval;
+
+}
 
 open_jvs_status_t write_serial (int serial, uint8_t *data, uint32_t data_len)
 {
@@ -151,11 +223,11 @@ void test_buffer ()
   //uint8_t cmd[] = {0xE0, 0xFF, 0x03, 0xF1, 0x01, 0xF4, 0xFF}; /* CMD_SETADDRESS */
 
   //uint8_t cmd[] = {0xE0, 0xFF, 0x03, 0xF1, CMD_ESCAPE, 0x01 -1, 0xF4, 0xFF}; /* CMD_SETADDRESS with escape injected*/
-  //uint8_t cmd[] = {0xE0, 0x01, 0x02, 0x10, 0x13};  /* CMD_READID */
+  uint8_t cmd[] = {0xE0, 0x01, 0x02, 0x10, 0x13};  /* CMD_READID */
 
   //uint8_t cmd[] = {0xE0, 0x01, 0x05, 0x11, 0x12, 0x13, 0x14, 0x50}; /* Multi Request */
 
-  uint8_t cmd[] = {0xE0, 0x01, 0x0D, 0x20, 0x02, 0x02, 0x22, 0x08, 0x21, 0x02, 0x32, 0x03, 0x00, 0x00, 0x00, 0xB4}; /* Multi Request*/
+  //uint8_t cmd[] = {0xE0, 0x01, 0x0D, 0x20, 0x02, 0x02, 0x22, 0x08, 0x21, 0x02, 0x32, 0x03, 0x00, 0x00, 0x00, 0xB4}; /* Multi Request*/
 
   //uint8_t cmd[] =  { 0xE0, 0xFF, 0x3, 0xef, 0x10, 0x01 }; /* Test CMD */
 
@@ -224,6 +296,8 @@ void print_circ_buffer ()
 
 int main (int argc, char *argv[])
 {
+  open_jvs_status_t retval = OPEN_JVS_ERR_OK;
+
   /* Setup signal handlers */
 #ifndef OFFLINE_MODE
   signal (SIGINT, intHandler);
@@ -232,6 +306,9 @@ int main (int argc, char *argv[])
   /* Print out information */
   printf ("OpenJVS Emulator %d.%d (Beta)\n", majorVersion, minorVersion);
   printf ("(C) Robert Dilley 2018\n\n");
+
+  // todo: put jvs-io selection unto config?
+  retval = initJvsProfile( (jvs_io_t * ) &jvs_io_lindbergh);
 
 #ifndef OFFLINE_MODE
   if (argc > 1)
@@ -249,7 +326,10 @@ int main (int argc, char *argv[])
   init_debug_pin();
 #endif
 
-  initConfig ();
+  initConfig();
+
+
+  if(OPEN_JVS_ERR_OK != retval)
 
   if (debug_mode)
   {
@@ -266,7 +346,7 @@ int main (int argc, char *argv[])
     runMouse ();
   }
 
-  if (initController () == 0)
+  if (OPEN_JVS_ERR_OK == initController ())
   {
     runController ();
   }
@@ -307,7 +387,7 @@ int main (int argc, char *argv[])
   set_interface_attribs (serial, B115200);
 
   /* Init the modules here */
-  initControl ();
+  initControl();
 
   printf ("OpenJVS Started\n");
 
@@ -409,7 +489,7 @@ int main (int argc, char *argv[])
       deviceID = 0xFFFF;
       /* Flush receive buffer and start over */
       circ_buffer_init (&read_buffer);
-      syncFloat ();
+      syncFloat();
 
       if (debug_mode)
       {
@@ -692,28 +772,46 @@ open_jvs_status_t process_cmd (uint8_t *request, uint32_t request_len_remaining,
       {
         debug ("CMD_READID\n");
 
+        jvs_io_t * jvs_io = NULL;
+        retval = jvs_get_io_profile(&jvs_io);
 
-        resp_packet[response_payload_len] = JVS_REPORT_NORMAL;
-        response_payload_len += 1;
+        if(OPEN_JVS_ERR_OK == retval)
+        {
+          resp_packet[response_payload_len] = JVS_REPORT_NORMAL;
+          response_payload_len += 1;
 
-        memcpy (&resp_packet[response_payload_len], OPEN_JVS_ID, sizeof(OPEN_JVS_ID));
-        response_payload_len += sizeof(OPEN_JVS_ID);
+          memcpy (&resp_packet[response_payload_len], jvs_io->jvs_id_str, strlen(jvs_io->jvs_id_str));
+          response_payload_len += strlen(jvs_io->jvs_id_str);
 
-        request_len_cmd = CMD_LEN_CMD + 0;
+          request_len_cmd = CMD_LEN_CMD + 0;
+        }
+        else
+        {
+          retval = OPEN_JVS_ERR_JVS_PROFILE_NULL;
+        }
       }
       break;
 
       case CMD_FORMATVERSION:
       {
         debug ("CMD_FORMATVERSION\n");
+        jvs_io_t * jvs_io = NULL;
+        retval = jvs_get_io_profile(&jvs_io);
 
-        resp_packet[response_payload_len] = JVS_REPORT_NORMAL;
-        response_payload_len += 1;
+        if(OPEN_JVS_ERR_OK == retval)
+        {
+          resp_packet[response_payload_len] = JVS_REPORT_NORMAL;
+          response_payload_len += 1;
 
-        resp_packet[response_payload_len] = OPEN_JVS_COMMAND_REVISION;
-        response_payload_len += 1;
+          resp_packet[response_payload_len] = jvs_io->jvs_cmd_revision;
+          response_payload_len += 1;
 
-        request_len_cmd = CMD_LEN_CMD + 0;
+          request_len_cmd = CMD_LEN_CMD + 0;
+        }
+        else
+        {
+          retval = OPEN_JVS_ERR_JVS_PROFILE_NULL;
+        }
       }
       break;
 
@@ -721,13 +819,24 @@ open_jvs_status_t process_cmd (uint8_t *request, uint32_t request_len_remaining,
       {
         debug ("CMD_JVSVERSION\n");
 
-        resp_packet[response_payload_len] = JVS_REPORT_NORMAL;
-        response_payload_len += 1;
+        jvs_io_t * jvs_io = NULL;
+        retval = jvs_get_io_profile(&jvs_io);
 
-        resp_packet[response_payload_len] = 0x20;
-        response_payload_len += 1;
+        if(OPEN_JVS_ERR_OK == retval)
+        {
+          resp_packet[response_payload_len] = JVS_REPORT_NORMAL;
+          response_payload_len += 1;
 
-        request_len_cmd = CMD_LEN_CMD + 0;
+          resp_packet[response_payload_len] = jvs_io->jvs_standard;
+          response_payload_len += 1;
+
+          request_len_cmd = CMD_LEN_CMD + 0;
+        }
+        else
+        {
+          retval = OPEN_JVS_ERR_JVS_PROFILE_NULL;
+        }
+
       }
       break;
 
@@ -747,25 +856,36 @@ open_jvs_status_t process_cmd (uint8_t *request, uint32_t request_len_remaining,
 
       case CMD_GETFEATURES:
       {
-        uint8_t features[] =
-        {   /* Code 0x01: Sw input*/ 0x01, players, bytesPerPlayer * 8, 0x00,
-            /* Code 0x02: Number Coin Slots*/ 0x02,  0x02, 0x00, 0x00,
-            /* Code 0x03: Number Analog channels, Bits per channel*/ 0x03, analogueChannels, 0x08, 0x00,
-            /* Code 0x04: Number Rotary channels */ 0x04,  rotaryChannels, 0x00, 0x00,
-            /* Code 0x07: General purpose SW inputs */ 0x07, 0x00, 0x08, 0x00,
-            /* Code 0x13: Analog Output channels */ 0x13, 0x08, 0x00, 0x00,
-            /* Code 0x06: Enter screen position ???*/ 0x06, 0x08, 0x08, 0x02,
-            /* Code 0x12: General purpose driver */ 0x12,  0x08, 0x00, 0x00,
-            /* End */ 0x00 };
+        jvs_io_t * jvs_io = NULL;
+        retval = jvs_get_io_profile(&jvs_io);
 
-        debug ("CMD_GETFEATURES\n");
-        resp_packet[response_payload_len] = JVS_REPORT_NORMAL;
-        response_payload_len += 1;
+        if(OPEN_JVS_ERR_OK == retval)
+        {
+          uint8_t features[] =
+          {   /* Code 0x01: Sw input*/ 0x01, players, bytesPerPlayer * 8, 0x00,
+              /* Code 0x02: Number Coin Slots*/ 0x02,  jvs_io->jvs_coin_slots, 0x00, 0x00,
+              /* Code 0x03: Number Analog channels, Bits per channel*/ 0x03, jvs_io->jvs_analog_channels, jvs_io->jvs_analog_number_bits, 0x00,
+              /* Code 0x04: Number Rotary channels */ 0x04,  jvs_io->jvs_rotary_channels, 0x00, 0x00,
+              /* Code 0x07: General purpose SW inputs */ 0x07, 0x00, 0x08, 0x00,
+              /* Code 0x13: Analog Output channels */ 0x13, 0x08, 0x00, 0x00,
+              /* Code 0x06: Enter screen position ???*/ 0x06, 0x08, 0x08, 0x02,
+              /* Code 0x12: General purpose driver */ 0x12,  0x08, 0x00, 0x00,
+              /* End */ 0x00 };
 
-        memcpy (&resp_packet[response_payload_len], features, sizeof(features));
-        response_payload_len += sizeof(features);
 
-        request_len_cmd = CMD_LEN_CMD + 0;
+          debug ("CMD_GETFEATURES\n");
+          resp_packet[response_payload_len] = JVS_REPORT_NORMAL;
+          response_payload_len += 1;
+
+          memcpy (&resp_packet[response_payload_len], features, sizeof(features));
+          response_payload_len += sizeof(features);
+
+          request_len_cmd = CMD_LEN_CMD + 0;
+        }
+        else
+        {
+          retval = OPEN_JVS_ERR_JVS_PROFILE_NULL;
+        }
       }
       break;
 
@@ -876,12 +996,10 @@ open_jvs_status_t process_cmd (uint8_t *request, uint32_t request_len_remaining,
 
         for (uint32_t i = 0; i < request[PROCESS_CMD_IDX_PAYLOAD]; i++)
         {
-#warning "Are the analog data in analogue[] only in 1 byte precision? Is the rest cut off or scaled? "
-
-          resp_packet[response_payload_len] = analogue[i];
+          resp_packet[response_payload_len] = (analogue[i] >> 8 ) & (jvs_analog_mask >> 8);
           response_payload_len += 1;
 
-          resp_packet[response_payload_len] = 0x00;
+          resp_packet[response_payload_len] = (analogue[i] >> 0 ) & (jvs_analog_mask >> 0);
           response_payload_len += 1;
         }
 
@@ -1026,10 +1144,15 @@ open_jvs_status_t processPacket (uint8_t *request, uint8_t *resp_packet, uint32_
           if((OPEN_JVS_ERR_REPORT == retval) || (OPEN_JVS_ERR_INVALID_CMD == retval))
           {
             report_ok = retval;
-          }
 
-          /* Continue with the processing so that the error report can be sent */
-          retval = OPEN_JVS_ERR_OK;
+            /* Continue with the processing so that the error report can be sent */
+            retval = OPEN_JVS_ERR_OK;
+          }
+        }
+
+        if(OPEN_JVS_ERR_OK != retval)
+        {
+          break;
         }
       }
 
@@ -1116,3 +1239,45 @@ void syncGround ()
       printf ("Warning: Failed to sink sync pin %d\n", sync_pin);
   }
 }
+
+uint16_t jvs_get_analog_mask(void)
+{
+  return jvs_analog_mask;
+}
+
+void jvs_set_analog_mask(uint16_t mask)
+{
+  jvs_analog_mask = mask;
+}
+
+uint16_t jvs_get_analog_max(void)
+{
+  return jvs_analog_max;
+}
+
+void jvs_set_analog_max(uint16_t max)
+{
+  jvs_analog_max = max;
+}
+
+open_jvs_status_t jvs_get_io_profile(jvs_io_t ** jvs_io_p)
+{
+  open_jvs_status_t retval = OPEN_JVS_ERR_OK;
+
+  if(NULL != jvs_io_profile)
+  {
+    *jvs_io_p = jvs_io_profile;
+  }
+  else
+  {
+    retval = OPEN_JVS_ERR_JVS_PROFILE_NULL;
+  }
+
+  return retval;
+}
+
+void jvs_set_io_profile(jvs_io_t * jvs_profile_p)
+{
+  jvs_io_profile = jvs_profile_p;
+}
+

@@ -1,16 +1,15 @@
 #include "Control.h"
+#include "OpenJVS.h"
 
 char players = 2;
 char bytesPerPlayer = 2;
 uint8_t playerSwitches[255];
 char systemSwitches = 0x0;
 char boardID[255];
-char analogueChannels = 8;
-char analogue[255];
-char rotaryChannels = 8;
+uint16_t analogue[255];
 char rotary[255];
 uint16_t coin = 10;
-char analogueDefault[255];
+uint16_t analogueDefault[255];
 
 uint8_t reverse(uint8_t b)
 {
@@ -20,23 +19,32 @@ uint8_t reverse(uint8_t b)
 	return b;
 }
 
-void initControl()
+open_jvs_status_t initControl()
 {
-	systemSwitches = 0x0;
-	for (int i = 0; i < players * bytesPerPlayer; i++)
-	{
-		playerSwitches[i] = 0x0;
-	}
+  open_jvs_status_t retval;
+  jvs_io_t * jvs_io = NULL;
 
-	for (int i = 0; i < analogueChannels; i++)
-	{
-		analogue[i] = analogueDefault[i];
-	}
+  retval = jvs_get_io_profile(&jvs_io);
 
-	for (int i = 0; i < rotaryChannels; i++)
-	{
-		rotary[i] = 0x05;
-	}
+  if(OPEN_JVS_ERR_OK == retval)
+  {
+    systemSwitches = 0x0;
+    for (int i = 0; i < players * bytesPerPlayer; i++)
+    {
+      playerSwitches[i] = 0x0;
+    }
+
+    for (int i = 0; i < jvs_io->jvs_analog_channels; i++)
+    {
+      analogue[i] = analogueDefault[i];
+    }
+
+    for (int i = 0; i < jvs_io->jvs_rotary_channels; i++)
+    {
+      rotary[i] = 0x05;
+    }
+  }
+  return retval;
 }
 
 void setSystemSwitch(int bit, int value)
@@ -63,12 +71,12 @@ void setPlayerSwitch(int player, int bit, int value)
   }
 }
 
-void setAnalogue(int channel, char value)
+void setAnalogue(int channel, uint16_t value)
 {
 	analogue[channel] = value;
 }
 
-int getAnalogue(int channel)
+uint16_t getAnalogue(int channel)
 {
 	return analogue[channel];
 }

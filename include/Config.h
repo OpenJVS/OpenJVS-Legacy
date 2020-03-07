@@ -43,6 +43,6 @@ extern int ControllerAbsAdd[];
 
 extern int AnalogueFlip[];
 
-int initConfig();
+open_jvs_status_t initConfig(void);
 int parseConfig(char* fileName);
 #endif // CONFIG_H_

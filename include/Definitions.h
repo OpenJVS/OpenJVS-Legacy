@@ -2,8 +2,48 @@
 #define DEFINITIONS_H_
 
 /* JVS IO */
-static const char OPEN_JVS_ID[] = "SEGA CORPORATION;I/O BD JVS;837-14572;Ver1.00;2005/10";
-static const uint8_t OPEN_JVS_COMMAND_REVISION = 0x13;
+
+typedef struct
+{
+  uint8_t * jvs_id_str;
+  uint8_t  jvs_cmd_revision;
+  uint8_t jvs_standard;
+  uint8_t jvs_analog_channels;
+  uint16_t jvs_analog_number_bits;
+  uint8_t jvs_rotary_channels;
+  uint8_t jvs_coin_slots;
+
+} jvs_io_t;
+
+static const jvs_io_t jvs_io_lindbergh =
+{
+    .jvs_id_str = "SEGA CORPORATION;I/O BD JVS;837-14572;Ver1.00;2005/10",
+    .jvs_cmd_revision = 0x13,
+    .jvs_standard = 0x30,
+    .jvs_analog_channels = 8,
+    .jvs_analog_number_bits = 16,
+    .jvs_rotary_channels = 8, // is this right?
+    .jvs_coin_slots = 2,
+};
+
+// todo: @Bobby: I did not check these values but just copied them from the old source - are these verified?
+static const jvs_io_t jvs_io_naomi=
+{
+    .jvs_id_str = "OpenJVS Emulator;I/O BD JVS;837-13551;Ver1.00;98/10",
+    .jvs_cmd_revision = 0x11,
+    .jvs_standard = 0x30,
+    .jvs_analog_channels = 8,
+    .jvs_analog_number_bits = 8,
+    .jvs_rotary_channels = 8, // is this right?
+    .jvs_coin_slots = 2,
+};
+
+
+//static const char OPEN_JVS_ID[] = "SEGA CORPORATION;I/O BD JVS;837-14572;Ver1.00;2005/10";
+//static const uint8_t OPEN_JVS_COMMAND_REVISION = 0x13;
+//static const uint8_t OPEN_JVS_STANDARD = 0x30;
+////static const uint8_t OPEN_JVS_ANALOG_CH_NUMBER_BITS = 8;
+//static  uint8_t OPEN_JVS_ANALOG_CH_NUMBER_BITS = 16;
 
 /* Settings for keyboard types */
 #define CONFIG_KEY_BIND 0
@@ -99,5 +139,39 @@ static const uint8_t OPEN_JVS_COMMAND_REVISION = 0x13;
 #define PLAYER_PUSH6 4
 #define PLAYER_PUSH7 3
 #define PLAYER_PUSH8 2
+
+typedef enum
+{
+        OPEN_JVS_ERR_OK = 0,
+        OPEN_JVS_ERR_REC_BUFFER,
+        OPEN_JVS_ERR_SERIAL_READ,
+        OPEN_JVS_ERR_SERIAL_WRITE,
+        OPEN_JVS_ERR_STATE,
+        OPEN_JVS_ERR_CHECKSUM,
+        OPEN_JVS_ERR_TIMEOUT,
+        OPEN_JVS_ERR_NULL,
+        OPEN_JVS_ERR_WAIT_BYTES,
+        OPEN_JVS_ERR_INVALID_CMD,
+        OPEN_JVS_ERR_REPORT,
+        OPEN_JVS_ERR_JVS_PROFILE_NULL,
+        OPEN_JVS_ERR_ANALOG_MASK,
+
+        OPEN_JVS_ERR_SYNC_BYTE,
+        OPEN_JVS_FOUND_HEADER,
+        OPEN_JVS_FOUND_MESSAGE,
+
+
+} open_jvs_status_t;
+
+
+typedef enum
+{
+        OPEN_JVS_STATE_WAITING_MESSAGE = 0,
+        OPEN_JVS_STATE_WAITING_FOR_HEADER,
+        OPEN_JVS_STATE_WAITING_FOR_PAYLOAD,
+        OPEN_JVS_STATE_ERROR
+} open_jvs_state_t;
+
+
 
 #endif // DEFINITIONS_H_
