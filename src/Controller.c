@@ -1,4 +1,5 @@
 #include "Controller.h"
+#include "OpenJVS.h"
 
 int controller_fd;
 pthread_t thread_id;
