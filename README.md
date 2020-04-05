@@ -1,9 +1,12 @@
 [![Build Status](https://travis-ci.com/bobbydilley/OpenJVS.svg?branch=master)](https://travis-ci.com/bobbydilley/OpenJVS)
 
+# OpenJVS3
+
+This current version of OpenJVS will not be developed anymore, with a move over to a new version written from the ground up. The new version is being developed here: https://github.com/bobbydilley/OpenJVS3
+
+Thank you to everyone that has helped with debugging / suggestions / code for this version. I have learnt a huge amount from this project, and hopefully will be able to provide a better and more stable experience in OpenJVS3.
+
 # OpenJVS
-
-> Attention: OpenJVS 2 will soon be released. This has a much easier system for mapping controls, and will automatially detect plugged in perhipherals so should be much easier!
-
 
 OpenJVS is a software emulator for JVS I/O boards found in many modern arcade machines. To use JVS a USB to RS485 connector is required, along with a linux computer such as the Raspberry Pi 2 with Ubuntu Linux. OpenJVS currently fully supports the Sega Naomi, and supports other platforms with additional hardware.
 
