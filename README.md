@@ -1,10 +1,10 @@
 [![Build Status](https://travis-ci.com/bobbydilley/OpenJVS.svg?branch=master)](https://travis-ci.com/bobbydilley/OpenJVS)
 
-# ATTENTION: Please use OpenJVS3
+# ATTENTION: Please use Modern OpenJVS
 
 This current version of OpenJVS will not be developed anymore, with a move over to a new version written from the ground up. The new version is being developed here:
 
-https://github.com/bobbydilley/OpenJVS3
+https://github.com/openjvs/openjvs
 
 Thank you to everyone that has helped with debugging / suggestions / code for this version. I have learnt a huge amount from this project, and hopefully will be able to provide a better and more stable experience in OpenJVS3.
 
