@@ -1,0 +1,25 @@
+# --
+# OpenJVS Version 3
+# Copyright The OpenJVS Team 2020
+# This software is free for non commercial uses.
+# --
+# Most of these settings should be left alone, only modify them if the system doesn't work.
+# --
+
+# The default game mapping
+DEFAULT_MAPPING driving-generic
+
+# The IO Board to emulate (0 type 3, 1 namco jyu io)
+DEFAULT_IO 0
+
+# The path of the RS485 Converter
+DEVICE_PATH /dev/ttyUSB0
+
+# The type of sense circuit to use (0 no circuit, 1 float, 2 switch)
+SENSE_TYPE 1
+
+# Output debug info
+DEBUG_MODE 0
+
+# Atomiswave Analogue Fix, Make sure the IO is 8-bits for this one (openjvs custom io is 8 bits)
+ATOMISWAVE_FIX 0

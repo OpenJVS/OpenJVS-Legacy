@@ -1,0 +1,12 @@
+
+Game		System		Interface	Name		Rom
+---------------------------------------------------------------------------------
+Maze Of Kings	Naomi 		Wii Remote	mok_n_wr.py	maze_of_kings.bin
+Maze Of Kings	Naomi 		Mouse		mok_n_m.py	maze_of_kings.bin
+Maze Of Kings	Naomi 		Joystick	mok_n_j.py	maze_of_kings.bin
+
+Virtua Tennis	Naomi		Joystick	vt_n_j.py	virtua_tennis.bin
+
+Sports Shooting	Atomiswave	Wii Remote	ss_a_wr.py	sammy_ss.bin
+
+

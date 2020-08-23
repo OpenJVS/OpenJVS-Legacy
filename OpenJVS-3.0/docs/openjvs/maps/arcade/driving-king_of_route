@@ -1,0 +1,33 @@
+# Warning: Analog calibration is in Game-Test->Volume
+# Game-Assingment->MotorPower to off
+# Nitro is on Start Button
+
+ANALOGUE 0 WHEEL
+ANALOGUE 2 BREAK
+ANALOGUE 1 ACCELERATOR
+
+# P2 Down: Gear-Down
+BUTTON 3 BUTTON_5 2
+# P2 Up:Gear-Up
+BUTTON 2 BUTTON_6 2
+#Whiper
+BUTTON 7 BUTTON_2
+# Change View
+BUTTON 3 BUTTON_3
+# Horn
+BUTTON 6 BUTTON_1
+
+SYSTEM 1 SYSTEM_2
+SYSTEM 2 SYSTEM_3
+SYSTEM 3 SYSTEM_4
+SYSTEM 4 SYSTEM_5
+SYSTEM 5 SYSTEM_6
+SYSTEM 6 SYSTEM_7
+SYSTEM 7 SYSTEM_8
+
+# Start Button
+BUTTON 0 START
+# TEST Button
+SYSTEM 0 TEST
+# Service Button (P1)
+BUTTON 1 SYSTEM_1
