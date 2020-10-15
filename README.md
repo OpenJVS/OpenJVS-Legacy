@@ -1,5 +1,7 @@
 # OpenJVS Legacy
 
+Please use the latest version of OpenJVS here: https://github.com/openjvs/openjvs
+
 This repository contains the following legacy versions of OpenJVS:
 
 - OpenJVS-0.1 - The original version of OpenJVS called JVSEmulator written orignally in python and then ported to C
